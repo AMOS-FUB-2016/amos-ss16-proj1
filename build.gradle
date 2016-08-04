@@ -1,0 +1,11 @@
+apply plugin: 'war'
+apply from: 'https://raw.github.com/saladinkzn/gretty/master/pluginScripts/gretty.plugin'
+
+
+repositories {
+    jcenter()
+}
+
+dependencies {
+    compile "javax.servlet:servlet-api:2.5"
+}
