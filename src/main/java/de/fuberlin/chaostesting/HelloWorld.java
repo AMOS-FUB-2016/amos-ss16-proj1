@@ -3,7 +3,11 @@ package de.fuberlin.chaostesting;
 public class HelloWorld {
     
     public String sayHello() {
-        return "Saying hello from a gradle web app bean";
+    	String hw = new String("Hello World from Chaos Testing!</br>");
+    	hw += "<a href=\"newAdmin.jsp\">Add Admin</a></br>";
+    	hw += "<a href=\"newTester.jsp\">Add Tester</a></br>";
+    	hw += "<a href=\"showUsers.jsp\">Show Users</a>";
+        return hw;
     }
     
 }
