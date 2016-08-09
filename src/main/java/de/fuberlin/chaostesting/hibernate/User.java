@@ -68,7 +68,7 @@ public class User {
 	}
 	
 	public String list( ){
-		String userList = "";
+		String userList = "<tr><th>Nutzername</th><th>Passwort-Hash</th><th>Admin</th></tr>\n";
 		
 		SessionFactory sessionFactory = new Configuration().configure().buildSessionFactory();
 		Session session = sessionFactory.openSession();
@@ -78,9 +78,9 @@ public class User {
 		
 		for (Iterator iterator = users.iterator(); iterator.hasNext();) {
 			User user = (User) iterator.next(); 
-			userList += "Nutzername: " + user.getUserName();
-			userList += " | Passwort-Hash: " + user.getPassHash();
-			userList += " | Admin: " + user.getisAdmin() + "</br>";
+			userList += "<tr><td>" + user.getUserName();
+			userList += "</td><td>" + user.getPassHash();
+			userList += "</td><td>" + user.getisAdmin() + "</td></tr>\n";
 		}		
 		
 		transaction.commit();
