@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC 
+ "-//Hibernate/Hibernate Mapping DTD//EN"
+ "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd"> 
+
+<hibernate-mapping>
+   <class name="de.fuberlin.chaostesting.hibernate.User" table="USER_INFORMATION">
+      <meta attribute="class-description">
+         This class contains the user detail.
+      </meta>
+      <id name="id" type="int" column="id">
+         <generator class="increment"/>
+      </id>
+      <property name="userName" column="user_name" type="string"/>
+      <property name="passHash" column="pass_hash" type="string"/>
+      <property name="isAdmin" column="is_admin" type="boolean"/>
+   </class>
+</hibernate-mapping>
