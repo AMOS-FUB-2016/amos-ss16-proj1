@@ -1,14 +1,20 @@
 apply plugin: 'war'
 apply plugin : 'eclipse-wtp'
-apply from: 'https://raw.github.com/saladinkzn/gretty/master/pluginScripts/gretty.plugin'
 
 repositories {
     jcenter()
 }
 
 dependencies {
-    compile "javax.servlet:servlet-api:2.5"
-    compile "javax.persistence:persistence-api:1.0"
     compile "org.hibernate:hibernate-core:5.2.2.Final"
     runtime "org.postgresql:postgresql:9.4.1209"
+}
+
+eclipse.classpath.file {
+    // Classpath entry for Eclipse which changes the order of classpathentries; otherwise no sources for 3rd party jars are shown
+    withXml { xml ->
+        def node = xml.asNode()
+        node.remove( node.find { it.@path == 'org.eclipse.jst.j2ee.internal.web.container' } )
+        node.appendNode( 'classpathentry', [ kind: 'con', path: 'org.eclipse.jst.j2ee.internal.web.container', exported: 'true'])
+    }
 }
