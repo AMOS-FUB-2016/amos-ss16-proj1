@@ -56,7 +56,7 @@ public class User {
 	}
 	
 	public void register() {
-		SessionFactory sessionFactory = new Configuration().configure().buildSessionFactory();
+		SessionFactory sessionFactory = createConfiguration().buildSessionFactory();
 		Session session = sessionFactory.openSession();
 		session.beginTransaction();
 
@@ -70,14 +70,13 @@ public class User {
 	public String list( ){
 		String userList = "<tr><th>Nutzername</th><th>Passwort-Hash</th><th>Admin</th></tr>\n";
 		
-		SessionFactory sessionFactory = new Configuration().configure().buildSessionFactory();
+		SessionFactory sessionFactory = createConfiguration().buildSessionFactory();
 		Session session = sessionFactory.openSession();
 		Transaction transaction = session.beginTransaction();
 		
-		List users = session.createQuery("FROM User").getResultList();
+		List<User> users = (List<User>)session.createQuery("FROM User").getResultList();
 		
-		for (Iterator iterator = users.iterator(); iterator.hasNext();) {
-			User user = (User) iterator.next(); 
+		for (User user : users) { 
 			userList += "<tr><td>" + user.getUserName();
 			userList += "</td><td>" + user.getPassHash();
 			userList += "</td><td>" + user.getisAdmin() + "</td></tr>\n";
@@ -88,5 +87,17 @@ public class User {
 		sessionFactory.close();
 		
 		return userList;
+	}
+	
+	private Configuration createConfiguration() {
+		Configuration config = new Configuration().configure();
+		String url = config.getProperty("hibernate.connection.url");
+		String hostname = System.getProperty("HIBERNATE_DB_HOST");
+		if(hostname != null && url != null) {
+			url = url.replaceFirst("localhost", hostname);
+			config.setProperty("hibernate.connection.url", url);
+		}
+		
+		return config;
 	}
 }
