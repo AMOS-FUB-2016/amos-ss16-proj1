@@ -12,10 +12,10 @@ Use the gradle wrapper (or your local gradle installation) and execute the follo
 gradle eclipse
 ```
 
-Then, in Eclipse, use `File -> Import ...`, select `Existing Projects into Workspace` and navigate to the project folder and press `Finish`.
+Then, in Eclipse, use `File -> Import ...`, select `Existing Projects into Workspace` and navigate to the project directory and press `Finish`.
 
 Note: since the Buildship Gradle plugin for Eclipse does not support web projects, only the classic option using the Gradle `eclipse-wtp` is viable.
 
-### Using IntelliJ IDEA
+### Using IntelliJ IDEA Ultimate
 
-TBD
+Use `Import Project`, navigate  to the project directory and select it. Use `Import project from external model` and select `Gradle`. Use the default settings in the following view and press `Finish`. In the navigation bar, use the run/debug configuration selector and press `Edit configurations...`. Click the `+`-button and select `Tomcat Server -> Local`. Configure the server by navigating to your Tomcat installation directory. In the `Deployment` tab, use the `+`-button to add the Gradle-generated WAR file. Press `OK` to apply your configuration.
