@@ -3,7 +3,7 @@ package de.fuberlin.chaostesting;
 public class HelloWorld {
     
     public String sayHello() {
-    	String hw = new String("Hello World from Chaos Testing!</br>");
+    	String hw = "Hello World from Chaos Testing!</br>";
     	hw += "<a href=\"newAdmin.jsp\">Add Admin</a></br>";
     	hw += "<a href=\"newTester.jsp\">Add Tester</a></br>";
     	hw += "<a href=\"showUsers.jsp\">Show Users</a>";
