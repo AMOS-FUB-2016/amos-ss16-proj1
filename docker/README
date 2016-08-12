@@ -1,0 +1,20 @@
+This configuration will run a packaged web application (WAR) in a Docker environment configured with Tomcat and PostgreSQL.
+The WAR file has to be placed in the web folder as "application.war".  The web app will be deployed to the ROOT context.
+By default, Tomcat will be accessible from port 8081. The manager app is accessible from the /mgr resource.
+
+To compose the system, run:
+
+    docker-compose build
+
+Then, to run/stop the environment, use:
+
+    docker-compose up -d
+    docker-compose stop
+
+If you wish to open a shell in one of the containers, run
+
+    docker exec -it <container_id> /bin/bash
+
+A list of all container ids can be found using
+
+    docker ps -a
