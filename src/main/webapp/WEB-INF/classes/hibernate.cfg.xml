@@ -24,6 +24,7 @@
    <property name="hbm2ddl.auto">update</property>
 
    <!-- List of XML mapping files -->
+   <mapping resource="Test.hbm.xml"/>
    <mapping resource="User.hbm.xml"/>
 
 </session-factory>
