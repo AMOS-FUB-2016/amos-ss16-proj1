@@ -4,6 +4,17 @@
          xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee
 		 http://xmlns.jcp.org/xml/ns/javaee/web-app_3_1.xsd"
          version="3.1">
+	<servlet>
+		<description>
+		</description>
+		<display-name>Definition</display-name>
+		<servlet-name>Definition</servlet-name>
+		<servlet-class>test.Definition</servlet-class>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>Definition</servlet-name>
+		<url-pattern>/Definition</url-pattern>
+	</servlet-mapping>
 
     <!-- Config here. -->
 
