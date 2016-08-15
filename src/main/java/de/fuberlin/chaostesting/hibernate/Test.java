@@ -1,6 +1,5 @@
 package de.fuberlin.chaostesting.hibernate;
 
-import java.util.Iterator;
 import java.util.List;
 
 import javax.persistence.Entity;
@@ -27,7 +26,8 @@ public class Test {
 	public Test() {
 	}
 	
-	public Test(String von, String nach, String hinfahrt, String reisende, String klasse, String preis) {
+	public Test(String von, String nach, String hinfahrt, String reisende, 
+			String klasse, String preis) {
 		this.testVon = von;
 		this.testNach = nach;
 		this.testHinfahrt = hinfahrt;
@@ -92,26 +92,38 @@ public class Test {
 		sessionFactory.close();
 	}
 	
-	public String list( ){
-		String userList = "<tr><th>Nutzername</th><th>Passwort-Hash</th><th>Admin</th></tr>\n";
+	public String list(){
+		/*
+		private String testVon; 
+		private String testNach;
+		private String testHinfahrt;
+		private String testReisende;
+		private String testKlasse;
+		private String preis;
+		 */
+		String testList = "<tr><th>Von</th><th>Nach</th><th>Datum</th>"
+				+ "<th>Reisende</th><th>Klasse</th><th>Preis</th></tr>\n";
 		
 		SessionFactory sessionFactory = createConfiguration().buildSessionFactory();
 		Session session = sessionFactory.openSession();
 		Transaction transaction = session.beginTransaction();
 		
-		List<User> users = (List<User>)session.createQuery("FROM User").getResultList();
+		List<Test> tests = (List<Test>)session.createQuery("FROM Test").getResultList();
 		
-		for (User user : users) { 
-			userList += "<tr><td>" + user.getUserName();
-			userList += "</td><td>" + user.getPassHash();
-			userList += "</td><td>" + user.getisAdmin() + "</td></tr>\n";
+		for (Test test : tests) { 
+			testList += "<tr><td>" + test.getTestVon();
+			testList += "</td><td>" + test.getTestNach();
+			testList += "</td><td>" + test.getTestHinfahrt();
+			testList += "</td><td>" + test.getTestReisende();
+			testList += "</td><td>" + test.getTestKlasse();
+			testList += "</td><td>" + test.getPreis() + "</td></tr>\n";
 		}		
 		
 		transaction.commit();
 		session.close();
 		sessionFactory.close();
 		
-		return userList;
+		return testList;
 	}
 	
 	private Configuration createConfiguration() {

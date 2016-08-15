@@ -3,7 +3,8 @@
 <!DOCTYPE html> 
 <html>
 	<head>
-		<link rel="stylesheet" href="style.css" type="text/css" />
+		<link rel="stylesheet" href="style.css" type="text/css" />		
+		<title>Chaos Testing</title>	
 	</head>
 	<body>
 		<header>
@@ -18,6 +19,7 @@
 			</nav>		
 		</header>
 		<section class="clear">
+			<h1>Chaos Testing</h1>
 			<p>${userTest.newAdmin()}</p>
 		</section>
 		<footer><p>${startseite.footer()}</p></footer>

@@ -3,7 +3,7 @@
 <html>
 	<head>
 		<link rel="stylesheet" href="style.css" type="text/css" />
-		<title>Test-Definition</title>	
+		<title>Chaos Testing - Test-Definition</title>	
 	</head>
 	<body>
 		<header>
@@ -19,13 +19,13 @@
 		</header>
 		<section class="clear">
 			<h1>Test-Definition</h1>
-			<p>
+			<h3>
 				Eingabe der Test-Daten
-			</p>
+			</h3>
 			<form action=Definition method="POST">
 				Von: <input type="text" name="von"></input><br /><br />
 				Nach: <input type="text" name="nach"></input><br /><br />
-				Hinfahrt: <input type="date" name="hinfahrt" value="jjjj-mm-tt"></input><br /><br />
+				Datum: <input type="date" name="hinfahrt" value="jjjj-mm-tt"></input><br /><br />
 				Reisende:
 				<select name="reisende" size="1">
 					<option value="eins">1 Reisender</option>

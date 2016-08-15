@@ -4,7 +4,7 @@
 <html>
 	<head>
 		<link rel="stylesheet" href="style.css" type="text/css" />
-		<title>Users</title>	
+		<title>Chaos Testing - Nutzer-Liste</title>
 	</head>
 	<body>
 		<header>
@@ -19,7 +19,7 @@
 			</nav>		
 		</header>
 		<section class="clear">
-			<h1>Users</h1>
+			<h1>Nutzer-Liste</h1>
 				<table style = "border:1px solid grey; background-color: #F8F8F8">
 					${userTest.getUsers()}
 				</table>
