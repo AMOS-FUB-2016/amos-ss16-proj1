@@ -2,38 +2,32 @@
 <!DOCTYPE html> 
 <html>
 	<head>
-		<link rel="stylesheet" href="stylesheet.css" type="text/css" />
-		<title>Startseite</title>
+		<link rel="stylesheet" href="style.css" type="text/css" />
+		<title>Startseite</title>	
 	</head>
 	<body>
 		<header>
 			<nav>
+				<div class="left">
+					${startseite.navTest()}
+				</div>
+				<div class="right">
+					${startseite.navUser()}
+				</div>
+				
 			</nav>		
 		</header>
-		<section>
+		
+		<section class="clear">
 			<h1>Startseite</h1>
 			<p>${startseite.sayHello()}</p>
-		
-			<p>
-			Testdefinition
-			</p>
-			<form action=Definition method="POST">
-				Von: <input type="text" name="von"></input><br /><br />
-				Nach: <input type="text" name="nach"></input><br /><br />
-				Hinfahrt: <input type="date" name="hinfahrt" value="jjjj-mm-tt"></input><br /><br />
-				Reisende:
-				<select name="reisende" size="1">
-					<option value="eins">1 Reisender</option>
-					<option value="zwei">2 Reisende</option>
-					<option value="drei">3 Reisende</option>
-					<option value="vier">4 Reisende</option>
-					<option value="fuenf">5 Reisende</option>
-				</select><br /><br />
-				Klasse 1: <input type="radio" name="klasse" value="eins"></input><br />
-				Klasse 2: <input type="radio" name="klasse" value="zwei"></input><br /><br />
-				Preis (Sollwert): <input type="text" name="preis" value="0"><br /><br />
-				<input type="submit" value="senden" name="Eintragen"></input><br />
-			</form>
+			<p><img src="logo.png" alt="Logo" width="250px" height="250px"  class="left"></p>
+			<p>Der Testautomat ist ein System, welches mit gegebenem Code und gegebenen Daten einen Automaten zur Preisbestimmung von Verbindungen der DB simuliert.
+Mit diesem sollen (vorgefertigte) Tests ausgeführt werden, welche reale Reiseanfragen simulieren.
+Die Preise der Verbindungen sollen mit Preisen anderer Code- und Datenversionen verglichen werden.
+Bei Preisveränderungen soll das System ein Hilfestellung zur Bewertung der Abweichungen geben.</p>
+			<p  class="clear"></p>
 		</section>
+		<footer><p>${startseite.footer()}</p></footer>
 	</body>
 </html>
