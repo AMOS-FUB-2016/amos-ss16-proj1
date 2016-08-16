@@ -116,7 +116,9 @@ public class Test {
 			testList += "</td><td>" + test.getTestHinfahrt();
 			testList += "</td><td>" + test.getTestReisende();
 			testList += "</td><td>" + test.getTestKlasse();
-			testList += "</td><td>" + test.getPreis() + "</td></tr>\n";
+			testList += "</td><td>" + test.getPreis();
+			testList += "</td><td><a href=\"executeTest.jsp?id=" + test.getId() + "\">Execute</a>";
+			testList += "</td></tr>";
 		}		
 		
 		transaction.commit();
@@ -126,7 +128,33 @@ public class Test {
 		return testList;
 	}
 	
-	private Configuration createConfiguration() {
+	public String toXML(){
+		String xml = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>"
+				+"<angebotsAnfrage msgVersion=\"1.0\">"
+				+"<allgemeineAngaben wagenKlasse_e=\"KLASSE_"+testKlasse+"\"/>"
+				+"<reisender typ_e=\"ERWACHSENER\" anzahl=\""+testReisende+"\"/>"
+				+"<verbindungsParameter zeitpunkt=\""+testHinfahrt+"\" >"
+				+"<halt bahnhof=\""+testVon+"\"/>"
+				+"<halt bahnhof=\""+testNach+"\"/>"
+				+"</verbindungsParameter>"
+				+"</angebotsAnfrage>";		
+		return xml;
+	}
+	
+	public static Test byId(int id) {
+		Test theTest = null;
+		SessionFactory sessionFactory = createConfiguration().buildSessionFactory();
+		Session session = sessionFactory.openSession();
+		
+		theTest = session.get(Test.class, id);
+		
+		session.close();
+		sessionFactory.close();
+		
+		return theTest;
+	}
+	
+	private static Configuration createConfiguration() {
 		Configuration config = new Configuration().configure();
 		String url = config.getProperty("hibernate.connection.url");
 		String hostname = System.getProperty("HIBERNATE_DB_HOST");

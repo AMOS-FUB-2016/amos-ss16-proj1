@@ -42,7 +42,7 @@ public class Definition extends HttpServlet {
 	protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
     	von = req.getParameter("von");
     	nach = req.getParameter("nach");
-    	hinfahrt = req.getParameter("hinfahrt");
+    	hinfahrt = req.getParameter("hinfahrt") + "T00:00:00+01:00"; // TODO: parse into date and serialize
     	reisende = req.getParameter("reisende");
     	klasse = req.getParameter("klasse");
     	preis = req.getParameter("preis");
