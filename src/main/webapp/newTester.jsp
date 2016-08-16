@@ -1,4 +1,4 @@
-<jsp:useBean id="startseite" class="de.fuberlin.chaostesting.Startseite" />
+﻿<jsp:useBean id="startseite" class="de.fuberlin.chaostesting.Startseite" />
 <jsp:useBean id="userTest" class="de.fuberlin.chaostesting.UserTest" />
 <!DOCTYPE html> 
 <html>

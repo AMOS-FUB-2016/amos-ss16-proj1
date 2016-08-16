@@ -1,4 +1,4 @@
-<jsp:useBean id="startseite" class="de.fuberlin.chaostesting.Startseite" />
+ï»¿<jsp:useBean id="startseite" class="de.fuberlin.chaostesting.Startseite" />
 <!DOCTYPE html> 
 <html>
 	<head>
@@ -23,9 +23,9 @@
 			<%-- <p>${startseite.sayHello()}</p> --%>
 			<p><img src="logo.png" alt="Logo" width="250px" height="250px"  class="left"></p>
 			<p>Der Testautomat ist ein System, welches mit gegebenem Code und gegebenen Daten einen Automaten zur Preisbestimmung von Verbindungen der DB simuliert.
-				Mit diesem sollen (vorgefertigte) Tests ausgeführt werden, welche reale Reiseanfragen simulieren.
+				Mit diesem sollen (vorgefertigte) Tests ausgefÃ¼hrt werden, welche reale Reiseanfragen simulieren.
 				Die Preise der Verbindungen sollen mit Preisen anderer Code- und Datenversionen verglichen werden.
-				Bei Preisveränderungen soll das System ein Hilfestellung zur Bewertung der Abweichungen geben.</p>
+				Bei PreisverÃ¤nderungen soll das System ein Hilfestellung zur Bewertung der Abweichungen geben.</p>
 			<p  class="clear"></p>
 		</section>
 		<footer><p>${startseite.footer()}</p></footer>

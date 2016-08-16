@@ -1,4 +1,4 @@
-package de.fuberlin.chaostesting;
+ï»¿package de.fuberlin.chaostesting;
 
 public class Startseite {
     
@@ -17,8 +17,8 @@ public class Startseite {
     }
     
     public String navUser() {
-    	String nav = new String ("<a href=\"newAdmin.jsp\">Test-Admin hinzufügen</a>");
-    	nav += " - <a href=\"newTester.jsp\">Test-Anwender hinzufügen</a>";
+    	String nav = new String ("<a href=\"newAdmin.jsp\">Test-Admin hinzufÃ¼gen</a>");
+    	nav += " - <a href=\"newTester.jsp\">Test-Anwender hinzufÃ¼gen</a>";
     	nav += " - <a href=\"showUsers.jsp\">Nutzer-Liste</a>";
     	
         return nav;
