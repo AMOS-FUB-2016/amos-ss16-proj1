@@ -1,7 +1,6 @@
 package de.fuberlin.chaostesting;
 
-public class Startseite {
-    
+public class Startseite {    
     public String sayHello() {
     	String hw = new String("Chaos Testing sagt \"Hallo Welt\"!</br>");
     	

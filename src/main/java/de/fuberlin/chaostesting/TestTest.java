@@ -11,22 +11,15 @@ import java.net.URL;
 
 import de.fuberlin.chaostesting.hibernate.Test;
 
-public class TestTest {
-	
-	private String executeId;
-	
-	
+public class TestTest {	
+	private String executeId;	
 	
 	public String getTests() {
 		return new Test().list();
 	}
-
-
-
 	public String getExecuteId() {
 		return executeId;
 	}
-
 	public void setExecuteId(String executeId) {
 		this.executeId = executeId;
 	}

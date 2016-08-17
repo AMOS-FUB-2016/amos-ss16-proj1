@@ -2,25 +2,33 @@ package de.fuberlin.chaostesting.hibernate;
 
 import java.util.List;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
-import org.hibernate.Transaction;
 import org.hibernate.cfg.Configuration;
 
 @Entity
 @Table(name="TEST")
 public class Test {	
-	@Id
+	@Id	@GeneratedValue
+	@Column(name="id")
 	private int id;
-	private String testVon; 
+	@Column(name="von")
+	private String testVon;
+	@Column(name="nach")
 	private String testNach;
+	@Column(name="hinfahrt")
 	private String testHinfahrt;
+	@Column(name="reisende")
 	private String testReisende;
+	@Column(name="klasse")
 	private String testKlasse;
+	@Column(name="preis")
 	private String preis;
 	
 	public Test() {
@@ -81,32 +89,22 @@ public class Test {
 	
 	
 	public void register() {
-		SessionFactory sessionFactory = createConfiguration().buildSessionFactory();
+		SessionFactory sessionFactory = HibernateUtil.getSessionFactory();
 		Session session = sessionFactory.openSession();
 		session.beginTransaction();
 
 		session.save(this);
 		
 		session.getTransaction().commit();
-		session.close();
-		sessionFactory.close();
 	}
 	
 	public String list(){
-		/*
-		private String testVon; 
-		private String testNach;
-		private String testHinfahrt;
-		private String testReisende;
-		private String testKlasse;
-		private String preis;
-		 */
 		String testList = "<tr><th>Von</th><th>Nach</th><th>Datum</th>"
 				+ "<th>Reisende</th><th>Klasse</th><th>Preis</th></tr>\n";
 		
-		SessionFactory sessionFactory = createConfiguration().buildSessionFactory();
+		SessionFactory sessionFactory = HibernateUtil.getSessionFactory();
 		Session session = sessionFactory.openSession();
-		Transaction transaction = session.beginTransaction();
+		session.beginTransaction();
 		
 		List<Test> tests = (List<Test>)session.createQuery("FROM Test").getResultList();
 		
@@ -121,9 +119,7 @@ public class Test {
 			testList += "</td></tr>";
 		}		
 		
-		transaction.commit();
-		session.close();
-		sessionFactory.close();
+		session.getTransaction().commit();
 		
 		return testList;
 	}
@@ -143,26 +139,11 @@ public class Test {
 	
 	public static Test byId(int id) {
 		Test theTest = null;
-		SessionFactory sessionFactory = createConfiguration().buildSessionFactory();
+		SessionFactory sessionFactory = HibernateUtil.getSessionFactory();
 		Session session = sessionFactory.openSession();
 		
 		theTest = session.get(Test.class, id);
 		
-		session.close();
-		sessionFactory.close();
-		
 		return theTest;
-	}
-	
-	private static Configuration createConfiguration() {
-		Configuration config = new Configuration().configure();
-		String url = config.getProperty("hibernate.connection.url");
-		String hostname = System.getProperty("HIBERNATE_DB_HOST");
-		if(hostname != null && url != null) {
-			url = url.replaceFirst("localhost", hostname);
-			config.setProperty("hibernate.connection.url", url);
-		}
-		
-		return config;
 	}
 }
