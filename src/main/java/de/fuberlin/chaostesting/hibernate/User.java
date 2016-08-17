@@ -1,4 +1,4 @@
-﻿package de.fuberlin.chaostesting.hibernate;
+package de.fuberlin.chaostesting.hibernate;
 
 import java.util.Iterator;
 import java.util.List;

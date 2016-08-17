@@ -1,4 +1,4 @@
-﻿package de.fuberlin.chaostesting;
+package de.fuberlin.chaostesting;
 
 import java.io.BufferedReader;
 import java.io.DataOutputStream;
@@ -36,7 +36,7 @@ public class TestTest {
 		try {
 			id = Integer.parseInt(executeId);
 		} catch (NumberFormatException e) {
-			return "ung�ltiger parameter";
+			return "ungültiger parameter";
 		}
 		
 		Test test = Test.byId(id);

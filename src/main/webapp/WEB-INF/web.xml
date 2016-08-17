@@ -9,7 +9,7 @@
 		</description>
 		<display-name>Definition</display-name>
 		<servlet-name>Definition</servlet-name>
-		<servlet-class>test.Definition</servlet-class>
+		<servlet-class>de.fuberlin.chaostesting.test.Definition</servlet-class>
 	</servlet>
 	<servlet-mapping>
 		<servlet-name>Definition</servlet-name>
