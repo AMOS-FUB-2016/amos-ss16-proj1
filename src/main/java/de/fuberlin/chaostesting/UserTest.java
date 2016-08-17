@@ -1,5 +1,7 @@
 package de.fuberlin.chaostesting;
 
+import java.util.List;
+
 import de.fuberlin.chaostesting.hibernate.User;
 
 public class UserTest {
@@ -14,7 +16,7 @@ public class UserTest {
 			return "Test-Admin wurde gespeichert!";
 		}
 		
-		public String getUsers() {
-			return new User().list();
+		public List<User> getUsers() {
+			return User.list();
 		}
 }

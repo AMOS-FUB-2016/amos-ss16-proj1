@@ -1,28 +1,9 @@
-﻿<jsp:useBean id="startseite" class="de.fuberlin.chaostesting.Startseite" />
+﻿<%@page contentType="text/html" pageEncoding="UTF-8"%>
+<%@taglib prefix="t" tagdir="/WEB-INF/tags" %>
 <jsp:useBean id="testTest" class="de.fuberlin.chaostesting.TestTest" />
-<jsp:setProperty name="testTest" property="executeId" value="<%=request.getParameter(\"id\")%>"/>
-<!DOCTYPE html> 
-<html>
-	<head>
-		<link rel="stylesheet" href="style.css" type="text/css" />
-		<title>Chaos Testing - Test-Liste</title>	
-	</head>
-	<body>
-		<header>
-			<nav>
-				<div class="left">
-					${startseite.navTest()}
-				</div>
-				<div class="right">
-					${startseite.navUser()}
-				</div>
-				
-			</nav>		
-		</header>
-		<section class="clear">
-			<h1>Testausführung</h1>
-			${testTest.executeTest()}
-		</section>
-		<footer><p>${startseite.footer()}</p></footer>
-	</body>
-</html>
+<jsp:setProperty name="testTest" property="executeId" value="${param.id}"/>
+
+<t:genericpage>
+	<h1>Testausführung</h1>
+	${testTest.executeTest()}
+</t:genericpage>

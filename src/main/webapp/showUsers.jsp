@@ -1,30 +1,17 @@
-﻿<jsp:useBean id="startseite" class="de.fuberlin.chaostesting.Startseite" />
+﻿<%@page contentType="text/html" pageEncoding="UTF-8"%>
+<%@taglib prefix="t" tagdir="/WEB-INF/tags" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <jsp:useBean id="userTest" class="de.fuberlin.chaostesting.UserTest" />
-<!DOCTYPE html> 
-<html>
-	<head>
-		<link rel="stylesheet" href="style.css" type="text/css" />
-		<title>Chaos Testing - Nutzer-Liste</title>
-	</head>
-	<body>
-		<header>
-			<nav>
-				<div class="left">
-					${startseite.navTest()}
-				</div>
-				<div class="right">
-					${startseite.navUser()}
-				</div>
-				
-			</nav>		
-		</header>
-		<section class="clear">
-			<h1>Nutzer-Liste</h1>
-				<table style = "border:1px solid grey; background-color: #F8F8F8">
-					${userTest.getUsers()}
-				</table>
-				<p><%= new java.util.Date() %></p>
-		</section>
-		<footer><p>${startseite.footer()}</p></footer>
-	</body>
-</html>
+<jsp:useBean id="now" class="java.util.Date"/>
+
+<t:genericpage>
+	<h1>Nutzer-Liste</h1>
+	<table style = "border:1px solid grey; background-color: #F8F8F8">
+		<tr><th>Nutzername</th><th>Passwort-Hash</th><th>Admin</th></tr>
+		<c:forEach items="${userTest.users}" var="user">
+		    <tr><td>${user.userName} </td><td> ${user.passHash} </td><td> ${user.isAdmin}</td></tr>
+		</c:forEach>
+	</table>
+	<fmt:formatDate value="${now}" pattern="dd-MM-yyyy" />
+</t:genericpage>

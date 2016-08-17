@@ -1,5 +1,7 @@
-apply plugin: 'war'
-apply plugin : 'eclipse-wtp'
+plugins {
+	id 'war'
+	id 'eclipse-wtp'
+}
 
 compileJava.options.encoding = 'utf-8'
 
@@ -9,7 +11,10 @@ repositories {
 
 dependencies {
     providedCompile "javax.servlet:javax.servlet-api:3.1.+"
+	providedCompile group: 'javax.servlet.jsp', name: 'jsp-api', version: '2.2'
+	compile group: 'javax.servlet', name: 'jstl', version: '1.2'
     compile "org.hibernate:hibernate-core:5.2.2.Final"
+	compile "net.sourceforge.stripes:stripes:1.5.8"
     runtime "org.postgresql:postgresql:9.4.1209"
 }
 
@@ -19,7 +24,6 @@ eclipse.wtp {
     }
 
     facet {
-
         facet name: 'jst.web', version: '3.1'
         facet name: 'jst.java', version: '1.8'
     }

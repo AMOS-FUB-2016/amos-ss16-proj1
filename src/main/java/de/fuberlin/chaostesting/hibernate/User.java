@@ -67,8 +67,7 @@ public class User {
 		sessionFactory.close();
 	}
 	
-	public String list( ){
-		String userList = "<tr><th>Nutzername</th><th>Passwort-Hash</th><th>Admin</th></tr>\n";
+	public static List<User> list( ){
 		
 		SessionFactory sessionFactory = createConfiguration().buildSessionFactory();
 		Session session = sessionFactory.openSession();
@@ -76,20 +75,14 @@ public class User {
 		
 		List<User> users = (List<User>)session.createQuery("FROM User").getResultList();
 		
-		for (User user : users) { 
-			userList += "<tr><td>" + user.getUserName();
-			userList += "</td><td>" + user.getPassHash();
-			userList += "</td><td>" + user.getisAdmin() + "</td></tr>\n";
-		}		
-		
 		transaction.commit();
 		session.close();
 		sessionFactory.close();
 		
-		return userList;
+		return users;
 	}
 	
-	private Configuration createConfiguration() {
+	private static Configuration createConfiguration() {
 		Configuration config = new Configuration().configure();
 		String url = config.getProperty("hibernate.connection.url");
 		String hostname = System.getProperty("HIBERNATE_DB_HOST");

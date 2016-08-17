@@ -92,40 +92,18 @@ public class Test {
 		sessionFactory.close();
 	}
 	
-	public String list(){
-		/*
-		private String testVon; 
-		private String testNach;
-		private String testHinfahrt;
-		private String testReisende;
-		private String testKlasse;
-		private String preis;
-		 */
-		String testList = "<tr><th>Von</th><th>Nach</th><th>Datum</th>"
-				+ "<th>Reisende</th><th>Klasse</th><th>Preis</th></tr>\n";
-		
+	public static List<Test> list(){
 		SessionFactory sessionFactory = createConfiguration().buildSessionFactory();
 		Session session = sessionFactory.openSession();
 		Transaction transaction = session.beginTransaction();
 		
 		List<Test> tests = (List<Test>)session.createQuery("FROM Test").getResultList();
 		
-		for (Test test : tests) { 
-			testList += "<tr><td>" + test.getTestVon();
-			testList += "</td><td>" + test.getTestNach();
-			testList += "</td><td>" + test.getTestHinfahrt();
-			testList += "</td><td>" + test.getTestReisende();
-			testList += "</td><td>" + test.getTestKlasse();
-			testList += "</td><td>" + test.getPreis();
-			testList += "</td><td><a href=\"executeTest.jsp?id=" + test.getId() + "\">Execute</a>";
-			testList += "</td></tr>";
-		}		
-		
 		transaction.commit();
 		session.close();
 		sessionFactory.close();
 		
-		return testList;
+		return tests;
 	}
 	
 	public String toXML(){
