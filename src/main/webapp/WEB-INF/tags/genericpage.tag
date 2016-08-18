@@ -14,7 +14,7 @@
 				<div class="right">
 					<a href="newAdmin.jsp">Test-Admin hinzufügen</a> - <a href="newTester.jsp">Test-Anwender hinzufügen</a> - <a href="showUsers.jsp">Nutzer-Liste</a>
 				</div>
-			</nav>		
+			</nav>
 		</header>
 		
 		<section class="clear">
