@@ -8,14 +8,16 @@
 <t:genericpage>
 	<h1>Test-Liste</h1>
 	<table style = "border:1px solid grey; background-color: #F8F8F8">
-		<tr><th>Von</th><th>Nach</th><th>Datum</th><th>Reisende</th><th>Klasse</th><th>Preis</th></tr>
+		<tr><th>Von</th><th>Nach</th><th>Datum</th><th>Reisende</th><th>Klasse</th><th>Angebot</th><th>Sparpreis</th><th>Flexpreis</th></tr>
 		<c:forEach items="${testTest.tests}" var="test">
-			<tr><td>${test.testVon}
-			</td><td>${test.testNach}
-			</td><td>${test.testHinfahrt}
-			</td><td>${test.testReisende}
-			</td><td>${test.testKlasse}
-			</td><td>${test.preis}
+			<tr><td>${test.von}
+			</td><td>${test.nach}
+			</td><td>${test.zeitpunkt}
+			</td><td>${test.reisende}
+			</td><td>${test.klasse}
+			</td><td>${test.isAngebot()}
+			</td><td>${test.isSparpreis()}
+			</td><td>${test.isFlexpreis()}
 			</td><td><a href="executeTest.jsp?id=${test.id}">Ausführen</a>
 			</td></tr>
 		</c:forEach>

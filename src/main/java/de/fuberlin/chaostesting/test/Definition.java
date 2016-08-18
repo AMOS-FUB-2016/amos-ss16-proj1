@@ -16,10 +16,12 @@ public class Definition extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 	String von = "";
 	String nach = "";
-	String hinfahrt = "";
+	String zeitpunkt = "";
 	String reisende = "";
 	String klasse = "";
-	String preis = "";       
+	String angebot = "";
+	String sparpreis = "";
+	String flexpreis = "";     
 
     public Definition() {
         super();       
@@ -36,19 +38,21 @@ public class Definition extends HttpServlet {
 	protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
     	von = req.getParameter("von");
     	nach = req.getParameter("nach");
-    	hinfahrt = req.getParameter("hinfahrt") + "T00:00:00+01:00"; // TODO: parse into date and serialize
+    	zeitpunkt = req.getParameter("datum") + "T" + req.getParameter("uhrzeit") + ":00+01:00"; // TODO: parse into date and serialize
     	reisende = req.getParameter("reisende");
     	klasse = req.getParameter("klasse");
-    	preis = req.getParameter("preis");
+    	angebot = req.getParameter("angebot");
+    	sparpreis = req.getParameter("sparpreis");
+    	flexpreis = req.getParameter("flexpreis");
     			
     	resp.setContentType("text/html");
     	PrintWriter out = resp.getWriter();
     	out.println("<b>Test-Definition erfolgreich</b><br />");
     	out.println("Von " + von + " nach " + nach + "<br />");
-    	out.println("Datum: " + hinfahrt + "<br />");
-    	out.println("Reisende: " + reisende + " Klasse: " + klasse + "<br /><br />");
-    	out.println("Preis (Sollwert): " + preis + "<br />");
-    	new Test(von, nach, hinfahrt, reisende, klasse, preis).register();
+    	out.println("Datum: " + zeitpunkt + "<br />");
+    	out.println("Reisende: " + reisende + " Klasse: " + klasse + "<br />");
+    	out.println("Angebot: " + angebot + " Sparpreis: " + sparpreis + " Flexpreis: " + flexpreis + "<br /><br />");
+    	new Test(von, nach, zeitpunkt, reisende, klasse, angebot, sparpreis, flexpreis).register();
  
 		doGet(req, resp);
 	}

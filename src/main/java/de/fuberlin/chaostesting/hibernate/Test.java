@@ -12,37 +12,42 @@ import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 
 @Entity
-@Table(name="TEST")
+@Table(name="TEST_INFORMATION")
 public class Test {	
 	@Id	@GeneratedValue
-	@Column(name="id")
+	@Column(name="test_id")
 	private int id;
-	@Column(name="von")
-	private String testVon;
-	@Column(name="nach")
-	private String testNach;
-	@Column(name="hinfahrt")
-	private String testHinfahrt;
-	@Column(name="reisende")
-	private String testReisende;
-	@Column(name="klasse")
-	private String testKlasse;
-	@Column(name="preis")
-	private String preis;
+	@Column(name="test_von")
+	private String von;
+	@Column(name="test_nach")
+	private String nach;
+	@Column(name="test_zeitpunkt")
+	private String zeitpunkt;
+	@Column(name="test_reisende")
+	private String reisende;
+	@Column(name="test_klasse")
+	private String klasse;
+	@Column(name="test_Angebot")
+	private String angebot;
+	@Column(name="test_sparpreis")
+	private String sparpreis;
+	@Column(name="test_flexpreis")
+	private String flexpreis;
 	
 	public Test() {
 	}
 	
 	public Test(String von, String nach, String hinfahrt, String reisende, 
-			String klasse, String preis) {
-		this.testVon = von;
-		this.testNach = nach;
-		this.testHinfahrt = hinfahrt;
-		this.testReisende = reisende;
-		this.testKlasse = klasse;
-		this.preis = preis;
-	}
-
+			String klasse, String angebot, String sparpreis, String flexpreis) {
+		this.von = von;
+		this.nach = nach;
+		this.zeitpunkt = hinfahrt;
+		this.reisende = reisende;
+		this.klasse = klasse;
+		this.angebot = angebot;
+		this.sparpreis = sparpreis;
+		this.flexpreis = flexpreis;
+	}	
 	
 	public int getId() {
 		return id;
@@ -52,52 +57,68 @@ public class Test {
 		this.id = id;
 	}
 
-	public String getTestVon() {
-		return testVon;
+	public String getVon() {
+		return von;
 	}
 
-	public void setTestVon(String testVon) {
-		this.testVon = testVon;
+	public void setVon(String von) {
+		this.von = von;
 	}
 
-	public String getTestNach() {
-		return testNach;
+	public String getNach() {
+		return nach;
 	}
 
-	public void setTestNach(String testNach) {
-		this.testNach = testNach;
+	public void setNach(String nach) {
+		this.nach = nach;
 	}
 
-	public String getTestHinfahrt() {
-		return testHinfahrt;
+	public String getZeitpunkt() {
+		return zeitpunkt;
 	}
 
-	public void setTestHinfahrt(String testHinfahrt) {
-		this.testHinfahrt = testHinfahrt;
+	public void setZeitpunkt(String zeitpunkt) {
+		this.zeitpunkt = zeitpunkt;
 	}
 
-	public String getTestReisende() {
-		return testReisende;
+	public String getReisende() {
+		return reisende;
 	}
 
-	public void setTestReisende(String testReisende) {
-		this.testReisende = testReisende;
+	public void setReisende(String reisende) {
+		this.reisende = reisende;
 	}
 
-	public String getTestKlasse() {
-		return testKlasse;
+	public String getKlasse() {
+		return klasse;
 	}
 
-	public void setTestKlasse(String testKlasse) {
-		this.testKlasse = testKlasse;
+	public void setKlasse(String klasse) {
+		this.klasse = klasse;
 	}
 
-	public String getPreis() {
-		return preis;
+	public String isAngebot() {
+		return angebot;
 	}
 
-	public void setPreis(String preis) {
-		this.preis = preis;
+	public void setAngebot(String angebot) {
+		this.angebot = angebot;
+	}
+
+	public String isSparpreis() {
+		return sparpreis;
+	}
+
+	public void setSparpreis(String sparpreis) {
+		this.sparpreis = sparpreis;
+	}
+
+	public String isFlexpreis() {
+		return flexpreis;
+	}
+
+	public void setFlexpreis(String flexpreis) {
+		this.flexpreis = flexpreis;
 	}
 
 	public void register() {
@@ -125,11 +146,11 @@ public class Test {
 	public String toXML(){
 		String xml = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>"
 				+"<angebotsAnfrage msgVersion=\"1.0\">"
-				+"<allgemeineAngaben wagenKlasse_e=\"KLASSE_"+testKlasse+"\"/>"
-				+"<reisender typ_e=\"ERWACHSENER\" anzahl=\""+testReisende+"\"/>"
-				+"<verbindungsParameter zeitpunkt=\""+testHinfahrt+"\" >"
-				+"<halt bahnhof=\""+testVon+"\"/>"
-				+"<halt bahnhof=\""+testNach+"\"/>"
+				+"<allgemeineAngaben wagenKlasse_e=\"KLASSE_"+klasse+"\"/>"
+				+"<reisender typ_e=\"ERWACHSENER\" anzahl=\""+reisende+"\"/>"
+				+"<verbindungsParameter zeitpunkt=\""+zeitpunkt+"\" >"
+				+"<halt bahnhof=\""+von+"\"/>"
+				+"<halt bahnhof=\""+nach+"\"/>"
 				+"</verbindungsParameter>"
 				+"</angebotsAnfrage>";		
 		return xml;
