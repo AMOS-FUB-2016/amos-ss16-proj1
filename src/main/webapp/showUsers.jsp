@@ -10,7 +10,7 @@
 	<table style = "border:1px solid grey; background-color: #F8F8F8">
 		<tr><th>Nutzername</th><th>Passwort-Hash</th><th>Admin</th></tr>
 		<c:forEach items="${userTest.users}" var="user">
-		    <tr><td>${user.userName} </td><td> ${user.passHash} </td><td> ${user.isAdmin}</td></tr>
+		    <tr><td>${user.userName} </td><td> ${user.passHash} </td><td> ${user.admin}</td></tr>
 		</c:forEach>
 	</table>
 	<fmt:formatDate value="${now}" pattern="dd-MM-yyyy" />

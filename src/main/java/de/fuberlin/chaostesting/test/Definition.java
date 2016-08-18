@@ -11,9 +11,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import de.fuberlin.chaostesting.hibernate.Test;
-/**
- * Servlet implementation class Definition
- */
 
 public class Definition extends HttpServlet {
 	private static final long serialVersionUID = 1L;
@@ -22,13 +19,11 @@ public class Definition extends HttpServlet {
 	String hinfahrt = "";
 	String reisende = "";
 	String klasse = "";
-	String preis = "";
-       
+	String preis = "";       
 
     public Definition() {
         super();       
     }
-
 
 	protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {		
 		resp.setContentType("text/html");
@@ -37,7 +32,6 @@ public class Definition extends HttpServlet {
 		RequestDispatcher view = con.getRequestDispatcher("/index.jsp");
 		view.include(req, resp);		
 	}
-
 
 	protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
     	von = req.getParameter("von");
@@ -58,5 +52,4 @@ public class Definition extends HttpServlet {
  
 		doGet(req, resp);
 	}
-
 }

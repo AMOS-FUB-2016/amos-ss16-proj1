@@ -1,24 +1,27 @@
 package de.fuberlin.chaostesting.hibernate;
 
-import java.util.Iterator;
 import java.util.List;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
-import org.hibernate.Transaction;
-import org.hibernate.cfg.Configuration;
 
 @Entity
 @Table(name="USER_INFORMATION")
 public class User {	
-	@Id
+	@Id	@GeneratedValue
+	@Column(name="user_id")
 	private int id;
-	private String userName; 
+	@Column(name="user_name")
+	private String userName;
+	@Column(name="pass_hash")
 	private String passHash;
+	@Column(name="is_admin")
 	private boolean isAdmin;
 	
 	public User() {
@@ -29,68 +32,59 @@ public class User {
 		this.passHash = hash;
 		this.isAdmin = admin;
 	}
-
+	
 	public int getId() {
 		return id;
 	}
+
 	public void setId(int id) {
 		this.id = id;
 	}
+
 	public String getUserName() {
 		return userName;
 	}
+
 	public void setUserName(String userName) {
 		this.userName = userName;
 	}
+
 	public String getPassHash() {
 		return passHash;
 	}
+
 	public void setPassHash(String passHash) {
 		this.passHash = passHash;
 	}
-	public boolean getisAdmin() {
+
+	public boolean isAdmin() {
 		return isAdmin;
 	}
-	public void setisAdmin(boolean isAdmin) {
+
+	public void setAdmin(boolean isAdmin) {
 		this.isAdmin = isAdmin;
 	}
-	
+
 	public void register() {
-		SessionFactory sessionFactory = createConfiguration().buildSessionFactory();
+		SessionFactory sessionFactory = HibernateUtil.getSessionFactory();
 		Session session = sessionFactory.openSession();
 		session.beginTransaction();
 
 		session.save(this);
 		
 		session.getTransaction().commit();
-		session.close();
-		sessionFactory.close();
 	}
 	
 	public static List<User> list( ){
 		
-		SessionFactory sessionFactory = createConfiguration().buildSessionFactory();
+		SessionFactory sessionFactory = HibernateUtil.getSessionFactory();
 		Session session = sessionFactory.openSession();
-		Transaction transaction = session.beginTransaction();
+		session.beginTransaction();
 		
-		List<User> users = (List<User>)session.createQuery("FROM User").getResultList();
+		List<User> users = session.createQuery("FROM User", User.class).getResultList();
 		
-		transaction.commit();
-		session.close();
-		sessionFactory.close();
+		session.getTransaction().commit();
 		
 		return users;
-	}
-	
-	private static Configuration createConfiguration() {
-		Configuration config = new Configuration().configure();
-		String url = config.getProperty("hibernate.connection.url");
-		String hostname = System.getProperty("HIBERNATE_DB_HOST");
-		if(hostname != null && url != null) {
-			url = url.replaceFirst("localhost", hostname);
-			config.setProperty("hibernate.connection.url", url);
-		}
-		
-		return config;
 	}
 }
