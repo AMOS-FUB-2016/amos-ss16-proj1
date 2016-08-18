@@ -1,4 +1,4 @@
-﻿<jsp:useBean id="startseite" class="de.fuberlin.chaostesting.Startseite" />
+<jsp:useBean id="startseite" class="de.fuberlin.chaostesting.Startseite" />
 <!DOCTYPE html> 
 <html>
 	<head>
@@ -25,7 +25,7 @@
 			<form action="Definition" method="POST">
 				Von: <input type="text" name="von"></input><br /><br />
 				Nach: <input type="text" name="nach"></input><br /><br />
-				Datum: <input type="date" name="hinfahrt" value="jjjj-mm-tt"></input><br /><br />
+				Zeitpunkt: <input type="date" name="zeitpunkt" value="jjjj-mm-tt"></input><br /><br />
 				Reisende:
 				<select name="reisende" size="1">
 					<option value="1">1 Reisender</option>
@@ -36,7 +36,12 @@
 				</select><br /><br />
 				Klasse 1: <input type="radio" name="klasse" value="1"></input><br />
 				Klasse 2: <input type="radio" name="klasse" value="2"></input><br /><br />
-				Preis (Sollwert): <input type="text" name="preis" value="0"><br /><br />
+				Angebot: <input type="checkbox" name="angebot" value="true"></input><br />
+				<input type="hidden" name="angebot" value="false"></input>
+				Sparpreis: <input type="checkbox" name="sparpreis" value="true"></input><br />
+				<input type="hidden" name="sparpreis" value="false"></input>
+				Flexpreis: <input type="checkbox" name="flexpreis" value="true"></input><br /><br />
+				<input type="hidden" name="flexpreis" value="false"></input>
 				<input type="submit" value="senden" name="Eintragen"></input><br />
 			</form>
 		</section>

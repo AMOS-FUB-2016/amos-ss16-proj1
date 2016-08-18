@@ -29,13 +29,13 @@ public class TestTest {
 		try {
 			id = Integer.parseInt(executeId);
 		} catch (NumberFormatException e) {
-			return "ungültiger parameter";
+			return "ungültiger Parameter";
 		}
 		
 		Test test = Test.byId(id);
 		String testXml = test.toXML();
 		
-		String responseStr = "keine antwort erhalten";
+		String responseStr = "keine Antwort erhalten";
 		try {
 			URL url = new URL("http://localhost:8082/osst");
 			HttpURLConnection urlConnection = (HttpURLConnection) url.openConnection();

@@ -10,84 +10,118 @@ import javax.persistence.Table;
 
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
-import org.hibernate.cfg.Configuration;
 
 @Entity
-@Table(name="TEST")
+@Table(name="TEST_INFORMATION")
 public class Test {	
 	@Id	@GeneratedValue
-	@Column(name="id")
+	@Column(name="test_id")
 	private int id;
-	@Column(name="von")
-	private String testVon;
-	@Column(name="nach")
-	private String testNach;
-	@Column(name="hinfahrt")
-	private String testHinfahrt;
-	@Column(name="reisende")
-	private String testReisende;
-	@Column(name="klasse")
-	private String testKlasse;
-	@Column(name="preis")
-	private String preis;
+	@Column(name="test_von")
+	private String von;
+	@Column(name="test_nach")
+	private String nach;
+	@Column(name="test_zeitpunkt")
+	private String zeitpunkt;
+	@Column(name="test_reisende")
+	private String reisende;
+	@Column(name="test_klasse")
+	private String klasse;
+	@Column(name="test_Angebot")
+	private String angebot;
+	@Column(name="test_sparpreis")
+	private String sparpreis;
+	@Column(name="test_flexpreis")
+	private String flexpreis;
 	
 	public Test() {
 	}
 	
 	public Test(String von, String nach, String hinfahrt, String reisende, 
-			String klasse, String preis) {
-		this.testVon = von;
-		this.testNach = nach;
-		this.testHinfahrt = hinfahrt;
-		this.testReisende = reisende;
-		this.testKlasse = klasse;
-		this.preis = preis;
+			String klasse, String angebot, String sparpreis, String flexpreis) {
+		this.von = von;
+		this.nach = nach;
+		this.zeitpunkt = hinfahrt;
+		this.reisende = reisende;
+		this.klasse = klasse;
+		this.angebot = angebot;
+		this.sparpreis = sparpreis;
+		this.flexpreis = flexpreis;
 	}
-
+	
+	
 	public int getId() {
 		return id;
 	}
+
 	public void setId(int id) {
 		this.id = id;
 	}
-	public String getTestVon() {
-		return testVon;
+
+	public String getVon() {
+		return von;
 	}
-	public void setTestVon(String von) {
-		this.testVon = von;
+
+	public void setVon(String von) {
+		this.von = von;
 	}
-	public String getTestNach() {
-		return testNach;
+
+	public String getNach() {
+		return nach;
 	}
-	public void setTestNach(String nach) {
-		this.testNach = nach;
+
+	public void setNach(String nach) {
+		this.nach = nach;
 	}
-	public String getTestHinfahrt() {
-		return testHinfahrt;
+
+	public String getZeitpunkt() {
+		return zeitpunkt;
 	}
-	public void setTestHinfahrt(String hinfahrt) {
-		this.testHinfahrt = hinfahrt;
+
+	public void setZeitpunkt(String zeitpunkt) {
+		this.zeitpunkt = zeitpunkt;
 	}
-	public String getTestReisende() {
-		return testReisende;
+
+	public String getReisende() {
+		return reisende;
 	}
-	public void setTestReisende(String reisende) {
-		this.testReisende = reisende;
+
+	public void setReisende(String reisende) {
+		this.reisende = reisende;
 	}
-	public String getTestKlasse() {
-		return testKlasse;
+
+	public String getKlasse() {
+		return klasse;
 	}
-	public void setTestKlasse(String klasse) {
-		this.testKlasse = klasse;
+
+	public void setKlasse(String klasse) {
+		this.klasse = klasse;
 	}
-	public String getPreis() {
-		return preis;
+
+	public String isAngebot() {
+		return angebot;
 	}
-	public void setPreis(String preis) {
-		this.preis = preis;
+
+	public void setAngebot(String angebot) {
+		this.angebot = angebot;
 	}
-	
-	
+
+	public String isSparpreis() {
+		return sparpreis;
+	}
+
+	public void setSparpreis(String sparpreis) {
+		this.sparpreis = sparpreis;
+	}
+
+	public String isFlexpreis() {
+		return flexpreis;
+	}
+
+	public void setFlexpreis(String flexpreis) {
+		this.flexpreis = flexpreis;
+	}
+
 	public void register() {
 		SessionFactory sessionFactory = HibernateUtil.getSessionFactory();
 		Session session = sessionFactory.openSession();
@@ -100,7 +134,8 @@ public class Test {
 	
 	public String list(){
 		String testList = "<tr><th>Von</th><th>Nach</th><th>Datum</th>"
-				+ "<th>Reisende</th><th>Klasse</th><th>Preis</th></tr>\n";
+				+ "<th>Reisende</th><th>Klasse</th><th>Angebot</th>"
+				+ "<th>Sparpreis</th><th>Flexpreis</th></tr>\n";
 		
 		SessionFactory sessionFactory = HibernateUtil.getSessionFactory();
 		Session session = sessionFactory.openSession();
@@ -109,13 +144,15 @@ public class Test {
 		List<Test> tests = (List<Test>)session.createQuery("FROM Test").getResultList();
 		
 		for (Test test : tests) { 
-			testList += "<tr><td>" + test.getTestVon();
-			testList += "</td><td>" + test.getTestNach();
-			testList += "</td><td>" + test.getTestHinfahrt();
-			testList += "</td><td>" + test.getTestReisende();
-			testList += "</td><td>" + test.getTestKlasse();
-			testList += "</td><td>" + test.getPreis();
-			testList += "</td><td><a href=\"executeTest.jsp?id=" + test.getId() + "\">Execute</a>";
+			testList += "<tr><td>" + test.getVon();
+			testList += "</td><td>" + test.getNach();
+			testList += "</td><td>" + test.getZeitpunkt();
+			testList += "</td><td>" + test.getReisende();
+			testList += "</td><td>" + test.getKlasse();
+			testList += "</td><td>" + test.isAngebot();
+			testList += "</td><td>" + test.isSparpreis();
+			testList += "</td><td>" + test.isFlexpreis();
+			testList += "</td><td><a href=\"executeTest.jsp?id=" + test.getId() + "\">Test ausführen</a>";
 			testList += "</td></tr>";
 		}		
 		
@@ -127,11 +164,11 @@ public class Test {
 	public String toXML(){
 		String xml = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>"
 				+"<angebotsAnfrage msgVersion=\"1.0\">"
-				+"<allgemeineAngaben wagenKlasse_e=\"KLASSE_"+testKlasse+"\"/>"
-				+"<reisender typ_e=\"ERWACHSENER\" anzahl=\""+testReisende+"\"/>"
-				+"<verbindungsParameter zeitpunkt=\""+testHinfahrt+"\" >"
-				+"<halt bahnhof=\""+testVon+"\"/>"
-				+"<halt bahnhof=\""+testNach+"\"/>"
+				+"<allgemeineAngaben wagenKlasse_e=\"KLASSE_"+klasse+"\"/>"
+				+"<reisender typ_e=\"ERWACHSENER\" anzahl=\""+reisende+"\"/>"
+				+"<verbindungsParameter zeitpunkt=\""+zeitpunkt+"\" >"
+				+"<halt bahnhof=\""+von+"\"/>"
+				+"<halt bahnhof=\""+nach+"\"/>"
 				+"</verbindungsParameter>"
 				+"</angebotsAnfrage>";		
 		return xml;
