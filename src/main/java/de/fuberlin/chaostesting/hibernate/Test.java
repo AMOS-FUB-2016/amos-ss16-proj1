@@ -10,7 +10,6 @@ import javax.persistence.Table;
 
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
-import org.hibernate.cfg.Configuration;
 
 @Entity
 @Table(name="TEST")
@@ -44,50 +43,63 @@ public class Test {
 		this.preis = preis;
 	}
 
+	
 	public int getId() {
 		return id;
 	}
+
 	public void setId(int id) {
 		this.id = id;
 	}
+
 	public String getTestVon() {
 		return testVon;
 	}
-	public void setTestVon(String von) {
-		this.testVon = von;
+
+	public void setTestVon(String testVon) {
+		this.testVon = testVon;
 	}
+
 	public String getTestNach() {
 		return testNach;
 	}
-	public void setTestNach(String nach) {
-		this.testNach = nach;
+
+	public void setTestNach(String testNach) {
+		this.testNach = testNach;
 	}
+
 	public String getTestHinfahrt() {
 		return testHinfahrt;
 	}
-	public void setTestHinfahrt(String hinfahrt) {
-		this.testHinfahrt = hinfahrt;
+
+	public void setTestHinfahrt(String testHinfahrt) {
+		this.testHinfahrt = testHinfahrt;
 	}
+
 	public String getTestReisende() {
 		return testReisende;
 	}
-	public void setTestReisende(String reisende) {
-		this.testReisende = reisende;
+
+	public void setTestReisende(String testReisende) {
+		this.testReisende = testReisende;
 	}
+
 	public String getTestKlasse() {
 		return testKlasse;
 	}
-	public void setTestKlasse(String klasse) {
-		this.testKlasse = klasse;
+
+	public void setTestKlasse(String testKlasse) {
+		this.testKlasse = testKlasse;
 	}
+
 	public String getPreis() {
 		return preis;
 	}
+
 	public void setPreis(String preis) {
 		this.preis = preis;
 	}
-	
-	
+
 	public void register() {
 		SessionFactory sessionFactory = HibernateUtil.getSessionFactory();
 		Session session = sessionFactory.openSession();
@@ -129,6 +141,8 @@ public class Test {
 		Session session = sessionFactory.openSession();
 		
 		theTest = session.get(Test.class, id);
+		
+		session.close();
 		
 		return theTest;
 	}
