@@ -14,7 +14,7 @@ dependencies {
 	providedCompile group: 'javax.servlet.jsp', name: 'jsp-api', version: '2.2'
 	compile group: 'javax.servlet', name: 'jstl', version: '1.2'
     compile "org.hibernate:hibernate-core:5.2.2.Final"
-	compile "net.sourceforge.stripes:stripes:1.5.8"
+	compile "net.sourceforge.stripes:stripes:1.6.+"
     runtime "org.postgresql:postgresql:9.4.1209"
 }
 

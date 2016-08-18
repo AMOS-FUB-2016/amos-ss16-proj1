@@ -1,5 +1,6 @@
 package de.fuberlin.chaostesting.hibernate;
 
+import java.util.Date;
 import java.util.List;
 
 import javax.persistence.Column;
@@ -22,7 +23,7 @@ public class Test {
 	@Column(name="nach")
 	private String testNach;
 	@Column(name="hinfahrt")
-	private String testHinfahrt;
+	private Date testHinfahrt;
 	@Column(name="reisende")
 	private String testReisende;
 	@Column(name="klasse")
@@ -33,7 +34,7 @@ public class Test {
 	public Test() {
 	}
 	
-	public Test(String von, String nach, String hinfahrt, String reisende, 
+	public Test(String von, String nach, Date hinfahrt, String reisende, 
 			String klasse, String preis) {
 		this.testVon = von;
 		this.testNach = nach;
@@ -43,7 +44,6 @@ public class Test {
 		this.preis = preis;
 	}
 
-	
 	public int getId() {
 		return id;
 	}
@@ -68,11 +68,11 @@ public class Test {
 		this.testNach = testNach;
 	}
 
-	public String getTestHinfahrt() {
+	public Date getTestHinfahrt() {
 		return testHinfahrt;
 	}
 
-	public void setTestHinfahrt(String testHinfahrt) {
+	public void setTestHinfahrt(Date testHinfahrt) {
 		this.testHinfahrt = testHinfahrt;
 	}
 

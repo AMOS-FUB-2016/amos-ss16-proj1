@@ -4,18 +4,38 @@
          xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee
 		 http://xmlns.jcp.org/xml/ns/javaee/web-app_3_1.xsd"
          version="3.1">
-	<servlet>
-		<description>
-		</description>
-		<display-name>Definition</display-name>
-		<servlet-name>Definition</servlet-name>
-		<servlet-class>de.fuberlin.chaostesting.test.Definition</servlet-class>
-	</servlet>
-	<servlet-mapping>
-		<servlet-name>Definition</servlet-name>
-		<url-pattern>/Definition</url-pattern>
-	</servlet-mapping>
+	
+	<filter>
+        <display-name>Stripes Filter</display-name>
+        <filter-name>StripesFilter</filter-name>
+        <filter-class>net.sourceforge.stripes.controller.StripesFilter</filter-class>
+        <init-param>
+            <param-name>ActionResolver.Packages</param-name>
+            <param-value>de.fuberlin.chaostesting</param-value>
+        </init-param>
+    </filter>
 
-    <!-- Config here. -->
+	<filter-mapping>
+        <filter-name>StripesFilter</filter-name>
+        <url-pattern>*.jsp</url-pattern>
+        <dispatcher>REQUEST</dispatcher>
+    </filter-mapping>
+    
+    <servlet>
+        <servlet-name>StripesDispatcher</servlet-name>
+        <servlet-class>net.sourceforge.stripes.controller.DispatcherServlet</servlet-class>
+        <load-on-startup>1</load-on-startup>
+    </servlet>
+    
+    <filter-mapping>
+        <filter-name>StripesFilter</filter-name>
+        <servlet-name>StripesDispatcher</servlet-name>
+        <dispatcher>REQUEST</dispatcher>
+    </filter-mapping>
+    
+    <servlet-mapping>
+        <servlet-name>StripesDispatcher</servlet-name>
+        <url-pattern>*.action</url-pattern>
+    </servlet-mapping>
 
 </web-app>
