@@ -8,15 +8,18 @@ import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.util.List;
 
 import de.fuberlin.chaostesting.hibernate.Test;
 
-public class TestTest {	
-	private String executeId;	
+public class TestTest {
 	
-	public String getTests() {
-		return new Test().list();
+	private String executeId;
+	
+	public List<Test> getTests() {
+		return Test.list();
 	}
+
 	public String getExecuteId() {
 		return executeId;
 	}

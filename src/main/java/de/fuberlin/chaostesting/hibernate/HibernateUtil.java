@@ -6,7 +6,7 @@ import org.hibernate.cfg.Configuration;
 public class HibernateUtil {
     private static SessionFactory sessionFactory;
      
-    public static SessionFactory getSessionFactory() {
+    public static synchronized SessionFactory getSessionFactory() {
         if (sessionFactory == null) {
         	Configuration configuration = new Configuration().configure();
     		String url = configuration.getProperty("hibernate.connection.url");
@@ -17,6 +17,7 @@ public class HibernateUtil {
     		}
 
             sessionFactory = configuration.buildSessionFactory();
+            // TODO: what happens when  creation fails?
         }
          
         return sessionFactory;

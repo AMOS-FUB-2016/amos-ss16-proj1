@@ -32,32 +32,39 @@ public class User {
 		this.passHash = hash;
 		this.isAdmin = admin;
 	}
-
+	
 	public int getId() {
 		return id;
 	}
+
 	public void setId(int id) {
 		this.id = id;
 	}
+
 	public String getUserName() {
 		return userName;
 	}
+
 	public void setUserName(String userName) {
 		this.userName = userName;
 	}
+
 	public String getPassHash() {
 		return passHash;
 	}
+
 	public void setPassHash(String passHash) {
 		this.passHash = passHash;
 	}
-	public boolean getisAdmin() {
+
+	public boolean isAdmin() {
 		return isAdmin;
 	}
-	public void setisAdmin(boolean isAdmin) {
+
+	public void setAdmin(boolean isAdmin) {
 		this.isAdmin = isAdmin;
 	}
-	
+
 	public void register() {
 		SessionFactory sessionFactory = HibernateUtil.getSessionFactory();
 		Session session = sessionFactory.openSession();
@@ -68,23 +75,16 @@ public class User {
 		session.getTransaction().commit();
 	}
 	
-	public String list( ){
-		String userList = "<tr><th>Nutzername</th><th>Passwort-Hash</th><th>Admin</th></tr>\n";
+	public static List<User> list( ){
 		
 		SessionFactory sessionFactory = HibernateUtil.getSessionFactory();
 		Session session = sessionFactory.openSession();
 		session.beginTransaction();
 		
-		List<User> users = (List<User>)session.createQuery("FROM User").getResultList();
-		
-		for (User user : users) { 
-			userList += "<tr><td>" + user.getUserName();
-			userList += "</td><td>" + user.getPassHash();
-			userList += "</td><td>" + user.getisAdmin() + "</td></tr>\n";
-		}		
+		List<User> users = session.createQuery("FROM User", User.class).getResultList();
 		
 		session.getTransaction().commit();
 		
-		return userList;
+		return users;
 	}
 }

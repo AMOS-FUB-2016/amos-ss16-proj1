@@ -10,7 +10,6 @@ import javax.persistence.Table;
 
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
-import org.hibernate.cfg.Configuration;
 
 @Entity
 @Table(name="TEST")
@@ -44,50 +43,63 @@ public class Test {
 		this.preis = preis;
 	}
 
+	
 	public int getId() {
 		return id;
 	}
+
 	public void setId(int id) {
 		this.id = id;
 	}
+
 	public String getTestVon() {
 		return testVon;
 	}
-	public void setTestVon(String von) {
-		this.testVon = von;
+
+	public void setTestVon(String testVon) {
+		this.testVon = testVon;
 	}
+
 	public String getTestNach() {
 		return testNach;
 	}
-	public void setTestNach(String nach) {
-		this.testNach = nach;
+
+	public void setTestNach(String testNach) {
+		this.testNach = testNach;
 	}
+
 	public String getTestHinfahrt() {
 		return testHinfahrt;
 	}
-	public void setTestHinfahrt(String hinfahrt) {
-		this.testHinfahrt = hinfahrt;
+
+	public void setTestHinfahrt(String testHinfahrt) {
+		this.testHinfahrt = testHinfahrt;
 	}
+
 	public String getTestReisende() {
 		return testReisende;
 	}
-	public void setTestReisende(String reisende) {
-		this.testReisende = reisende;
+
+	public void setTestReisende(String testReisende) {
+		this.testReisende = testReisende;
 	}
+
 	public String getTestKlasse() {
 		return testKlasse;
 	}
-	public void setTestKlasse(String klasse) {
-		this.testKlasse = klasse;
+
+	public void setTestKlasse(String testKlasse) {
+		this.testKlasse = testKlasse;
 	}
+
 	public String getPreis() {
 		return preis;
 	}
+
 	public void setPreis(String preis) {
 		this.preis = preis;
 	}
-	
-	
+
 	public void register() {
 		SessionFactory sessionFactory = HibernateUtil.getSessionFactory();
 		Session session = sessionFactory.openSession();
@@ -98,30 +110,16 @@ public class Test {
 		session.getTransaction().commit();
 	}
 	
-	public String list(){
-		String testList = "<tr><th>Von</th><th>Nach</th><th>Datum</th>"
-				+ "<th>Reisende</th><th>Klasse</th><th>Preis</th></tr>\n";
-		
+	public static List<Test> list(){
 		SessionFactory sessionFactory = HibernateUtil.getSessionFactory();
 		Session session = sessionFactory.openSession();
 		session.beginTransaction();
 		
-		List<Test> tests = (List<Test>)session.createQuery("FROM Test").getResultList();
-		
-		for (Test test : tests) { 
-			testList += "<tr><td>" + test.getTestVon();
-			testList += "</td><td>" + test.getTestNach();
-			testList += "</td><td>" + test.getTestHinfahrt();
-			testList += "</td><td>" + test.getTestReisende();
-			testList += "</td><td>" + test.getTestKlasse();
-			testList += "</td><td>" + test.getPreis();
-			testList += "</td><td><a href=\"executeTest.jsp?id=" + test.getId() + "\">Execute</a>";
-			testList += "</td></tr>";
-		}		
+		List<Test> tests = session.createQuery("FROM Test", Test.class).getResultList();
 		
 		session.getTransaction().commit();
 		
-		return testList;
+		return tests;
 	}
 	
 	public String toXML(){
@@ -143,6 +141,8 @@ public class Test {
 		Session session = sessionFactory.openSession();
 		
 		theTest = session.get(Test.class, id);
+		
+		session.close();
 		
 		return theTest;
 	}
