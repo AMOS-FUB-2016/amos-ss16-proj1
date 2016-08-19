@@ -133,11 +133,18 @@ public class Test {
 	}
 	
 	public String toXML(){
+		String y = "" + (zeitpunkt.getYear() + 1900);
+		String m = String.format("%02d", zeitpunkt.getMonth()+1);
+		String d = String.format("%02d", zeitpunkt.getDate());
+		String h = String.format("%02d", zeitpunkt.getHours());
+		String min = String.format("%02d", zeitpunkt.getMinutes());
+		String zeitpunktXML = y + "-" + m + "-" + d + "T" + h + ":" + min + ":00+01:00";
+		
 		String xml = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>"
 				+"<angebotsAnfrage msgVersion=\"1.0\">"
 				+"<allgemeineAngaben wagenKlasse_e=\"KLASSE_"+klasse+"\"/>"
 				+"<reisender typ_e=\"ERWACHSENER\" anzahl=\""+reisende+"\"/>"
-				+"<verbindungsParameter zeitpunkt=\""+zeitpunkt+"\" >"
+				+"<verbindungsParameter zeitpunkt=\""+zeitpunktXML+"\" >"
 				+"<halt bahnhof=\""+von+"\"/>"
 				+"<halt bahnhof=\""+nach+"\"/>"
 				+"</verbindungsParameter>"
