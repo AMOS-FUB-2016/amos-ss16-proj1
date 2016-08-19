@@ -15,22 +15,10 @@ import net.sourceforge.stripes.validation.Validate;
 import net.sourceforge.stripes.validation.ValidationErrors;
 
 @UrlBinding("/newTest.action")
-public class TestAction implements ActionBean {
+public class DefineTestAction extends GenericActionBean {
 
-	ActionBeanContext context;
-	
 	String result;
 	Test test;
-	
-	@Override
-	public void setContext(ActionBeanContext context) {
-		this.context = context;
-	}
-
-	@Override
-	public ActionBeanContext getContext() {
-		return context;
-	}
 	
 	public Test getTest() {
 		return test;

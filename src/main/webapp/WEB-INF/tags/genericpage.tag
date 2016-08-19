@@ -1,4 +1,6 @@
 <%@tag description="Overall Page template" pageEncoding="UTF-8"%>
+<%@taglib prefix="stripes" uri="http://stripes.sourceforge.net/stripes.tld"%>
+
 <!DOCTYPE html> 
 <html>
 	<head>
@@ -9,7 +11,7 @@
 		<header>
 			<nav>
 				<div class="left">
-					<a href="index.jsp">Startseite</a> - <a href="testDefinition.jsp">Test-Definition</a> - <a href="showTests.jsp">Test-Liste</a>
+					<a href="index.jsp">Startseite</a> - <a href="testDefinition.jsp">Test-Definition</a> - <stripes:link beanclass="de.fuberlin.chaostesting.ShowTestsAction">Test-Liste</stripes:link>
 				</div>
 				<div class="right">
 					<a href="newAdmin.jsp">Test-Admin hinzufügen</a> - <a href="newTester.jsp">Test-Anwender hinzufügen</a> - <a href="showUsers.jsp">Nutzer-Liste</a>

@@ -8,7 +8,7 @@
 	<h3>
 		Eingabe der Test-Daten
 	</h3>
-	<stripes:form beanclass="de.fuberlin.chaostesting.TestAction">
+	<stripes:form beanclass="de.fuberlin.chaostesting.DefineTestAction">
 		<stripes:errors/>
 		Von: <stripes:text name="test.von"></stripes:text><br /><br />
 		Nach: <stripes:text name="test.nach"/><br /><br />
