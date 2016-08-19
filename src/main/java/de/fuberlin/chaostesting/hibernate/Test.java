@@ -1,5 +1,6 @@
 package de.fuberlin.chaostesting.hibernate;
 
+import java.util.Date;
 import java.util.List;
 
 import javax.persistence.Column;
@@ -22,32 +23,20 @@ public class Test {
 	@Column(name="test_nach")
 	private String nach;
 	@Column(name="test_zeitpunkt")
-	private String zeitpunkt;
+	private Date zeitpunkt;
 	@Column(name="test_reisende")
 	private String reisende;
 	@Column(name="test_klasse")
 	private String klasse;
 	@Column(name="test_Angebot")
-	private String angebot;
+	private boolean angebot;
 	@Column(name="test_sparpreis")
-	private String sparpreis;
+	private boolean sparpreis;
 	@Column(name="test_flexpreis")
-	private String flexpreis;
+	private boolean flexpreis;
 	
 	public Test() {
 	}
-	
-	public Test(String von, String nach, String hinfahrt, String reisende, 
-			String klasse, String angebot, String sparpreis, String flexpreis) {
-		this.von = von;
-		this.nach = nach;
-		this.zeitpunkt = hinfahrt;
-		this.reisende = reisende;
-		this.klasse = klasse;
-		this.angebot = angebot;
-		this.sparpreis = sparpreis;
-		this.flexpreis = flexpreis;
-	}	
 	
 	public int getId() {
 		return id;
@@ -73,11 +62,11 @@ public class Test {
 		this.nach = nach;
 	}
 
-	public String getZeitpunkt() {
+	public Date getZeitpunkt() {
 		return zeitpunkt;
 	}
 
-	public void setZeitpunkt(String zeitpunkt) {
+	public void setZeitpunkt(Date zeitpunkt) {
 		this.zeitpunkt = zeitpunkt;
 	}
 
@@ -97,27 +86,27 @@ public class Test {
 		this.klasse = klasse;
 	}
 
-	public String isAngebot() {
+	public boolean isAngebot() {
 		return angebot;
 	}
 
-	public void setAngebot(String angebot) {
+	public void setAngebot(boolean angebot) {
 		this.angebot = angebot;
 	}
 
-	public String isSparpreis() {
+	public boolean isSparpreis() {
 		return sparpreis;
 	}
 
-	public void setSparpreis(String sparpreis) {
+	public void setSparpreis(boolean sparpreis) {
 		this.sparpreis = sparpreis;
 	}
 
-	public String isFlexpreis() {
+	public boolean isFlexpreis() {
 		return flexpreis;
 	}
 
-	public void setFlexpreis(String flexpreis) {
+	public void setFlexpreis(boolean flexpreis) {
 		this.flexpreis = flexpreis;
 	}
 
@@ -144,11 +133,18 @@ public class Test {
 	}
 	
 	public String toXML(){
+		String y = "" + (zeitpunkt.getYear() + 1900);
+		String m = String.format("%02d", zeitpunkt.getMonth()+1);
+		String d = String.format("%02d", zeitpunkt.getDate());
+		String h = String.format("%02d", zeitpunkt.getHours());
+		String min = String.format("%02d", zeitpunkt.getMinutes());
+		String zeitpunktXML = y + "-" + m + "-" + d + "T" + h + ":" + min + ":00+01:00";
+		
 		String xml = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>"
 				+"<angebotsAnfrage msgVersion=\"1.0\">"
 				+"<allgemeineAngaben wagenKlasse_e=\"KLASSE_"+klasse+"\"/>"
 				+"<reisender typ_e=\"ERWACHSENER\" anzahl=\""+reisende+"\"/>"
-				+"<verbindungsParameter zeitpunkt=\""+zeitpunkt+"\" >"
+				+"<verbindungsParameter zeitpunkt=\""+zeitpunktXML+"\" >"
 				+"<halt bahnhof=\""+von+"\"/>"
 				+"<halt bahnhof=\""+nach+"\"/>"
 				+"</verbindungsParameter>"
