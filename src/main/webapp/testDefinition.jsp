@@ -2,6 +2,7 @@
 <%@taglib prefix="t" tagdir="/WEB-INF/tags" %>
 <%@taglib prefix="stripes" uri="http://stripes.sourceforge.net/stripes.tld"%>
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="dynattr" uri="http://stripes.sourceforge.net/stripes-dynattr.tld" %>
 
 <t:genericpage>
 	<h1>Test-Definition</h1>
@@ -12,7 +13,8 @@
 		<stripes:errors/>
 		Von: <stripes:text name="test.von"></stripes:text><br /><br />
 		Nach: <stripes:text name="test.nach"/><br /><br />
-		Datum: <stripes:text name="test.zeitpunkt" formatType="date" formatPattern="YYYY-MM-dd" value="jjjj-mm-tt"/><br /><br />
+		Datum: <dynattr:text type="date" name="test.zeitpunkt" formatType="date" formatPattern="YYYY-MM-dd" value="jjjj-mm-tt"/><br /><br />
+		Uhrzeit: <dynattr:text type="time" name="uhrzeit" formatPattern="HH:mm" value="SS:MM"/><br /><br />
 		Reisende:
 		<stripes:select name="test.reisende" size="1">
 			<stripes:option value="1">1 Reisender</stripes:option>
