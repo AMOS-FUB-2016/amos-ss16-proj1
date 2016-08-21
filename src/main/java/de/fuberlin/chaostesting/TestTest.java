@@ -11,24 +11,16 @@ import java.net.URL;
 
 import de.fuberlin.chaostesting.hibernate.Test;
 
-public class TestTest {
-	
-	private String executeId;
-	
-	
+public class TestTest {	
+	private String executeId;	
 	
 	public String getTests() {
 		return new Test().list();
 	}
-
-
-
 	public String getExecuteId() {
 		return executeId;
 	}
-
 	public void setExecuteId(String executeId) {
-		this.executeId = executeId;
 	}
 	
 	public String executeTest() {
@@ -36,7 +28,7 @@ public class TestTest {
 		try {
 			id = Integer.parseInt(executeId);
 		} catch (NumberFormatException e) {
-			return "ung�ltiger parameter";
+			return "ungültiger parameter";
 		}
 		
 		Test test = Test.byId(id);
@@ -76,5 +68,21 @@ public class TestTest {
 		}
 		
 		return "<xmp>" + responseStr + "</xmp>";
+	}
+	
+	public String delTest() {
+		int id;
+		try {
+			id = Integer.parseInt(executeId);
+		} catch (NumberFormatException e) {
+			return "ungültiger parameter";
+		}
+		
+		int res = Test.delete(id);
+		if (res != 0) {
+			return "Test entfernt";
+		} else {
+			return "Achtung: kein Eintrag aus Test entfernt";
+		}
 	}
 }

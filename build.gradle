@@ -1,6 +1,8 @@
 apply plugin: 'war'
 apply plugin : 'eclipse-wtp'
 
+compileJava.options.encoding = 'utf-8'
+
 repositories {
     jcenter()
 }
@@ -11,6 +13,18 @@ dependencies {
     runtime "org.postgresql:postgresql:9.4.1209"
 }
 
+eclipse.wtp {
+    component {
+        contextPath = '/'
+    }
+
+    facet {
+
+        facet name: 'jst.web', version: '3.1'
+        facet name: 'jst.java', version: '1.8'
+    }
+}
+
 eclipse.classpath.file {
     // Classpath entry for Eclipse which changes the order of classpathentries; otherwise no sources for 3rd party jars are shown
     withXml { xml ->
@@ -18,4 +32,16 @@ eclipse.classpath.file {
         node.remove( node.find { it.@path == 'org.eclipse.jst.j2ee.internal.web.container' } )
         node.appendNode( 'classpathentry', [ kind: 'con', path: 'org.eclipse.jst.j2ee.internal.web.container', exported: 'true'])
     }
+}
+
+// set utf-8 encoding for eclipse project
+eclipseJdt << {
+    File f = file('.settings/org.eclipse.core.resources.prefs')
+    f.write('eclipse.preferences.version=1\n')
+    f.append('encoding/<project>=utf-8')
+}
+
+cleanEclipse << {
+    File f = file('.settings/org.eclipse.core.resources.prefs')
+    f.delete()
 }

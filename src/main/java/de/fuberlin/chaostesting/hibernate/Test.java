@@ -2,25 +2,40 @@ package de.fuberlin.chaostesting.hibernate;
 
 import java.util.List;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.Query;
 import javax.persistence.Table;
+import javax.transaction.HeuristicMixedException;
+import javax.transaction.HeuristicRollbackException;
+import javax.transaction.RollbackException;
+import javax.transaction.SystemException;
+import javax.transaction.Transaction;
 
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
-import org.hibernate.Transaction;
 import org.hibernate.cfg.Configuration;
+import org.hibernate.criterion.Restrictions;
 
 @Entity
 @Table(name="TEST")
 public class Test {	
-	@Id
+	@Id	@GeneratedValue
+	@Column(name="id")
 	private int id;
-	private String testVon; 
+	@Column(name="von")
+	private String testVon;
+	@Column(name="nach")
 	private String testNach;
+	@Column(name="hinfahrt")
 	private String testHinfahrt;
+	@Column(name="reisende")
 	private String testReisende;
+	@Column(name="klasse")
 	private String testKlasse;
+	@Column(name="preis")
 	private String preis;
 	
 	public Test() {
@@ -81,35 +96,23 @@ public class Test {
 	
 	
 	public void register() {
-		SessionFactory sessionFactory = createConfiguration().buildSessionFactory();
-		Session session = sessionFactory.openSession();
-		session.beginTransaction();
-
-		session.save(this);
-		
-		session.getTransaction().commit();
-		session.close();
-		sessionFactory.close();
+		HibernateUtil.insert(this);
 	}
 	
+
 	public String list(){
-		/*
-		private String testVon; 
-		private String testNach;
-		private String testHinfahrt;
-		private String testReisende;
-		private String testKlasse;
-		private String preis;
-		 */
 		String testList = "<tr><th>Von</th><th>Nach</th><th>Datum</th>"
-				+ "<th>Reisende</th><th>Klasse</th><th>Preis</th></tr>\n";
+				+ "<th>Reisende</th><th>Klasse</th><th>Preis</th>  <th>Option1</th>  <th>Option2</th></tr>";
 		
-		SessionFactory sessionFactory = createConfiguration().buildSessionFactory();
+		//Session session = HibernateUtil.startSession();
+		
+		SessionFactory sessionFactory = HibernateUtil.getSessionFactory();
 		Session session = sessionFactory.openSession();
-		Transaction transaction = session.beginTransaction();
+		session.beginTransaction();
 		
 		List<Test> tests = (List<Test>)session.createQuery("FROM Test").getResultList();
-		
+		@SuppressWarnings("unused")
+		int íd;
 		for (Test test : tests) { 
 			testList += "<tr><td>" + test.getTestVon();
 			testList += "</td><td>" + test.getTestNach();
@@ -117,14 +120,34 @@ public class Test {
 			testList += "</td><td>" + test.getTestReisende();
 			testList += "</td><td>" + test.getTestKlasse();
 			testList += "</td><td>" + test.getPreis();
-			testList += "</td><td><a href=\"executeTest.jsp?id=" + test.getId() + "\">Execute</a>";
+			testList += "</td><td><a href=\"executeTest.jsp?id=" + test.getId() + "\">Execute</a> - ";
+			testList += "<a href=\"delTest.jsp?id=" + test.getId() + "\">Delete</a>";
 			testList += "</td></tr>";
 		}		
 		
-		transaction.commit();
-		session.close();
-		sessionFactory.close();
+		session.getTransaction().commit();
 		
+		return testList;
+	}
+	
+	//test?
+	public String listDAO(){
+		HibernateUtil<Test> res = new HibernateUtil<Test>();
+		List<Test> tests = res.list("Test");	
+		
+		String testList = "<tr><th>Von</th><th>Nach</th><th>Datum</th>"
+				+ "<th>Reisende</th><th>Klasse</th><th>Preis</th><th>Option</th></tr>";
+		for (Test test : tests) { 
+			testList += "<tr><td>" + test.getTestVon();
+			testList += "</td><td>" + test.getTestNach();
+			testList += "</td><td>" + test.getTestHinfahrt();
+			testList += "</td><td>" + test.getTestReisende();
+			testList += "</td><td>" + test.getTestKlasse();
+			testList += "</td><td>" + test.getPreis();
+			testList += "</td><td><a href=\"executeTest.jsp?id=" + test.getId() + "\">Execute</a> - ";
+			testList += "<a href=\"delTest.jsp?id=" + test.getId() + "\">Delete</a>";
+			testList += "</td></tr>";
+		}		
 		return testList;
 	}
 	
@@ -143,26 +166,18 @@ public class Test {
 	
 	public static Test byId(int id) {
 		Test theTest = null;
-		SessionFactory sessionFactory = createConfiguration().buildSessionFactory();
+		SessionFactory sessionFactory = HibernateUtil.getSessionFactory();
 		Session session = sessionFactory.openSession();
 		
 		theTest = session.get(Test.class, id);
 		
-		session.close();
-		sessionFactory.close();
-		
 		return theTest;
 	}
 	
-	private static Configuration createConfiguration() {
-		Configuration config = new Configuration().configure();
-		String url = config.getProperty("hibernate.connection.url");
-		String hostname = System.getProperty("HIBERNATE_DB_HOST");
-		if(hostname != null && url != null) {
-			url = url.replaceFirst("localhost", hostname);
-			config.setProperty("hibernate.connection.url", url);
-		}
-		
-		return config;
-	}
+	
+	public static int delete (int id)  
+	{  
+		return HibernateUtil.delete("Test", id);
+	} 
+	
 }

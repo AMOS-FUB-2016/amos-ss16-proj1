@@ -71,3 +71,8 @@ atlassian-ide-plugin.xml
 # Logs
 # ----
 /*.log
+
+# Package Files #
+*.jar
+*.war
+*.ear

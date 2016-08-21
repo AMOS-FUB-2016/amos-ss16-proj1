@@ -1,4 +1,4 @@
-<jsp:useBean id="startseite" class="de.fuberlin.chaostesting.Startseite" />
+﻿<jsp:useBean id="startseite" class="de.fuberlin.chaostesting.Startseite" />
 <jsp:useBean id="testTest" class="de.fuberlin.chaostesting.TestTest" />
 <jsp:setProperty name="testTest" property="executeId" value="<%=request.getParameter(\"id\")%>"/>
 <!DOCTYPE html> 
@@ -20,7 +20,7 @@
 			</nav>		
 		</header>
 		<section class="clear">
-			<h1>Testausf�hrung</h1>
+			<h1>Testausführung</h1>
 			${testTest.executeTest()}
 		</section>
 		<footer><p>${startseite.footer()}</p></footer>
