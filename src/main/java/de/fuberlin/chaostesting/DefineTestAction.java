@@ -6,7 +6,7 @@ import java.util.GregorianCalendar;
 
 import org.apache.commons.lang.time.DateUtils;
 
-import de.fuberlin.chaostesting.hibernate.Test;
+import de.fuberlin.chaostesting.model.Test;
 import net.sourceforge.stripes.action.ActionBean;
 import net.sourceforge.stripes.action.ActionBeanContext;
 import net.sourceforge.stripes.action.After;

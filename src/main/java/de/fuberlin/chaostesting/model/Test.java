@@ -1,4 +1,4 @@
-package de.fuberlin.chaostesting.hibernate;
+package de.fuberlin.chaostesting.model;
 
 import java.util.Date;
 import java.util.List;

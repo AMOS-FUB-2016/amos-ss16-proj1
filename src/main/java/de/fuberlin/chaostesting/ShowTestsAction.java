@@ -2,8 +2,7 @@ package de.fuberlin.chaostesting;
 
 import java.util.List;
 
-import de.fuberlin.chaostesting.hibernate.Test;
-
+import de.fuberlin.chaostesting.model.Test;
 import net.sourceforge.stripes.action.DefaultHandler;
 import net.sourceforge.stripes.action.ForwardResolution;
 import net.sourceforge.stripes.action.Resolution;
