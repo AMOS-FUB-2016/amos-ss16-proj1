@@ -109,28 +109,6 @@ public class Test {
 	public void setFlexpreis(boolean flexpreis) {
 		this.flexpreis = flexpreis;
 	}
-
-	public void register() {
-		SessionFactory sessionFactory = HibernateUtil.getSessionFactory();
-		Session session = sessionFactory.openSession();
-		session.beginTransaction();
-
-		session.save(this);
-		
-		session.getTransaction().commit();
-	}
-	
-	public static List<Test> list(){
-		SessionFactory sessionFactory = HibernateUtil.getSessionFactory();
-		Session session = sessionFactory.openSession();
-		session.beginTransaction();
-		
-		List<Test> tests = session.createQuery("FROM Test", Test.class).getResultList();
-		
-		session.getTransaction().commit();
-		
-		return tests;
-	}
 	
 	public String toXML(){
 		String y = "" + (zeitpunkt.getYear() + 1900);
@@ -150,17 +128,5 @@ public class Test {
 				+"</verbindungsParameter>"
 				+"</angebotsAnfrage>";		
 		return xml;
-	}
-	
-	public static Test byId(int id) {
-		Test theTest = null;
-		SessionFactory sessionFactory = HibernateUtil.getSessionFactory();
-		Session session = sessionFactory.openSession();
-		
-		theTest = session.get(Test.class, id);
-		
-		session.close();
-		
-		return theTest;
 	}
 }

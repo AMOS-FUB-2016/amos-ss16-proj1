@@ -64,27 +64,4 @@ public class User {
 	public void setAdmin(boolean isAdmin) {
 		this.isAdmin = isAdmin;
 	}
-
-	public void register() {
-		SessionFactory sessionFactory = HibernateUtil.getSessionFactory();
-		Session session = sessionFactory.openSession();
-		session.beginTransaction();
-
-		session.save(this);
-		
-		session.getTransaction().commit();
-	}
-	
-	public static List<User> list( ){
-		
-		SessionFactory sessionFactory = HibernateUtil.getSessionFactory();
-		Session session = sessionFactory.openSession();
-		session.beginTransaction();
-		
-		List<User> users = session.createQuery("FROM User", User.class).getResultList();
-		
-		session.getTransaction().commit();
-		
-		return users;
-	}
 }

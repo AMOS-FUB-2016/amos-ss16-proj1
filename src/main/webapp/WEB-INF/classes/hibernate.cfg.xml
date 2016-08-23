@@ -24,8 +24,8 @@
    <property name="hbm2ddl.auto">update</property>
 
    <!-- List of persistence classes -->
-   <mapping class="de.fuberlin.chaostesting.hibernate.Test"/>
-   <mapping class="de.fuberlin.chaostesting.hibernate.User"/>
+   <mapping class="de.fuberlin.chaostesting.model.Test"/>
+   <mapping class="de.fuberlin.chaostesting.model.User"/>
 
 </session-factory>
 </hibernate-configuration>
