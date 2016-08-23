@@ -1,4 +1,4 @@
-package de.fuberlin.chaostesting.hibernate;
+package de.fuberlin.chaostesting.model;
  
 import org.hibernate.SessionFactory;
 import org.hibernate.cfg.Configuration;

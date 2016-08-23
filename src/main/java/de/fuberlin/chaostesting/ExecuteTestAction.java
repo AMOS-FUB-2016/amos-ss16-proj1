@@ -9,7 +9,8 @@ import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
 
-import de.fuberlin.chaostesting.hibernate.Test;
+import de.fuberlin.chaostesting.model.DAO;
+import de.fuberlin.chaostesting.model.Test;
 import net.sourceforge.stripes.action.Before;
 import net.sourceforge.stripes.action.DefaultHandler;
 import net.sourceforge.stripes.action.ForwardResolution;
@@ -50,7 +51,7 @@ public class ExecuteTestAction extends GenericActionBean {
 			return;
 		}
 		
-	    test = Test.byId(id);
+	    test = new DAO<>(Test.class).findById(id);
 	    
 	    if(test == null) {
 	    	context.getValidationErrors().add("noTestFound", new SimpleError("Kein Test gefunden für " + id, (Object)null));
