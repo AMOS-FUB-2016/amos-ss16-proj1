@@ -8,9 +8,10 @@
 
 <t:genericpage>
 	<h1>Test-Definition</h1>
-	<h3>Eingabe der Test-Daten</h3>
-	<stripes:form beanclass="de.fuberlin.chaostesting.DefineTestAction">
+	<h3>Änderung der Test-Daten</h3>
+	<stripes:form beanclass="de.fuberlin.chaostesting.UpdateTestAction">
 		<stripes:errors />
+		<stripes:hidden name="id" value="${ActionBean.id}" />
 		Von: <stripes:text name="test.von" />
 		<br />
 		<br />
@@ -18,11 +19,11 @@
 		<br />
 		<br />
 		Datum: <dynattr:text type="date" name="test.zeitpunkt"
-			formatType="date" formatPattern="YYYY-MM-dd" value="JJJJ-MM-TT" />
+			formatType="date" formatPattern="YYYY-MM-dd" />
 		<br />
 		<br />
 		Uhrzeit: <dynattr:text type="time" name="uhrzeit"
-			formatPattern="HH:mm" value="SS:MM" />
+			formatPattern="HH:mm" />
 		<br />
 		<br />
 		Reisende:

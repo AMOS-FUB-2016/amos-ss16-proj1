@@ -2,7 +2,6 @@ package de.fuberlin.chaostesting.model;
 
 import java.io.Serializable;
 import java.lang.reflect.Field;
-import java.lang.reflect.Method;
 import java.util.List;
 
 import javax.persistence.Id;
@@ -97,8 +96,7 @@ public class DAO<T> {
 		}
 		
 		return type.getName();
-	}
-	
+	}	
 	
 	String findEntityPrimaryKeyFieldName() {
 		// TODO: is it also possible to annotate getters as id?

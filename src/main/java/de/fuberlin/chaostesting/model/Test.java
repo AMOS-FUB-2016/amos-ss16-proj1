@@ -1,7 +1,6 @@
 package de.fuberlin.chaostesting.model;
 
 import java.util.Date;
-import java.util.List;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -9,12 +8,10 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
-import org.hibernate.Session;
-import org.hibernate.SessionFactory;
-
 @Entity
 @Table(name="TEST_INFORMATION")
-public class Test {	
+public class Test {
+	
 	@Id	@GeneratedValue
 	@Column(name="test_id")
 	private int id;
@@ -29,11 +26,11 @@ public class Test {
 	@Column(name="test_klasse")
 	private String klasse;
 	@Column(name="test_Angebot")
-	private boolean angebot;
+	private boolean angebot = false;
 	@Column(name="test_sparpreis")
-	private boolean sparpreis;
+	private boolean sparpreis = false;
 	@Column(name="test_flexpreis")
-	private boolean flexpreis;
+	private boolean flexpreis = false;
 	
 	public Test() {
 	}
@@ -110,6 +107,7 @@ public class Test {
 		this.flexpreis = flexpreis;
 	}
 	
+	@SuppressWarnings("deprecation")
 	public String toXML(){
 		String y = "" + (zeitpunkt.getYear() + 1900);
 		String m = String.format("%02d", zeitpunkt.getMonth()+1);

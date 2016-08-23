@@ -8,16 +8,11 @@ import org.apache.commons.lang.time.DateUtils;
 
 import de.fuberlin.chaostesting.model.DAO;
 import de.fuberlin.chaostesting.model.Test;
-import net.sourceforge.stripes.action.ActionBean;
-import net.sourceforge.stripes.action.ActionBeanContext;
-import net.sourceforge.stripes.action.After;
 import net.sourceforge.stripes.action.DefaultHandler;
 import net.sourceforge.stripes.action.ForwardResolution;
 import net.sourceforge.stripes.action.Resolution;
 import net.sourceforge.stripes.action.UrlBinding;
-import net.sourceforge.stripes.controller.LifecycleStage;
 import net.sourceforge.stripes.validation.Validate;
-import net.sourceforge.stripes.validation.ValidationErrors;
 
 @UrlBinding("/newTest.action")
 public class DefineTestAction extends GenericActionBean {

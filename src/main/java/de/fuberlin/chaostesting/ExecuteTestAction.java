@@ -51,7 +51,7 @@ public class ExecuteTestAction extends GenericActionBean {
 			return;
 		}
 		
-	    test = new DAO<>(Test.class).findById(id);
+		test = new DAO<>(Test.class).findById(id);
 	    
 	    if(test == null) {
 	    	context.getValidationErrors().add("noTestFound", new SimpleError("Kein Test gefunden für " + id, (Object)null));

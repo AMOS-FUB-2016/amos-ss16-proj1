@@ -1,19 +1,15 @@
 package de.fuberlin.chaostesting.model;
 
-import java.util.List;
-
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
-import org.hibernate.Session;
-import org.hibernate.SessionFactory;
-
 @Entity
 @Table(name="USER_INFORMATION")
-public class User {	
+public class User {
+	
 	@Id	@GeneratedValue
 	@Column(name="user_id")
 	private int id;
