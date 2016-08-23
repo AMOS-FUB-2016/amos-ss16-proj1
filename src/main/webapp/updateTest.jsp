@@ -7,14 +7,15 @@
 <t:genericpage>
 	<h1>Test-Definition</h1>
 	<h3>
-		Eingabe der Test-Daten
+		Änderung der Test-Daten
 	</h3>
-	<stripes:form beanclass="de.fuberlin.chaostesting.DefineTestAction">
+	<stripes:form beanclass="de.fuberlin.chaostesting.UpdateTestAction">
 		<stripes:errors/>
+		<stripes:hidden name="id"  value="${ActionBean.id}"/>
 		Von: <stripes:text name="test.von"/><br /><br />
 		Nach: <stripes:text name="test.nach"/><br /><br />
-		Datum: <dynattr:text type="date" name="test.zeitpunkt" formatType="date" formatPattern="YYYY-MM-dd" value="JJJJ-MM-TT"/><br /><br />
-		Uhrzeit: <dynattr:text type="time" name="uhrzeit" formatPattern="HH:mm" value="SS:MM"/><br /><br />
+		Datum: <dynattr:text type="date" name="test.zeitpunkt" formatType="date" formatPattern="YYYY-MM-dd"/><br /><br />
+		Uhrzeit: <dynattr:text type="time" name="uhrzeit" formatPattern="HH:mm"/><br /><br />
 		Reisende:
 		<stripes:select name="test.reisende" size="1">
 			<stripes:option value="1">1 Reisender</stripes:option>
@@ -28,12 +29,12 @@
 		Angebot: <stripes:checkbox name="test.angebot" value="true" checked="checked"/><br />
 		Sparpreis: <stripes:checkbox name="test.sparpreis" value="true"/><br />
 		Flexpreis: <stripes:checkbox name="test.flexpreis" value="true"/><br /><br />
-		<stripes:submit name="Eintragen" value="senden"/><br /> <br/>
+		<stripes:submit name="Eintragen" value="senden"/><br /><br />
 		<c:if test="${actionBean.result != null}">
-			<b>${actionBean.result}</b><br />
+			<b>${actionBean.result}</b><br/>
 			Von ${actionBean.test.von} nach ${actionBean.test.nach}<br />
     		Datum: ${actionBean.test.zeitpunkt}<br/>
-		   	Reisende: ${actionBean.test.reisende} Klasse: ${actionBean.test.klasse}<br /><br />
+		   	Reisende: ${actionBean.test.reisende} Klasse: ${actionBean.test.klasse}<br/><br/>
 		   	Angebot: ${actionBean.test.angebot} Sparpreis: ${actionBean.test.sparpreis} Flexpreis: ${actionBean.test.flexpreis}<br /><br />
 		</c:if>
 	</stripes:form>

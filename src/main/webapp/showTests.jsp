@@ -23,6 +23,11 @@
 				<stripes:param name="id" value="${test.id}"/>
 				Ausführen
 			</stripes:link>
+			 | 
+			<stripes:link beanclass="de.fuberlin.chaostesting.UpdateTestAction">
+				<stripes:param name="id" value="${test.id}"/>
+				Bearbeiten
+			</stripes:link>
 			</td></tr>
 		</c:forEach>
 	</table>

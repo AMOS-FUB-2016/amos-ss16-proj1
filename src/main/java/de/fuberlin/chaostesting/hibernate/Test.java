@@ -29,11 +29,11 @@ public class Test {
 	@Column(name="test_klasse")
 	private String klasse;
 	@Column(name="test_Angebot")
-	private boolean angebot;
+	private boolean angebot = false;
 	@Column(name="test_sparpreis")
-	private boolean sparpreis;
+	private boolean sparpreis = false;
 	@Column(name="test_flexpreis")
-	private boolean flexpreis;
+	private boolean flexpreis = false;
 	
 	public Test() {
 	}
@@ -111,8 +111,7 @@ public class Test {
 	}
 
 	public void register() {
-		SessionFactory sessionFactory = HibernateUtil.getSessionFactory();
-		Session session = sessionFactory.openSession();
+		Session session = createSession();
 		session.beginTransaction();
 
 		session.save(this);
@@ -120,12 +119,23 @@ public class Test {
 		session.getTransaction().commit();
 	}
 	
+	public void update(int id) {
+		Session session = createSession();
+		session.beginTransaction();		
+
+		Test test = (Test) session.load(Test.class, id);
+		test = this;
+		test.setId(id);
+		session.merge(test);
+		
+		session.getTransaction().commit();
+	}
+	
 	public static List<Test> list(){
-		SessionFactory sessionFactory = HibernateUtil.getSessionFactory();
-		Session session = sessionFactory.openSession();
+		Session session = createSession();
 		session.beginTransaction();
 		
-		List<Test> tests = session.createQuery("FROM Test", Test.class).getResultList();
+		List<Test> tests = session.createQuery("FROM Test ORDER BY test_id ASC", Test.class).getResultList();
 		
 		session.getTransaction().commit();
 		
@@ -154,13 +164,19 @@ public class Test {
 	
 	public static Test byId(int id) {
 		Test theTest = null;
-		SessionFactory sessionFactory = HibernateUtil.getSessionFactory();
-		Session session = sessionFactory.openSession();
+		Session session = createSession();
 		
 		theTest = session.get(Test.class, id);
 		
 		session.close();
 		
 		return theTest;
+	}
+	
+	private static Session createSession() {
+		SessionFactory sessionFactory = HibernateUtil.getSessionFactory();
+		Session session = sessionFactory.openSession();
+		
+		return session;
 	}
 }
