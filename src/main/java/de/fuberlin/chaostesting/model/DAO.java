@@ -40,12 +40,21 @@ public class DAO<T> {
 		return o != null;
 	}
 	
+	/**
+	 * Updates an entity or creates it if necessary.
+	 * @param entity the entity with state to be saved
+	 */
 	public void createOrUpdate(T entity) {
 		begin();
 		currentSession.saveOrUpdate(entity);
 		end();
 	}
 	
+	
+	/**
+	 * Finds all entities managed by this DAO.
+	 * @return A list of all found results.
+	 */
 	public List<T> findAll() {
 		begin();
 		List<T> ts = currentSession.createQuery("FROM " + type.getSimpleName(), type).getResultList();
@@ -54,6 +63,11 @@ public class DAO<T> {
 		return ts;
 	}
 	
+	/**
+	 * Finds an entity matching the given primary key.
+	 * @param id The primary key to be matched.
+	 * @return An entity instance or null.
+	 */
 	public T findById(Serializable id) {
 		begin();
 		T t = currentSession.get(type, id);
