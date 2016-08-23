@@ -1,7 +1,6 @@
-package de.fuberlin.chaostesting.hibernate;
+package de.fuberlin.chaostesting.model;
 
 import java.util.Date;
-import java.util.List;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -9,12 +8,10 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
-import org.hibernate.Session;
-import org.hibernate.SessionFactory;
-
 @Entity
 @Table(name="TEST_INFORMATION")
-public class Test {	
+public class Test {
+	
 	@Id	@GeneratedValue
 	@Column(name="test_id")
 	private int id;
@@ -109,39 +106,8 @@ public class Test {
 	public void setFlexpreis(boolean flexpreis) {
 		this.flexpreis = flexpreis;
 	}
-
-	public void register() {
-		Session session = createSession();
-		session.beginTransaction();
-
-		session.save(this);
-		
-		session.getTransaction().commit();
-	}
 	
-	public void update(int id) {
-		Session session = createSession();
-		session.beginTransaction();		
-
-		Test test = (Test) session.load(Test.class, id);
-		test = this;
-		test.setId(id);
-		session.merge(test);
-		
-		session.getTransaction().commit();
-	}
-	
-	public static List<Test> list(){
-		Session session = createSession();
-		session.beginTransaction();
-		
-		List<Test> tests = session.createQuery("FROM Test ORDER BY test_id ASC", Test.class).getResultList();
-		
-		session.getTransaction().commit();
-		
-		return tests;
-	}
-	
+	@SuppressWarnings("deprecation")
 	public String toXML(){
 		String y = "" + (zeitpunkt.getYear() + 1900);
 		String m = String.format("%02d", zeitpunkt.getMonth()+1);
@@ -160,23 +126,5 @@ public class Test {
 				+"</verbindungsParameter>"
 				+"</angebotsAnfrage>";		
 		return xml;
-	}
-	
-	public static Test byId(int id) {
-		Test theTest = null;
-		Session session = createSession();
-		
-		theTest = session.get(Test.class, id);
-		
-		session.close();
-		
-		return theTest;
-	}
-	
-	private static Session createSession() {
-		SessionFactory sessionFactory = HibernateUtil.getSessionFactory();
-		Session session = sessionFactory.openSession();
-		
-		return session;
 	}
 }

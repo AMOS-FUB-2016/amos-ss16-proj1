@@ -2,8 +2,8 @@ package de.fuberlin.chaostesting;
 
 import java.util.List;
 
-import de.fuberlin.chaostesting.hibernate.Test;
-
+import de.fuberlin.chaostesting.model.DAO;
+import de.fuberlin.chaostesting.model.Test;
 import net.sourceforge.stripes.action.DefaultHandler;
 import net.sourceforge.stripes.action.ForwardResolution;
 import net.sourceforge.stripes.action.Resolution;
@@ -24,7 +24,7 @@ public class ShowTestsAction extends GenericActionBean {
 
 	@DefaultHandler
 	public Resolution showTests() {
-		tests = Test.list();
+		tests = new DAO<>(Test.class).findAll();
 		
 		return new ForwardResolution("showTests.jsp");
 	}

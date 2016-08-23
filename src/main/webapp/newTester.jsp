@@ -1,5 +1,5 @@
 ﻿<%@page contentType="text/html" pageEncoding="UTF-8"%>
-<%@taglib prefix="t" tagdir="/WEB-INF/tags" %>
+<%@taglib prefix="t" tagdir="/WEB-INF/tags"%>
 <jsp:useBean id="userTest" class="de.fuberlin.chaostesting.UserTest" />
 
 <t:genericpage>

@@ -6,7 +6,8 @@ import java.util.GregorianCalendar;
 
 import org.apache.commons.lang.time.DateUtils;
 
-import de.fuberlin.chaostesting.hibernate.Test;
+import de.fuberlin.chaostesting.model.DAO;
+import de.fuberlin.chaostesting.model.Test;
 import net.sourceforge.stripes.action.DefaultHandler;
 import net.sourceforge.stripes.action.ForwardResolution;
 import net.sourceforge.stripes.action.Resolution;
@@ -56,7 +57,7 @@ public class DefineTestAction extends GenericActionBean {
 		zeitpunkt = DateUtils.addMinutes(zeitpunkt, calendar.get(Calendar.MINUTE));
 		test.setZeitpunkt(zeitpunkt);
 		
-		test.register();
+		new DAO<>(Test.class).createOrUpdate(test);
 		setResult("Test-Definition erfolgreich");
 		return new ForwardResolution("/testDefinition.jsp");
 	}

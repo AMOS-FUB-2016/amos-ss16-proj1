@@ -1,6 +1,4 @@
-package de.fuberlin.chaostesting.hibernate;
-
-import java.util.List;
+package de.fuberlin.chaostesting.model;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -8,12 +6,10 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
-import org.hibernate.Session;
-import org.hibernate.SessionFactory;
-
 @Entity
 @Table(name="USER_INFORMATION")
-public class User {	
+public class User {
+	
 	@Id	@GeneratedValue
 	@Column(name="user_id")
 	private int id;
@@ -63,28 +59,5 @@ public class User {
 
 	public void setAdmin(boolean isAdmin) {
 		this.isAdmin = isAdmin;
-	}
-
-	public void register() {
-		SessionFactory sessionFactory = HibernateUtil.getSessionFactory();
-		Session session = sessionFactory.openSession();
-		session.beginTransaction();
-
-		session.save(this);
-		
-		session.getTransaction().commit();
-	}
-	
-	public static List<User> list( ){
-		
-		SessionFactory sessionFactory = HibernateUtil.getSessionFactory();
-		Session session = sessionFactory.openSession();
-		session.beginTransaction();
-		
-		List<User> users = session.createQuery("FROM User", User.class).getResultList();
-		
-		session.getTransaction().commit();
-		
-		return users;
 	}
 }

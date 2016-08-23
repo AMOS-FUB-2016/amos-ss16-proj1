@@ -6,7 +6,8 @@ import java.util.GregorianCalendar;
 
 import org.apache.commons.lang.time.DateUtils;
 
-import de.fuberlin.chaostesting.hibernate.Test;
+import de.fuberlin.chaostesting.model.DAO;
+import de.fuberlin.chaostesting.model.Test;
 import net.sourceforge.stripes.action.Before;
 import net.sourceforge.stripes.action.DefaultHandler;
 import net.sourceforge.stripes.action.HandlesEvent;
@@ -69,7 +70,7 @@ public class UpdateTestAction extends GenericActionBean {
 			return;
 		}
 		
-	    test = Test.byId(id);
+		test = new DAO<>(Test.class).findById(id);
 	    
 	    if(test == null) {
 	    	context.getValidationErrors().add("noTestFound", new SimpleError("Kein Test gefunden für " + id, (Object)null));
@@ -91,7 +92,7 @@ public class UpdateTestAction extends GenericActionBean {
 		zeitpunkt = DateUtils.addMinutes(zeitpunkt, calendar.get(Calendar.MINUTE));
 		test.setZeitpunkt(zeitpunkt);
 		
-		test.update(getId());
+		new DAO<>(Test.class).createOrUpdate(test);
 		setResult("Test-Update erfolgreich");
 		return new RedirectResolution("/updateTest.jsp").addParameter("id", getId()).flash(this);
 	}
