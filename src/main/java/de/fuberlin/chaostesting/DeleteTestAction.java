@@ -53,7 +53,7 @@ public class DeleteTestAction extends GenericActionBean {
 	public Resolution deleteTest() {		
 		new DAO<>(Test.class).delete(test);
 		
-		setResult("Test gelöscht" + test.getId());
+		setResult("Test gelöscht");
 		return new ForwardResolution("/deleteTest.jsp");
 	}
 }
