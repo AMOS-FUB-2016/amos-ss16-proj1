@@ -38,6 +38,10 @@
 						beanclass="de.fuberlin.chaostesting.UpdateTestAction">
 						<stripes:param name="id" value="${test.id}" />
 				Bearbeiten
+			</stripes:link> | <stripes:link
+						beanclass="de.fuberlin.chaostesting.DeleteTestAction">
+						<stripes:param name="id" value="${test.id}" />
+				Löschen
 			</stripes:link></td>
 			</tr>
 		</c:forEach>

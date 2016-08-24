@@ -49,6 +49,15 @@ public class DAO<T> {
 		end();
 	}
 	
+	/**
+	 * Deletes an existing entity
+	 * @param entity the entity with state to be deleted
+	 */
+	public void delete(T entity) {
+		begin();
+		currentSession.delete(entity);
+		end();
+	}
 	
 	/**
 	 * Finds all entities managed by this DAO.
