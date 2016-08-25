@@ -17,8 +17,8 @@ dependencies {
 	compile "net.sourceforge.stripes:stripes:1.6.+"
     runtime "org.postgresql:postgresql:9.4.1209"
 	compile group: 'commons-lang', name: 'commons-lang', version: '2.6'
-	compile 'org.glassfish.jersey.media:jersey-media-moxy:2.3'
-	compile group: 'com.sun.jersey', name: 'jersey-server', version: '1.12-b01'
+	compile group: 'org.glassfish.jersey.core', name: 'jersey-server', version: '2.23.2'
+	compile group: 'org.glassfish.jersey.containers', name: 'jersey-container-servlet', version: '2.23.2'
 }
 
 eclipse.wtp {
