@@ -16,7 +16,7 @@ public class TestRessource {
 	@GET
 	@Produces(MediaType.TEXT_PLAIN)
 	public String testText() {
-		return "Test";
+		return "TestText";
 	}
 
 	@GET
