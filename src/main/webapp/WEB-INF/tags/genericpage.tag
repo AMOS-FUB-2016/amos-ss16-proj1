@@ -11,7 +11,7 @@
 		<header>
 			<nav>
 				<div class="left">
-					<a href="index.jsp">Startseite</a> - <a href="testDefinition.jsp">Test-Definition</a> - <stripes:link beanclass="de.fuberlin.chaostesting.ShowTestsAction">Test-Liste</stripes:link>
+					<a href="index.jsp">Startseite</a> - <a href="defineTest.jsp">Test-Definition</a> - <stripes:link beanclass="de.fuberlin.chaostesting.ShowTestsAction">Test-Liste</stripes:link>
 				</div>
 				<div class="right">
 					<a href="newAdmin.jsp">Test-Admin hinzufügen</a> - <a href="newTester.jsp">Test-Anwender hinzufügen</a> - <a href="showUsers.jsp">Nutzer-Liste</a>

@@ -10,6 +10,7 @@ import de.fuberlin.chaostesting.model.DAO;
 import de.fuberlin.chaostesting.model.Test;
 import net.sourceforge.stripes.action.Before;
 import net.sourceforge.stripes.action.DefaultHandler;
+import net.sourceforge.stripes.action.ForwardResolution;
 import net.sourceforge.stripes.action.HandlesEvent;
 import net.sourceforge.stripes.action.RedirectResolution;
 import net.sourceforge.stripes.action.Resolution;
@@ -82,7 +83,7 @@ public class UpdateTestAction extends GenericActionBean {
 	    return new RedirectResolution("/updateTest.jsp").addParameter("id", getId()).flash(this);
 	}
 	
-	@HandlesEvent("Eintragen")
+	@HandlesEvent("update")
 	public Resolution updateTest() {
 		// add time to the test date	    
 		Date zeitpunkt = test.getZeitpunkt();
@@ -95,5 +96,13 @@ public class UpdateTestAction extends GenericActionBean {
 		new DAO<>(Test.class).createOrUpdate(test);
 		setResult("Test-Update erfolgreich");
 		return new RedirectResolution("/updateTest.jsp").addParameter("id", getId()).flash(this);
+	}
+	
+	@HandlesEvent("delete")
+	public Resolution deleteTest() {		
+		new DAO<>(Test.class).delete(test);
+		
+		setResult("Test gelöscht");
+		return new ForwardResolution("/deleteTest.jsp");
 	}
 }

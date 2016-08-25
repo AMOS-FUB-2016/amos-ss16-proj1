@@ -14,7 +14,7 @@ import net.sourceforge.stripes.action.Resolution;
 import net.sourceforge.stripes.action.UrlBinding;
 import net.sourceforge.stripes.validation.Validate;
 
-@UrlBinding("/newTest.action")
+@UrlBinding("/defineTest.action")
 public class DefineTestAction extends GenericActionBean {
 
 	String result;
@@ -59,6 +59,6 @@ public class DefineTestAction extends GenericActionBean {
 		
 		new DAO<>(Test.class).createOrUpdate(test);
 		setResult("Test-Definition erfolgreich");
-		return new ForwardResolution("/testDefinition.jsp");
+		return new ForwardResolution("/defineTest.jsp");
 	}
 }

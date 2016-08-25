@@ -49,7 +49,7 @@
 		Flexpreis: <stripes:checkbox name="test.flexpreis" value="true" />
 		<br />
 		<br />
-		<stripes:submit name="Eintragen" value="senden" />
+		<stripes:submit name="define" value="Speichern" />
 		<br />
 		<br />
 		<c:if test="${actionBean.result != null}">
