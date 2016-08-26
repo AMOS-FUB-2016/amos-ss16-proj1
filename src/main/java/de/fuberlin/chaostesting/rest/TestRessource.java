@@ -6,9 +6,6 @@ import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
-import javax.xml.bind.annotation.XmlAccessType;
-import javax.xml.bind.annotation.XmlAccessorType;
-import javax.xml.bind.annotation.XmlRootElement;
 
 @Path("/test")
 public class TestRessource {
@@ -53,13 +50,9 @@ public class TestRessource {
 		return new TestObject(testId);
 	}
 	
-	
 	@GET
 	@Produces(MediaType.APPLICATION_JSON)
 	public String testJSON() {
 		return "Test";
 	}
-	
 }
-
-
