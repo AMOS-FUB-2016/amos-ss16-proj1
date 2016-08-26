@@ -26,6 +26,7 @@
    <!-- List of persistence classes -->
    <mapping class="de.fuberlin.chaostesting.model.Test"/>
    <mapping class="de.fuberlin.chaostesting.model.User"/>
+   <mapping class="de.fuberlin.chaostesting.model.Response"/>
 
 </session-factory>
 </hibernate-configuration>

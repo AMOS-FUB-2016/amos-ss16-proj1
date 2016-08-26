@@ -44,6 +44,13 @@ p {
 	text-align: justify;
 }
 
+xmp {	
+	margin: 20px;
+	padding: 10px, 0px,  10px, 0px;
+	text-align: justify;
+	white-space: pre-wrap;
+}
+
 form {
 	margin: 10px;
 	padding: 10px;
