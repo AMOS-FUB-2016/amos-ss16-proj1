@@ -16,7 +16,7 @@
 		<br />
 		<br />
 		<stripes:submit name="update" value="Speichern" />		
-		<stripes:submit name="delete" value="Löschen" />
+		<stripes:submit name="deleteUpdate" value="Löschen" />
 		<br />
 		<br />
 		<c:if test="${actionBean.result != null}">

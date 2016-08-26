@@ -120,4 +120,9 @@ public class TestCrudAction extends GenericActionBean {
 		setResult("Test gelöscht");
 		return new ForwardResolution("/deleteTest.jsp");
 	}
+	
+	@HandlesEvent("deleteUpdate")
+	public Resolution deleteEditTest() {
+		return deleteTest();
+	}
 }
