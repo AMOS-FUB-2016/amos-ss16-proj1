@@ -2,8 +2,7 @@
 <%@taglib prefix="t" tagdir="/WEB-INF/tags"%>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
-<%@taglib prefix="stripes"
-	uri="http://stripes.sourceforge.net/stripes.tld"%>
+<%@taglib prefix="stripes" uri="http://stripes.sourceforge.net/stripes.tld"%>
 <jsp:useBean id="now" class="java.util.Date" />
 
 <t:genericpage>
@@ -30,16 +29,13 @@
 				<td>${test.angebot}</td>
 				<td>${test.sparpreis}</td>
 				<td>${test.flexpreis}</td>
-				<td><stripes:link
-						beanclass="de.fuberlin.chaostesting.ExecuteTestAction">
+				<td><stripes:link beanclass="de.fuberlin.chaostesting.ExecuteTestAction">
 						<stripes:param name="id" value="${test.id}" />
 				Ausführen
-			</stripes:link> | <stripes:link
-						beanclass="de.fuberlin.chaostesting.UpdateTestAction">
+			</stripes:link> | <stripes:link beanclass="de.fuberlin.chaostesting.TestCrudAction" event="show">
 						<stripes:param name="id" value="${test.id}" />
 				Bearbeiten
-			</stripes:link> | <stripes:link
-						beanclass="de.fuberlin.chaostesting.DeleteTestAction">
+			</stripes:link> | <stripes:link beanclass="de.fuberlin.chaostesting.TestCrudAction" event="delete">
 						<stripes:param name="id" value="${test.id}" />
 				Löschen
 			</stripes:link></td>

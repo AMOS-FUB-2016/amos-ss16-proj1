@@ -49,6 +49,12 @@ public class DAO<T> {
 		end();
 	}
 	
+	public void merge(T entity) {
+		begin();
+		currentSession.merge(entity);
+		end();
+	}
+	
 	/**
 	 * Deletes an existing entity
 	 * @param entity the entity with state to be deleted

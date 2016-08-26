@@ -15,18 +15,16 @@ import net.sourceforge.stripes.action.HandlesEvent;
 import net.sourceforge.stripes.action.RedirectResolution;
 import net.sourceforge.stripes.action.Resolution;
 import net.sourceforge.stripes.action.UrlBinding;
+import net.sourceforge.stripes.controller.FlashScope;
 import net.sourceforge.stripes.controller.LifecycleStage;
 import net.sourceforge.stripes.validation.SimpleError;
 import net.sourceforge.stripes.validation.Validate;
 
-@UrlBinding("/updateTest.action")
-public class UpdateTestAction extends GenericActionBean {
-	
-	Test test;
+@UrlBinding("/modifyTest.action")
+public class TestCrudAction extends GenericActionBean {
 	String result;
-	
+	Test test; // TODO: create validator for test class	
 	Date uhrzeit;
-	int id = -1;
 	
 	public Test getTest() {
 		return test;
@@ -35,22 +33,17 @@ public class UpdateTestAction extends GenericActionBean {
 	public void setTest(Test test) {
 		this.test = test;
 	}
-	
+
 	public Date getUhrzeit() {
+		if(uhrzeit == null && test != null && test.getZeitpunkt() != null) {
+			return test.getZeitpunkt();
+		}
 		return uhrzeit;
 	}
 
-	@Validate(converter=TimeConverter.class)
+	@Validate(converter=TimeConverter.class, required=true, on={"update", "create"})
 	public void setUhrzeit(Date uhrzeit) {
 		this.uhrzeit = uhrzeit;
-	}
-
-	public int getId() {
-		return id;
-	}
-
-	public void setId(int id) {
-		this.id = id;
 	}
 
 	public String getResult() {
@@ -61,7 +54,7 @@ public class UpdateTestAction extends GenericActionBean {
 		this.result = result;
 	}
 	
-	@Before(stages = LifecycleStage.BindingAndValidation)
+	@Before(stages = LifecycleStage.BindingAndValidation, on={"show", "delete"})
 	public void rehydrate() {
 		int id = -1;
 		try {
@@ -78,24 +71,46 @@ public class UpdateTestAction extends GenericActionBean {
 	    }
 	}
 	
+	void handleTimeOfDayInput(Date timeOfDay, Test test) {
+		Date zeitpunkt = test.getZeitpunkt();
+		Calendar calendar = GregorianCalendar.getInstance();
+		calendar.setTime(timeOfDay);
+		zeitpunkt = DateUtils.addHours(zeitpunkt, calendar.get(Calendar.HOUR_OF_DAY));
+		zeitpunkt = DateUtils.addMinutes(zeitpunkt, calendar.get(Calendar.MINUTE));
+		test.setZeitpunkt(zeitpunkt);
+	}
+
 	@DefaultHandler
+	public Resolution handleDefault() {
+		// assume user wants to create a test
+		return new RedirectResolution("defineTest.jsp");
+	}
+	
+	@HandlesEvent("create")
+	public Resolution createTest() {
+		handleTimeOfDayInput(uhrzeit, test);
+		
+		new DAO<>(Test.class).createOrUpdate(test);
+		
+		FlashScope scope = FlashScope.getCurrent(context.getRequest(), true);
+		scope.put("test", test);
+		scope.put("result", "Test-Definition erfolgreich");
+		
+		return new RedirectResolution("/defineTest.jsp");
+	}
+	
+	@HandlesEvent("show")
 	public Resolution showTest() {
-	    return new RedirectResolution("/updateTest.jsp").addParameter("id", getId()).flash(this);
+		return new ForwardResolution("/updateTest.jsp");
 	}
 	
 	@HandlesEvent("update")
 	public Resolution updateTest() {
-		// add time to the test date	    
-		Date zeitpunkt = test.getZeitpunkt();
-		Calendar calendar = GregorianCalendar.getInstance();
-		calendar.setTime(uhrzeit);
-		zeitpunkt = DateUtils.addHours(zeitpunkt, calendar.get(Calendar.HOUR_OF_DAY));
-		zeitpunkt = DateUtils.addMinutes(zeitpunkt, calendar.get(Calendar.MINUTE));
-		test.setZeitpunkt(zeitpunkt);
+		handleTimeOfDayInput(uhrzeit, test);
 		
 		new DAO<>(Test.class).createOrUpdate(test);
 		setResult("Test-Update erfolgreich");
-		return new RedirectResolution("/updateTest.jsp").addParameter("id", getId()).flash(this);
+		return new RedirectResolution(TestCrudAction.class, "show").addParameter("id", test.getId()).flash(this);
 	}
 	
 	@HandlesEvent("delete")
@@ -104,5 +119,10 @@ public class UpdateTestAction extends GenericActionBean {
 		
 		setResult("Test gelöscht");
 		return new ForwardResolution("/deleteTest.jsp");
+	}
+	
+	@HandlesEvent("deleteUpdate")
+	public Resolution deleteEditTest() {
+		return deleteTest();
 	}
 }
