@@ -122,7 +122,7 @@ public class TestCrudAction extends GenericActionBean {
 	}
 	
 	@HandlesEvent("deleteUpdate")
-	public Resolution deleteEditTest() {
+	public Resolution deleteUpdateTest() {
 		return deleteTest();
 	}
 }

@@ -21,7 +21,11 @@
 				<td><stripes:link
 						beanclass="de.fuberlin.chaostesting.ShowResponseXMLAction">
 						<stripes:param name="id" value="${response.id}" />
-				Anzeigen
+				XML
+			</stripes:link> | <stripes:link
+						beanclass="de.fuberlin.chaostesting.ShowResponseXMLAction" event="serverVersion">
+						<stripes:param name="id" value="${response.id}" />
+				Server-Version
 			</stripes:link></td>
 			</tr>
 		</c:forEach>
