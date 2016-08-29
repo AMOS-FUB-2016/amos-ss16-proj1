@@ -50,9 +50,12 @@ public class TestRessource {
 	@Path("{testID}")
 	@Produces(MediaType.TEXT_XML)
 	public TestObject getTest (@PathParam("testId") String testId) {
-		return new TestObject(testId);
+		//return new TestObject(testId);
+		TestObject test = new TestObject();
+		test.setValue("0");
+	    return test;		
 	}
-	
+
 	
 	@GET
 	@Produces(MediaType.APPLICATION_JSON)

@@ -4,15 +4,33 @@ import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlElement;
 
-
 @XmlRootElement(name="test")
-//@XmlAccessorType(XmlAccessType.FIELD)
 public class TestObject {
+	
+	private String name;
+	
+	//@XmlElement(name="wert") 
+	private String value;
 
-	@XmlElement(name="id")    
-	private String testId;
-
-	public TestObject(String testId) {
-		this.testId = testId;
+	public TestObject() {
+		this.name = "leer";
 	}
-}
+	public TestObject(String testDescription) {
+		this.name = testDescription;
+	}
+	
+	public String getName() {
+		return name;
+	}
+	public void setName(String name) {
+		this.name = name;
+	}
+	public String getValue() {
+		return value;
+	}
+	public void setValue(String value) {
+		this.value = value;
+	}
+
+
+} 
