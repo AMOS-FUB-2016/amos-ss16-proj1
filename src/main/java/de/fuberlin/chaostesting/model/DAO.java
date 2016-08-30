@@ -1,14 +1,6 @@
 package de.fuberlin.chaostesting.model;
 
-import java.io.Serializable;
-import java.lang.reflect.Field;
 import java.util.List;
-
-import javax.persistence.Id;
-import javax.persistence.Table;
-
-import org.hibernate.Session;
-import org.hibernate.SessionFactory;
 
 /**
  * Simple DAO mechanism for easy access and abstraction from database semantics.
@@ -17,13 +9,10 @@ import org.hibernate.SessionFactory;
  *
  * @param <T> The entity type to be managed by a DAO
  */
-public class DAO<T> {
+public abstract class DAO<T> {
 	
-	private Class<T> type;
-	private Session currentSession;
-
-	public DAO(Class<T> type) { 
-		this.type = type; 
+	public static <T> DAO<T> createInstance(Class<T> type) {
+		return new JPADAO<>(type, PersistenceUtils.getEntityManager());
 	}
 	
 	/**
@@ -31,97 +20,31 @@ public class DAO<T> {
 	 * @param entity the entity with state to be saved
 	 * @return false if creation was unsuccessful, true else
 	 */
-	public boolean create(T entity) {
-		begin();
-		Object o = currentSession.save(entity);
-		end();
-		
-		return o != null;
-	}
+	public abstract Object create(T entity);
 	
 	/**
 	 * Updates an entity or creates it if necessary.
 	 * @param entity the entity with state to be saved
 	 */
-	public void createOrUpdate(T entity) {
-		begin();
-		currentSession.saveOrUpdate(entity);
-		end();
-	}
-	
-	public void merge(T entity) {
-		begin();
-		currentSession.merge(entity);
-		end();
-	}
+	public abstract void createOrUpdate(T entity);
 	
 	/**
 	 * Deletes an existing entity
 	 * @param entity the entity with state to be deleted
 	 */
-	public void delete(T entity) {
-		begin();
-		currentSession.delete(entity);
-		end();
-	}
+	public abstract void delete(T entity);
 	
 	/**
 	 * Finds all entities managed by this DAO.
 	 * @return A list of all found results.
 	 */
-	public List<T> findAll() {
-		begin();
-		List<T> ts = currentSession.createQuery("FROM " + type.getSimpleName(), type).getResultList();
-		end();
-		
-		return ts;
-	}
+	public abstract List<T> findAll();
 	
 	/**
 	 * Finds an entity matching the given primary key.
 	 * @param id The primary key to be matched.
 	 * @return An entity instance or null.
 	 */
-	public T findById(Serializable id) {
-		begin();
-		T t = currentSession.get(type, id);
-		end();
-		
-		return t;
-	}
+	public abstract T findById(Object id);
 	
-	void begin() {
-		if(currentSession == null) {
-			SessionFactory sessionFactory = HibernateUtil.getSessionFactory();
-			currentSession = sessionFactory.openSession();
-		}
-		currentSession.beginTransaction();
-	}
-	
-	void end() {
-		currentSession.getTransaction().commit();
-		currentSession.close();
-		currentSession = null;
-	}
-	
-	String findEntityTableName() {
-		Table tableAnnot = type.getAnnotation(Table.class);
-		if(tableAnnot != null) {
-			return tableAnnot.name();
-		}
-		
-		return type.getName();
-	}	
-	
-	String findEntityPrimaryKeyFieldName() {
-		// TODO: is it also possible to annotate getters as id?
-		for(Field field : type.getDeclaredFields()) {
-			Id idAnnot = field.getAnnotation(Id.class);
-			if(idAnnot != null) {
-				return field.getName();
-			}
-		}
-		
-		return null;
-	}
 }

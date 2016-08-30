@@ -27,6 +27,9 @@ public class ExecuteTestAction extends GenericActionBean {
 	String response;
 	int id = -1;
 	
+	DAO<Test> testDao = DAO.createInstance(Test.class);
+	DAO<Response> responseDao = DAO.createInstance(Response.class);
+	
 	public Test getTest() {
 		return test;
 	}
@@ -60,7 +63,7 @@ public class ExecuteTestAction extends GenericActionBean {
 			return;
 		}
 		
-		test = new DAO<>(Test.class).findById(getId());
+		test = testDao.findById(getId());
 	    
 	    if(test == null) {
 	    	context.getValidationErrors().add("noTestFound", new SimpleError("Kein Test gefunden für " + getId(), (Object)null));
@@ -99,7 +102,7 @@ public class ExecuteTestAction extends GenericActionBean {
 			}
 			rd.close();
 			responseStr = response.toString();
-			new DAO<>(Response.class).create(new Response(responseStr, getId()));
+			responseDao.create(new Response(responseStr, getId()));
 		} catch (MalformedURLException e) {
 			e.printStackTrace();
 		} catch (IOException e) {

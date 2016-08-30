@@ -37,5 +37,20 @@
         <servlet-name>StripesDispatcher</servlet-name>
         <url-pattern>*.action</url-pattern>
     </servlet-mapping>
-
+	
+	<listener>
+	  <description>Persistence State Listener</description>
+	  <listener-class>de.fuberlin.chaostesting.model.PersistenceStateHelper</listener-class>
+	</listener>
+	
+	<filter>
+	  <filter-name>persistence_interceptor</filter-name>
+	  <filter-class>de.fuberlin.chaostesting.model.PersistenceStateHelper</filter-class>
+	</filter>
+	
+	<filter-mapping>
+	  <filter-name>persistence_interceptor</filter-name>
+	  <url-pattern>*.do</url-pattern>
+	</filter-mapping>
+	
 </web-app>

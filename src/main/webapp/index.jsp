@@ -1,5 +1,6 @@
 ﻿<%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@taglib prefix="t" tagdir="/WEB-INF/tags"%>
+<jsp:useBean id="xsdTest" class="de.fuberlin.chaostesting.XSDSamples"/>
 
 <t:genericpage>
 	<h1>Chaos Testing</h1>
@@ -15,4 +16,5 @@
 		verglichen werden. Bei Preisveränderungen soll das System ein
 		Hilfestellung zur Bewertung der Abweichungen geben.</p>
 	<p class="clear"></p>
+	${xsdTest.xsdTest()}
 </t:genericpage>
