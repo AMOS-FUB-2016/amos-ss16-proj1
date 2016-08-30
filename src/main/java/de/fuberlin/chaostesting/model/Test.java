@@ -33,7 +33,7 @@ public class Test {
 	@Column(name="test_klasse")
 	private String klasse;
 	@Column(name="test_erwachsene")
-	private int erwachsene = 0;
+	private Integer erwachsene = 0;
 	@Column(name="test_msgVersion")
 	private String msgVersion = "1.0";
 	
@@ -88,11 +88,12 @@ public class Test {
 	public void setKlasse(String klasse) {
 		this.klasse = klasse;
 	}
-	public int getErwachsene() {
+	
+	public Integer getErwachsene() {
 		return erwachsene;
 	}
 
-	public void setErwachsene(int erwachsene) {
+	public void setErwachsene(Integer erwachsene) {
 		this.erwachsene = erwachsene;
 	}
 
