@@ -14,21 +14,39 @@ repositories {
 
 dependencies {
     providedCompile "javax.servlet:javax.servlet-api:3.1.+"
-	providedCompile group: 'javax.servlet.jsp', name: 'jsp-api', version: '2.2'
-	compile group: 'javax.servlet', name: 'jstl', version: '1.2'
+    providedCompile group: 'javax.servlet.jsp', name: 'jsp-api', version: '2.2'
+    compile group: 'javax.servlet', name: 'jstl', version: '1.2'
     compile "org.hibernate:hibernate-core:5.2.2.Final"
-	compile "net.sourceforge.stripes:stripes:1.6.+"
+    compile "net.sourceforge.stripes:stripes:1.6.+"
     runtime "org.postgresql:postgresql:9.4.1209"
-	compile group: 'commons-lang', name: 'commons-lang', version: '2.6'
+    compile group: 'commons-lang', name: 'commons-lang', version: '2.6'
     compile group: 'org.jvnet.hyperjaxb3', name: 'hyperjaxb3-ejb-runtime', version: '0.6.1'
 
     // jaxb dependencies
     xjc group: 'org.jvnet.hyperjaxb3', name: 'hyperjaxb3-ejb-plugin', version: '0.6.1'
 }
 
+jaxb {
+    javaGen {
+        //generates a 'project' schema file from existing java code
+        osst {
+            schema = file('Schnittstelle_OSST.xsd')
+            extension = true
+            packageName="com.deutschebahn.osst.v1_0"
+            args = ["-Xhyperjaxb3-jpa2", "-Xhyperjaxb3-jpa2-persistenceXml=persistence.xml"]
+        }
+    }
+}
+
+
+def taskOutputPath = tasks.getByName("jaxbJavaGenOsst").outputDirectory.getPath()
+print taskOutputPath
+
 eclipse.wtp {
     component {
         contextPath = '/'
+        //resource sourcePath: taskOutputPath + '/META-INF', deployPath: "META-INF"
+        resource sourcePath: 'build/generated/jaxb/java/osst/META-INF', deployPath: "/META-INF"
     }
 
     facet {
@@ -58,17 +76,6 @@ cleanEclipse << {
     f.delete()
 }
 
-jaxb {
-    javaGen {
-        //generates a 'project' schema file from existing java code
-        osst {
-            schema = file('Schnittstelle_OSST.xsd')
-            extension = true
-            packageName="com.deutschebahn.osst.v1_0"
-            args = ["-Xhyperjaxb3-jpa2"]
-        }
-    }
-}
 
 afterEvaluate {
     tasks.eclipseClasspath.dependsOn tasks.jaxb

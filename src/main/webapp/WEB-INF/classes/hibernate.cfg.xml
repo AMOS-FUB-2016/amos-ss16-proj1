@@ -3,29 +3,56 @@
 "http://www.hibernate.org/dtd/hibernate-configuration-3.0.dtd">
 
 <hibernate-configuration>
-   <session-factory>
-   <property name="hibernate.dialect">
-      org.hibernate.dialect.PostgreSQLDialect
-   </property>
-   <property name="hibernate.connection.driver_class">
-      org.postgresql.Driver
-   </property>
-   
-   <property name="hibernate.connection.url">
-      jdbc:postgresql://localhost:5432/HibernateTest
-   </property>
-   <property name="hibernate.connection.username">
-      postgres
-   </property>
-   <property name="hibernate.connection.password">
-      chaostesting
-   </property>
-   
-   <property name="hbm2ddl.auto">update</property>
+	<session-factory>
+		<property name="hibernate.dialect">
+			org.hibernate.dialect.PostgreSQL95Dialect
+		</property>
+		<property name="hibernate.connection.driver_class">
+			org.postgresql.Driver
+		</property>
 
-   <!-- List of persistence classes -->
-   <mapping class="de.fuberlin.chaostesting.model.Test"/>
-   <mapping class="de.fuberlin.chaostesting.model.User"/>
+		<property name="hibernate.connection.url">
+			jdbc:postgresql://localhost:5432/HibernateTest
+		</property>
+		<property name="hibernate.connection.username">
+			postgres
+		</property>
+		<property name="hibernate.connection.password">
+			chaostesting
+		</property>
 
-</session-factory>
+		<property name="hbm2ddl.auto">update</property>
+
+		<!-- List of persistence classes -->
+		<mapping class="de.fuberlin.chaostesting.model.Test" />
+		<mapping class="de.fuberlin.chaostesting.model.User" />
+		<mapping class="com.deutschebahn.osst.v1_0.AngebotsAnfrage" />
+		<mapping class="com.deutschebahn.osst.v1_0.AllgemeineAngaben" />
+		<mapping class="com.deutschebahn.osst.v1_0.AllgemeineAngaben" />
+		<mapping class="com.deutschebahn.osst.v1_0.AnfrageZughalt" />
+		<mapping class="com.deutschebahn.osst.v1_0.Angebot" />
+		<mapping class="com.deutschebahn.osst.v1_0.AngebotsAnfrage" />
+		<mapping class="com.deutschebahn.osst.v1_0.AngebotsAntwort" />
+		<mapping class="com.deutschebahn.osst.v1_0.Ausfertigungsdaten" />
+		<mapping class="com.deutschebahn.osst.v1_0.DruckRichtungsdaten" />
+		<mapping class="com.deutschebahn.osst.v1_0.Druckdaten" />
+		<mapping class="com.deutschebahn.osst.v1_0.EARootClass" />
+		<mapping class="com.deutschebahn.osst.v1_0.Fahrschein" />
+		<mapping class="com.deutschebahn.osst.v1_0.FahrscheinRichtungsdaten" />
+		<mapping class="com.deutschebahn.osst.v1_0.FahrscheinTexte" />
+		<mapping class="com.deutschebahn.osst.v1_0.FehlerInfo" />
+		<mapping class="com.deutschebahn.osst.v1_0.Geltungsdauer" />
+		<mapping class="com.deutschebahn.osst.v1_0.Halt" />
+		<mapping class="com.deutschebahn.osst.v1_0.HinRueckKombi" />
+		<mapping class="com.deutschebahn.osst.v1_0.MwStDaten" />
+		<mapping class="com.deutschebahn.osst.v1_0.OnlineInterface" />
+		<mapping class="com.deutschebahn.osst.v1_0.ProduktKlassen" />
+		<mapping class="com.deutschebahn.osst.v1_0.Reisender" />
+		<mapping class="com.deutschebahn.osst.v1_0.VDSFelder" />
+		<mapping class="com.deutschebahn.osst.v1_0.Verbindung" />
+		<mapping class="com.deutschebahn.osst.v1_0.VerbindungsParameter" />
+		<mapping class="com.deutschebahn.osst.v1_0.Verkehrsmittel" />
+		<mapping class="com.deutschebahn.osst.v1_0.VerkehrsmittelAttribut" />
+
+	</session-factory>
 </hibernate-configuration>

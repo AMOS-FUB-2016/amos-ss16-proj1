@@ -6,6 +6,7 @@ import java.io.DataOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.io.Serializable;
 import java.io.StringReader;
 import java.io.UnsupportedEncodingException;
 import java.net.HttpURLConnection;
@@ -30,6 +31,8 @@ import com.deutschebahn.osst.v1_0.ReisendenTyp;
 import com.deutschebahn.osst.v1_0.Reisender;
 import com.deutschebahn.osst.v1_0.VerbindungsParameter;
 import com.deutschebahn.osst.v1_0.WagenKlasse;
+
+import de.fuberlin.chaostesting.model.DAO;
 
 public class XSDSamples {
 
@@ -61,6 +64,15 @@ public class XSDSamples {
 		params.getHalte().add(halt1);
 		anfrage.getVerbindungsParameter().add(params);
 
+		Object id = new DAO<>(AngebotsAnfrage.class).create(anfrage);
+		
+		AngebotsAnfrage a2 = new DAO<>(AngebotsAnfrage.class).findById(id);
+		a2.getReisende(); a2.getVerbindungsParameter();
+		
+		for(Reisender r : a2.getReisende()) {
+			System.out.println(r);
+		}
+		
 		ByteArrayOutputStream stream = new ByteArrayOutputStream();
 
 		JAXB.marshal(anfrage, stream);
