@@ -99,7 +99,7 @@ public class ExecuteTestAction extends GenericActionBean {
 			}
 			rd.close();
 			responseStr = response.toString();
-			new DAO<>(Response.class).create(new Response(responseStr, getId()));
+			new DAO<>(Response.class).create(new Response(responseStr, getId(), Validation(responseStr)));
 		} catch (MalformedURLException e) {
 			e.printStackTrace();
 		} catch (IOException e) {
@@ -109,5 +109,16 @@ public class ExecuteTestAction extends GenericActionBean {
 		this.response = responseStr;
 		
 		return new ForwardResolution("/executeTest.jsp");
+	}
+	
+	public String Validation(String xml){
+		String valid;
+		if(xml.contains("<angebote typ_e=\"VERBINDUNGSANGEBOT\" status_e=\"ANGEBOT_GUELTIG\" bezAngebot=\"Flexpreis\" fahrscheinTyp_e=\"NORMALFAHRSCHEIN\">")){
+			valid = "Ist Valide";
+		}
+		else{
+			valid = "Ist nicht Valide";
+		}
+		return valid;
 	}
 }
