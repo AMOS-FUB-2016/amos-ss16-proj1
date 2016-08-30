@@ -9,37 +9,21 @@ import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Root;
 
-import org.apache.commons.beanutils.BeanUtils;
-
-class JPADAODelegate<T> implements DAODelegate<T> {
+class JPADAO<T> extends DAO<T> {
 
 	EntityManager entityManager;
 	Class<T> type;
 	
-	public JPADAODelegate(Class<T> type) {
+	public JPADAO(Class<T> type, EntityManager entityManager) {
 		this.type = type;
+		this.entityManager = entityManager;
 	}
-
-	@Override
-	public void beginTransactional() {
-		if(entityManager == null) {
-			entityManager = HibernateUtil.createEntityManager();
-		}
-		entityManager.getTransaction().begin();
-	}
-
-	@Override
-	public void endTransactional() {
-		entityManager.getTransaction().commit();
-		entityManager.close();
-		entityManager = null;
-	}
-
+	
 	@Override
 	public Object create(T entity) {
 		entityManager.persist(entity);
 
-		return HibernateUtil.getEntityPrimaryKey(entity);		
+		return PersistenceUtils.getEntityPrimaryKey(entity);		
 	}
 
 	@Override

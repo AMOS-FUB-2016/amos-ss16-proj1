@@ -4,6 +4,7 @@ import java.lang.reflect.Field;
 import java.util.List;
 
 import javax.persistence.Id;
+import javax.persistence.PersistenceUtil;
 import javax.persistence.Table;
 
 
@@ -14,12 +15,10 @@ import javax.persistence.Table;
  *
  * @param <T> The entity type to be managed by a DAO
  */
-public class DAO<T> {
+public abstract class DAO<T> {
 	
-	private DAODelegate<T> delegate;
-
-	public DAO(Class<T> type) { 
-		delegate = new JPADAODelegate<>(type);
+	public static <T> DAO<T> createInstance(Class<T> type) {
+		return new JPADAO<>(type, PersistenceUtils.getEntityManager());
 	}
 	
 	/**
@@ -27,56 +26,31 @@ public class DAO<T> {
 	 * @param entity the entity with state to be saved
 	 * @return false if creation was unsuccessful, true else
 	 */
-	public Object create(T entity) {
-		delegate.beginTransactional();
-		Object o = delegate.create(entity);
-		delegate.endTransactional();
-		
-		return o;
-	}
+	public abstract Object create(T entity);
 	
 	/**
 	 * Updates an entity or creates it if necessary.
 	 * @param entity the entity with state to be saved
 	 */
-	public void createOrUpdate(T entity) {
-		delegate.beginTransactional();
-		delegate.createOrUpdate(entity);
-		delegate.endTransactional();
-	}
+	public abstract void createOrUpdate(T entity);
 	
 	/**
 	 * Deletes an existing entity
 	 * @param entity the entity with state to be deleted
 	 */
-	public void delete(T entity) {
-		delegate.beginTransactional();
-		delegate.delete(entity);
-		delegate.endTransactional();
-	}
+	public abstract void delete(T entity);
 	
 	/**
 	 * Finds all entities managed by this DAO.
 	 * @return A list of all found results.
 	 */
-	public List<T> findAll() {
-		delegate.beginTransactional();
-		List<T> ts = delegate.findAll();
-		delegate.endTransactional();
-		
-		return ts;
-	}
+	public abstract List<T> findAll();
 	
 	/**
 	 * Finds an entity matching the given primary key.
 	 * @param id The primary key to be matched.
 	 * @return An entity instance or null.
 	 */
-	public T findById(Object id) {
-		delegate.beginTransactional();
-		T t = delegate.findById(id);
-		delegate.endTransactional();
-		
-		return t;
-	}
+	public abstract T findById(Object id);
+	
 }

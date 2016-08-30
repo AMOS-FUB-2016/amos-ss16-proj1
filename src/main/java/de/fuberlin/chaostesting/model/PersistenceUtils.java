@@ -18,34 +18,50 @@ import javax.persistence.Table;
 import org.hibernate.SessionFactory;
 import org.hibernate.cfg.Configuration;
  
-public class HibernateUtil {
-    private static SessionFactory sessionFactory;
+public class PersistenceUtils {
+
     private static EntityManagerFactory entityManagerFactory;
+    private static ThreadLocal<EntityManager> threadLocalEntityManager = new ThreadLocal<>();
     
-    public static synchronized EntityManager createEntityManager() {
+    public static EntityManager getEntityManager() {
     	if(entityManagerFactory == null) {
     		entityManagerFactory = Persistence.createEntityManagerFactory("de.fuberlin.chaostesting");
     		assert entityManagerFactory != null;
     	}
     	
-    	return entityManagerFactory.createEntityManager();
+    	EntityManager entityManager = threadLocalEntityManager.get();
+    	
+    	if(entityManager == null) {
+    		entityManager = entityManagerFactory.createEntityManager();
+    		threadLocalEntityManager.set(entityManager);
+    	}
+    	
+    	return entityManager;
     }
     
-    public static synchronized SessionFactory getSessionFactory() {
-        if (sessionFactory == null) {
-        	Configuration configuration = new Configuration().configure();
-    		String url = configuration.getProperty("hibernate.connection.url");
-    		String hostname = System.getProperty("HIBERNATE_DB_HOST");    		
-    		if(hostname != null && url != null) {
-    			url = url.replaceFirst("localhost", hostname);
-    			configuration.setProperty("hibernate.connection.url", url);
-    		}
+    public static void closeEntityManager() {
+    	EntityManager entityManager = threadLocalEntityManager.get();
+    	if(entityManager != null) {
+    		entityManager.close();
+    		threadLocalEntityManager.set(null);
+    	}
+    }
+    
+    public static void beginTransaction() {
+        getEntityManager().getTransaction().begin();
+    }
 
-            sessionFactory = configuration.buildSessionFactory();
-            assert sessionFactory != null;
-        }
-         
-        return sessionFactory;
+    public static void rollback() {
+        getEntityManager().getTransaction().rollback();
+    }
+
+    public static void commit() {
+        getEntityManager().getTransaction().commit();
+    }
+    
+    public static void closeEntityManagerFactory() {
+    	entityManagerFactory.close();
+    	entityManagerFactory = null;
     }
     
     public static <T> String findEntityTableName(Class<T> type) {

@@ -36,6 +36,8 @@ import de.fuberlin.chaostesting.model.DAO;
 
 public class XSDSamples {
 
+	private DAO<AngebotsAnfrage> dao = DAO.createInstance(AngebotsAnfrage.class);
+	
 	public String xsdTest() {
 		AngebotsAnfrage anfrage = new AngebotsAnfrage();
 		AllgemeineAngaben angaben = new AllgemeineAngaben();
@@ -64,9 +66,9 @@ public class XSDSamples {
 		params.getHalte().add(halt1);
 		anfrage.getVerbindungsParameter().add(params);
 
-		Object id = new DAO<>(AngebotsAnfrage.class).create(anfrage);
+		Object id = dao.create(anfrage);
 		
-		AngebotsAnfrage a2 = new DAO<>(AngebotsAnfrage.class).findById(id);
+		AngebotsAnfrage a2 = dao.findById(id);
 		a2.getReisende(); a2.getVerbindungsParameter();
 		
 		for(Reisender r : a2.getReisende()) {
