@@ -10,6 +10,7 @@ import java.net.MalformedURLException;
 import java.net.URL;
 
 import de.fuberlin.chaostesting.model.DAO;
+import de.fuberlin.chaostesting.model.Response;
 import de.fuberlin.chaostesting.model.Test;
 import net.sourceforge.stripes.action.Before;
 import net.sourceforge.stripes.action.DefaultHandler;
@@ -24,8 +25,10 @@ public class ExecuteTestAction extends GenericActionBean {
 	
 	Test test;
 	String response;
+	int id = -1;
 	
 	DAO<Test> testDao = DAO.createInstance(Test.class);
+	DAO<Response> responseDao = DAO.createInstance(Response.class);
 	
 	public Test getTest() {
 		return test;
@@ -43,20 +46,27 @@ public class ExecuteTestAction extends GenericActionBean {
 		this.response = response;
 	}
 
+	public int getId() {
+		return id;
+	}
+
+	public void setId(int id) {
+		this.id = id;
+	}
+
 	@Before(stages = LifecycleStage.BindingAndValidation)
 	public void rehydrate() {
-		int id = -1;
 		try {
-			id = Integer.parseInt(context.getRequest().getParameter("id"));
+			setId(Integer.parseInt(context.getRequest().getParameter("id")));
 		} catch(NumberFormatException e) {
 			context.getValidationErrors().add("illegalParameter", new SimpleError("Illegaler Request-Parameter", (Object)null));
 			return;
 		}
 		
-		test = testDao.findById(id);
+		test = testDao.findById(getId());
 	    
 	    if(test == null) {
-	    	context.getValidationErrors().add("noTestFound", new SimpleError("Kein Test gefunden für " + id, (Object)null));
+	    	context.getValidationErrors().add("noTestFound", new SimpleError("Kein Test gefunden für " + getId(), (Object)null));
 	    }
 	}
 	
@@ -71,6 +81,7 @@ public class ExecuteTestAction extends GenericActionBean {
 			urlConnection.setRequestMethod("POST");
 			urlConnection.setRequestProperty("Content-Type", "text/xml");
 			urlConnection.setRequestProperty("Content-Length", "" + Integer.toString(testXml.getBytes().length));
+			urlConnection.setRequestProperty("SSL_CLIENT_S_DN_CN", "IAT_FV_J_AUSLAND_J");
 
 			urlConnection.setDoInput(true);
 			urlConnection.setDoOutput(true);
@@ -91,6 +102,7 @@ public class ExecuteTestAction extends GenericActionBean {
 			}
 			rd.close();
 			responseStr = response.toString();
+			responseDao.create(new Response(responseStr, getId()));
 		} catch (MalformedURLException e) {
 			e.printStackTrace();
 		} catch (IOException e) {
