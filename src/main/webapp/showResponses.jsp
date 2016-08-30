@@ -1,4 +1,4 @@
-﻿<%@page contentType="text/html" pageEncoding="UTF-8"%>
+<%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@taglib prefix="t" tagdir="/WEB-INF/tags"%>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
@@ -13,6 +13,7 @@
 			<th>Zeitpunkt</th>
 			<th>Test-Definition-ID</th>
 			<th>Aktionen</th>
+			<th>Validierungsergebniss</th>
 		</tr>
 		<c:forEach items="${actionBean.responses}" var="response">
 			<tr>
@@ -27,6 +28,7 @@
 						<stripes:param name="id" value="${response.id}" />
 				Server-Version
 			</stripes:link></td>
+			<td>${response.valid}</td>
 			</tr>
 		</c:forEach>
 	</table>
