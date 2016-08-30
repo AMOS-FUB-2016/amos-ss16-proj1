@@ -15,25 +15,12 @@ Uhrzeit: <dynattr:text type="time" name="uhrzeit"
 	formatPattern="HH:mm" value="SS:MM" />
 <br />
 <br />
-Reisende:
-<stripes:select name="test.reisende" size="1">
-	<stripes:option value="1">1 Reisender</stripes:option>
-	<stripes:option value="2">2 Reisende</stripes:option>
-	<stripes:option value="3">3 Reisende</stripes:option>
-	<stripes:option value="4">4 Reisende</stripes:option>
-	<stripes:option value="5">5 Reisende</stripes:option>
-</stripes:select>
+Erwachsene: <stripes:text name="test.erwachsene" value="${test.erwachsene}"/>
 <br />
 <br />
-Klasse 1: <stripes:radio name="test.klasse" value="1"
-	checked="checked" />
-<br />
-Klasse 2: <stripes:radio name="test.klasse" value="2" />
-<br />
-<br />
-Angebot: <stripes:checkbox name="test.angebot" value="true"
-	checked="checked" />
-<br />
-Sparpreis: <stripes:checkbox name="test.sparpreis" value="true" />
-<br />
-Flexpreis: <stripes:checkbox name="test.flexpreis" value="true" />
+
+Klasse: 
+<stripes:select name="test.klasse" size="1">
+	<stripes:option value="KLASSE_1">Klasse 1</stripes:option>
+	<stripes:option value="KLASSE_2">Klasse 2</stripes:option>
+</stripes:select><br/>

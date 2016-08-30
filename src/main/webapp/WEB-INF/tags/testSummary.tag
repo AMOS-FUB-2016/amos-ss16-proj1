@@ -4,7 +4,6 @@
 
 Von ${test.von} nach ${test.nach}<br />
  		Datum: ${test.zeitpunkt}<br />
-  	Reisende: ${test.reisende} Klasse: ${test.klasse}<br />
+  	Erwachsene: ${test.erwachsene} Klasse: ${test.klasse}<br />
 <br />
-  	Angebot: ${test.angebot} Sparpreis: ${test.sparpreis} Flexpreis: ${test.flexpreis}<br />
 <br />
