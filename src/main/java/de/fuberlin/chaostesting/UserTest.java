@@ -3,7 +3,6 @@ package de.fuberlin.chaostesting;
 import java.util.List;
 
 import de.fuberlin.chaostesting.model.DAO;
-import de.fuberlin.chaostesting.model.Test;
 import de.fuberlin.chaostesting.model.User;
 
 public class UserTest {

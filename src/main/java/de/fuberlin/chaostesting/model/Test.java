@@ -15,7 +15,7 @@ import javax.xml.datatype.DatatypeConfigurationException;
 import javax.xml.datatype.DatatypeFactory;
 import javax.xml.datatype.XMLGregorianCalendar;
 
-import de.fuberlin.chaostesting.xml.*;
+import com.deutschebahn.osst.v1_0.*;
 
 @Entity
 @Table(name="TEST_INFORMATION")

@@ -1,6 +1,5 @@
 package de.fuberlin.chaostesting.model;
 
-import java.lang.reflect.InvocationTargetException;
 import java.util.List;
 
 import javax.persistence.EntityManager;

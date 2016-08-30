@@ -3,9 +3,7 @@ package de.fuberlin.chaostesting.model;
 import java.io.Serializable;
 import java.util.List;
 
-import org.apache.commons.lang.NotImplementedException;
 import org.hibernate.Session;
-import org.hibernate.SessionFactory;
 
 class HibernateDAO<T> extends DAO<T> {
 
