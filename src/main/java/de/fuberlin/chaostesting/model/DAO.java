@@ -1,12 +1,6 @@
 package de.fuberlin.chaostesting.model;
 
-import java.lang.reflect.Field;
 import java.util.List;
-
-import javax.persistence.Id;
-import javax.persistence.PersistenceUtil;
-import javax.persistence.Table;
-
 
 /**
  * Simple DAO mechanism for easy access and abstraction from database semantics.

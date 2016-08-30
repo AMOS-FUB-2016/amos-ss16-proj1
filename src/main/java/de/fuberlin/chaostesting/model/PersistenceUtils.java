@@ -7,7 +7,6 @@ import java.beans.PropertyDescriptor;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.HashMap;
@@ -20,8 +19,6 @@ import javax.persistence.Persistence;
 import javax.persistence.Table;
 
 import org.apache.commons.lang3.tuple.Pair;
-import org.hibernate.SessionFactory;
-import org.hibernate.cfg.Configuration;
 
 public class PersistenceUtils {
 
@@ -38,9 +35,16 @@ public class PersistenceUtils {
 
 		Map<String, String> overrides = new HashMap<>();
 		overridables.forEach(pair -> {
-			String envVal = System.getProperty(pair.getLeft());
+			String envKey = pair.getLeft();
+			String jpaKey = pair.getRight();
+			
+			String envVal = System.getProperty(envKey);
+			if(envVal == null) {
+				envVal = System.getenv(envKey);
+			}
+			
 			if(envVal != null) {
-				overrides.put(pair.getRight(), envVal);
+				overrides.put(jpaKey, envVal);
 			}
 		});
 		
