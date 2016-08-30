@@ -22,14 +22,17 @@ public class Response {
 	private Date timestamp;
 	@Column(name="test_id")
 	private int test_id;
+	@Column(name="valid")
+	private String valid;
 	
 	public Response() {
 	}
 	
-	public Response(String xml, int test_id) {
+	public Response(String xml, int test_id, String valid) {
 		this.xml = xml;
 		this.timestamp = new Date();
 		this.test_id = test_id;
+		this.valid = valid;
 	}
 
 	public int getId() {
@@ -62,5 +65,13 @@ public class Response {
 
 	public void setTest_id(int test_id) {
 		this.test_id = test_id;
-	}	
+	}
+	
+	public String getValid() {
+		return valid;
+	}
+	
+	public void setValid(String valid) {
+		this.valid = valid;
+	}
 }
