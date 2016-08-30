@@ -1,12 +1,21 @@
 package de.fuberlin.chaostesting.model;
 
+import java.io.ByteArrayOutputStream;
+import java.io.UnsupportedEncodingException;
 import java.util.Date;
+import java.util.GregorianCalendar;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import javax.xml.bind.JAXB;
+import javax.xml.datatype.DatatypeConfigurationException;
+import javax.xml.datatype.DatatypeFactory;
+import javax.xml.datatype.XMLGregorianCalendar;
+
+import de.fuberlin.chaostesting.xml.*;
 
 @Entity
 @Table(name="TEST_INFORMATION")
@@ -21,18 +30,23 @@ public class Test {
 	private String nach;
 	@Column(name="test_zeitpunkt")
 	private Date zeitpunkt;
-	@Column(name="test_reisende")
-	private String reisende;
 	@Column(name="test_klasse")
 	private String klasse;
-	@Column(name="test_Angebot")
-	private boolean angebot = false;
-	@Column(name="test_sparpreis")
-	private boolean sparpreis = false;
-	@Column(name="test_flexpreis")
-	private boolean flexpreis = false;
+	@Column(name="test_erwachsene")
+	private Integer erwachsene = 0;
+	@Column(name="test_msgVersion")
+	private String msgVersion = "1.0";
 	
+
 	public Test() {
+	}
+	
+	public String getMsgVersion() {
+		return msgVersion;
+	}
+
+	public void setMsgVersion(String msgVersion) {
+		this.msgVersion = msgVersion;
 	}
 	
 	public int getId() {
@@ -67,14 +81,6 @@ public class Test {
 		this.zeitpunkt = zeitpunkt;
 	}
 
-	public String getReisende() {
-		return reisende;
-	}
-
-	public void setReisende(String reisende) {
-		this.reisende = reisende;
-	}
-
 	public String getKlasse() {
 		return klasse;
 	}
@@ -82,49 +88,53 @@ public class Test {
 	public void setKlasse(String klasse) {
 		this.klasse = klasse;
 	}
-
-	public boolean isAngebot() {
-		return angebot;
-	}
-
-	public void setAngebot(boolean angebot) {
-		this.angebot = angebot;
-	}
-
-	public boolean isSparpreis() {
-		return sparpreis;
-	}
-
-	public void setSparpreis(boolean sparpreis) {
-		this.sparpreis = sparpreis;
-	}
-
-	public boolean isFlexpreis() {
-		return flexpreis;
-	}
-
-	public void setFlexpreis(boolean flexpreis) {
-		this.flexpreis = flexpreis;
-	}
 	
-	@SuppressWarnings("deprecation")
-	public String toXML(){
-		String y = "" + (zeitpunkt.getYear() + 1900);
-		String m = String.format("%02d", zeitpunkt.getMonth()+1);
-		String d = String.format("%02d", zeitpunkt.getDate());
-		String h = String.format("%02d", zeitpunkt.getHours());
-		String min = String.format("%02d", zeitpunkt.getMinutes());
-		String zeitpunktXML = y + "-" + m + "-" + d + "T" + h + ":" + min + ":00+01:00";
-		
-		String xml = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>"
-				+"<angebotsAnfrage msgVersion=\"1.0\">"
-				+"<allgemeineAngaben wagenKlasse_e=\"KLASSE_"+klasse+"\"/>"
-				+"<reisender typ_e=\"ERWACHSENER\" anzahl=\""+reisende+"\"/>"
-				+"<verbindungsParameter zeitpunkt=\""+zeitpunktXML+"\" >"
-				+"<halt bahnhof=\""+von+"\"/>"
-				+"<halt bahnhof=\""+nach+"\"/>"
-				+"</verbindungsParameter>"
-				+"</angebotsAnfrage>";		
-		return xml;
+	public Integer getErwachsene() {
+		return erwachsene;
 	}
+
+	public void setErwachsene(Integer erwachsene) {
+		this.erwachsene = erwachsene;
+	}
+
+	public String toXML(){
+		String s = null;
+		try {
+			AngebotsAnfrage anfrage = new AngebotsAnfrage();
+			anfrage.setMsgVersion(msgVersion);
+			AllgemeineAngaben allgemeineAngaben = new AllgemeineAngaben();
+			allgemeineAngaben.setWagenKlasseE(WagenKlasse.valueOf(klasse));
+			anfrage.setAllgemeineAngaben(allgemeineAngaben);
+			
+			VerbindungsParameter parameter = new VerbindungsParameter();
+			AnfrageZughalt halt1 = new AnfrageZughalt();
+			halt1.setBahnhof(von);
+			AnfrageZughalt halt2 = new AnfrageZughalt();
+			halt2.setBahnhof(nach);
+			parameter.getHalt().add(halt1);
+			parameter.getHalt().add(halt2);
+			
+			DatatypeFactory factory;
+			GregorianCalendar gc = new GregorianCalendar();
+			gc.setTime(zeitpunkt);
+			factory = DatatypeFactory.newInstance();
+			XMLGregorianCalendar calendar = factory.newXMLGregorianCalendar(gc);
+			parameter.setZeitpunkt(calendar);
+			
+			anfrage.getVerbindungsParameter().add(parameter);
+			Reisender reisender = new Reisender();
+			reisender.setAnzahl(erwachsene);
+			reisender.setTypE(ReisendenTyp.ERWACHSENER);
+			anfrage.getReisender().add(reisender);
+			
+			ByteArrayOutputStream stream = new ByteArrayOutputStream();
+			JAXB.marshal(anfrage, stream);
+			s = stream.toString(java.nio.charset.StandardCharsets.UTF_8.name());
+			
+		} catch (DatatypeConfigurationException | UnsupportedEncodingException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return s;
+	}		
 }
