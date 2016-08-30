@@ -38,15 +38,19 @@ jaxb {
     }
 }
 
-
-def taskOutputPath = tasks.getByName("jaxbJavaGenOsst").outputDirectory.getPath()
-print taskOutputPath
-
 eclipse.wtp {
     component {
         contextPath = '/'
-        //resource sourcePath: taskOutputPath + '/META-INF', deployPath: "META-INF"
         resource sourcePath: 'build/generated/jaxb/java/osst/META-INF', deployPath: "/META-INF"
+		
+		// prevent automatic downgrading on eclipse import which causes some wb-resources to be dropped
+		// (original value is '2.0')
+		file {
+			withXml { xml ->
+				def node = xml.asNode()
+				node.@'project-version' = '1.5.0'
+			}
+		}
     }
 
     facet {
