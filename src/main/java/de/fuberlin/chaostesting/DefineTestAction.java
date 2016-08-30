@@ -22,6 +22,8 @@ public class DefineTestAction extends GenericActionBean {
 	
 	Date uhrzeit;
 	
+	DAO<Test> testDao = DAO.createInstance(Test.class);
+	
 	public Test getTest() {
 		return test;
 	}
@@ -57,7 +59,7 @@ public class DefineTestAction extends GenericActionBean {
 		zeitpunkt = DateUtils.addMinutes(zeitpunkt, calendar.get(Calendar.MINUTE));
 		test.setZeitpunkt(zeitpunkt);
 		
-		new DAO<>(Test.class).createOrUpdate(test);
+		testDao.createOrUpdate(test);
 		setResult("Test-Definition erfolgreich");
 		return new ForwardResolution("/defineTest.jsp");
 	}

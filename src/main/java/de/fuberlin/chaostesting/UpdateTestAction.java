@@ -25,6 +25,8 @@ public class UpdateTestAction extends GenericActionBean {
 	Test test;
 	String result;
 	
+	DAO<Test> testDao = DAO.createInstance(Test.class);
+	
 	Date uhrzeit;
 	int id = -1;
 	
@@ -71,7 +73,7 @@ public class UpdateTestAction extends GenericActionBean {
 			return;
 		}
 		
-		test = new DAO<>(Test.class).findById(id);
+		test = testDao.findById(id);
 	    
 	    if(test == null) {
 	    	context.getValidationErrors().add("noTestFound", new SimpleError("Kein Test gefunden für " + id, (Object)null));
@@ -93,14 +95,14 @@ public class UpdateTestAction extends GenericActionBean {
 		zeitpunkt = DateUtils.addMinutes(zeitpunkt, calendar.get(Calendar.MINUTE));
 		test.setZeitpunkt(zeitpunkt);
 		
-		new DAO<>(Test.class).createOrUpdate(test);
+		testDao.createOrUpdate(test);
 		setResult("Test-Update erfolgreich");
 		return new RedirectResolution("/updateTest.jsp").addParameter("id", getId()).flash(this);
 	}
 	
 	@HandlesEvent("delete")
 	public Resolution deleteTest() {		
-		new DAO<>(Test.class).delete(test);
+		testDao.delete(test);
 		
 		setResult("Test gelöscht");
 		return new ForwardResolution("/deleteTest.jsp");

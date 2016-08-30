@@ -16,6 +16,8 @@ public class DeleteTestAction extends GenericActionBean {
 	Test test;
 	String result;
 	
+	DAO<Test> testDao = DAO.createInstance(Test.class);
+	
 	public Test getTest() {
 		return test;
 	}
@@ -42,7 +44,7 @@ public class DeleteTestAction extends GenericActionBean {
 			return;
 		}
 		
-		test = new DAO<>(Test.class).findById(id);
+		test = testDao.findById(id);
 	    
 	    if(test == null) {
 	    	context.getValidationErrors().add("noTestFound", new SimpleError("Kein Test gefunden für " + id, (Object)null));
@@ -51,7 +53,7 @@ public class DeleteTestAction extends GenericActionBean {
 	
 	@DefaultHandler
 	public Resolution deleteTest() {		
-		new DAO<>(Test.class).delete(test);
+		testDao.delete(test);
 		
 		setResult("Test gelöscht");
 		return new ForwardResolution("/deleteTest.jsp");

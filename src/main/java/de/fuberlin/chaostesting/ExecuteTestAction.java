@@ -25,6 +25,8 @@ public class ExecuteTestAction extends GenericActionBean {
 	Test test;
 	String response;
 	
+	DAO<Test> testDao = DAO.createInstance(Test.class);
+	
 	public Test getTest() {
 		return test;
 	}
@@ -51,7 +53,7 @@ public class ExecuteTestAction extends GenericActionBean {
 			return;
 		}
 		
-		test = new DAO<>(Test.class).findById(id);
+		test = testDao.findById(id);
 	    
 	    if(test == null) {
 	    	context.getValidationErrors().add("noTestFound", new SimpleError("Kein Test gefunden für " + id, (Object)null));
