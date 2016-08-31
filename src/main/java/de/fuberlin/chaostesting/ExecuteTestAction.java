@@ -102,7 +102,11 @@ public class ExecuteTestAction extends GenericActionBean {
 			}
 			rd.close();
 			responseStr = response.toString();
-			responseDao.create(new Response(responseStr, getId()));
+			
+			Response persistentResponse = new Response();
+			persistentResponse.setXml(responseStr);
+			persistentResponse.setValid(validate(responseStr));
+			responseDao.create(persistentResponse);
 		} catch (MalformedURLException e) {
 			e.printStackTrace();
 		} catch (IOException e) {
@@ -112,5 +116,9 @@ public class ExecuteTestAction extends GenericActionBean {
 		this.response = responseStr;
 		
 		return new ForwardResolution("/executeTest.jsp");
+	}
+	
+	private boolean validate(String xml){
+		return xml.contains("<angebote typ_e=\"VERBINDUNGSANGEBOT\" status_e=\"ANGEBOT_GUELTIG\" bezAngebot=\"Flexpreis\" fahrscheinTyp_e=\"NORMALFAHRSCHEIN\">");
 	}
 }

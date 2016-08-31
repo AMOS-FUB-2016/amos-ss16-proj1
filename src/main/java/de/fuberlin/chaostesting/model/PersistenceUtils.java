@@ -103,7 +103,7 @@ public class PersistenceUtils {
 			for(Field field : type.getDeclaredFields()) {
 				Id idAnnot = field.getAnnotation(Id.class);
 				if(idAnnot != null) {
-					return field.get(entity);
+					return getBeanProperty(entity, field.getName());
 				}  
 			}
 
@@ -128,17 +128,17 @@ public class PersistenceUtils {
 			propDesc.getWriteMethod().invoke(bean, value);
 		} catch (IntrospectionException | IllegalAccessException | IllegalArgumentException | InvocationTargetException e) {
 			// programmer's error
-			throw new RuntimeException();
+			throw new RuntimeException("could not set bean property \"" + propertyName + "\" on bean of type " + bean.getClass().getName(), e);
 		}
 	}
 
 	public static Object getBeanProperty(Object bean, String propertyName) {
 		try {
 			PropertyDescriptor propDesc = propDescByName(bean.getClass(), propertyName);
-			return propDesc.getReadMethod().invoke(bean, (Object)null);
+			return propDesc.getReadMethod().invoke(bean, (Object[])null);
 		} catch (IntrospectionException | IllegalAccessException | IllegalArgumentException | InvocationTargetException e) {
 			// programmer's error
-			throw new RuntimeException();
+			throw new RuntimeException("could not fetch bean property \"" + propertyName + "\" on bean of type " + bean.getClass().getName(), e);
 		}
 	}
 
