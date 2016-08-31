@@ -31,6 +31,8 @@ public class ShowResponseXMLAction extends GenericActionBean {
 	Response response;
 	String result;
 	int id = -1;
+	
+	DAO<Response> responseDao = DAO.createInstance(Response.class);
 
 	public Response getResponse() {
 		return response;
@@ -65,7 +67,7 @@ public class ShowResponseXMLAction extends GenericActionBean {
 			return;
 		}
 		
-		response = new DAO<>(Response.class).findById(getId());
+		response = responseDao.findById(getId());
 	    
 	    if(response == null) {
 	    	context.getValidationErrors().add("noResponseFound", new SimpleError("Keine Antwort gefunden für " + getId(), (Object)null));

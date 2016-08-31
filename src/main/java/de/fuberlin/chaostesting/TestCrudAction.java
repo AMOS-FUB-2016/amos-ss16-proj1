@@ -23,7 +23,10 @@ import net.sourceforge.stripes.validation.Validate;
 @UrlBinding("/modifyTest.action")
 public class TestCrudAction extends GenericActionBean {
 	String result;
-	Test test; // TODO: create validator for test class	
+
+	DAO<Test> testDao = DAO.createInstance(Test.class);
+	
+	Test test; // TODO: create validator for test class
 	Date uhrzeit;
 	
 	public Test getTest() {
@@ -64,7 +67,7 @@ public class TestCrudAction extends GenericActionBean {
 			return;
 		}
 		
-		test = new DAO<>(Test.class).findById(id);
+		test = testDao.findById(id);
 	    
 	    if(test == null) {
 	    	context.getValidationErrors().add("noTestFound", new SimpleError("Kein Test gefunden für " + id, (Object)null));
@@ -90,7 +93,7 @@ public class TestCrudAction extends GenericActionBean {
 	public Resolution createTest() {
 		handleTimeOfDayInput(uhrzeit, test);
 		
-		new DAO<>(Test.class).createOrUpdate(test);
+		testDao.createOrUpdate(test);
 		
 		FlashScope scope = FlashScope.getCurrent(context.getRequest(), true);
 		scope.put("test", test);
@@ -108,14 +111,14 @@ public class TestCrudAction extends GenericActionBean {
 	public Resolution updateTest() {
 		handleTimeOfDayInput(uhrzeit, test);
 		
-		new DAO<>(Test.class).createOrUpdate(test);
+		testDao.createOrUpdate(test);
 		setResult("Test-Update erfolgreich");
 		return new RedirectResolution(TestCrudAction.class, "show").addParameter("id", test.getId()).flash(this);
 	}
 	
 	@HandlesEvent("delete")
 	public Resolution deleteTest() {		
-		new DAO<>(Test.class).delete(test);
+		testDao.delete(test);
 		
 		setResult("Test gelöscht");
 		return new ForwardResolution("/deleteTest.jsp");

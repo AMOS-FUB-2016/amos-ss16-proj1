@@ -12,11 +12,8 @@
 			<th>Von</th>
 			<th>Nach</th>
 			<th>Datum</th>
-			<th>Reisende</th>
+			<th>Erwachsene</th>
 			<th>Klasse</th>
-			<th>Angebot</th>
-			<th>Sparpreis</th>
-			<th>Flexpreis</th>
 			<th>Aktionen</th>
 		</tr>
 		<c:forEach items="${actionBean.tests}" var="test">
@@ -24,11 +21,8 @@
 				<td>${test.von}</td>
 				<td>${test.nach}</td>
 				<td>${test.zeitpunkt}</td>
-				<td>${test.reisende}</td>
+				<td>${test.erwachsene}</td>
 				<td>${test.klasse}</td>
-				<td>${test.angebot}</td>
-				<td>${test.sparpreis}</td>
-				<td>${test.flexpreis}</td>
 				<td><stripes:link beanclass="de.fuberlin.chaostesting.ExecuteTestAction">
 						<stripes:param name="id" value="${test.id}" />
 				Ausführen
