@@ -126,6 +126,8 @@ public class TestCrudAction extends GenericActionBean {
 	
 	@HandlesEvent("deleteUpdate")
 	public Resolution deleteUpdateTest() {
+		// reload test to get a attached instance
+		test = testDao.findById(test.getId());
 		return deleteTest();
 	}
 }
