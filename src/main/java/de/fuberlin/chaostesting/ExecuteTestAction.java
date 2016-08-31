@@ -99,7 +99,12 @@ public class ExecuteTestAction extends GenericActionBean {
 			}
 			rd.close();
 			responseStr = response.toString();
-			new DAO<>(Response.class).create(new Response(responseStr, getId(), Validation(responseStr)));
+			
+			Response persistentResponse = new Response();
+			persistentResponse.setId(getId());
+			persistentResponse.setXml(responseStr);
+			persistentResponse.setValid(validate(responseStr));
+			new DAO<>(Response.class).create(persistentResponse);
 		} catch (MalformedURLException e) {
 			e.printStackTrace();
 		} catch (IOException e) {
@@ -111,14 +116,7 @@ public class ExecuteTestAction extends GenericActionBean {
 		return new ForwardResolution("/executeTest.jsp");
 	}
 	
-	public String Validation(String xml){
-		String valid;
-		if(xml.contains("<angebote typ_e=\"VERBINDUNGSANGEBOT\" status_e=\"ANGEBOT_GUELTIG\" bezAngebot=\"Flexpreis\" fahrscheinTyp_e=\"NORMALFAHRSCHEIN\">")){
-			valid = "Ist Valide";
-		}
-		else{
-			valid = "Ist nicht Valide";
-		}
-		return valid;
+	private boolean validate(String xml){
+		return xml.contains("<angebote typ_e=\"VERBINDUNGSANGEBOT\" status_e=\"ANGEBOT_GUELTIG\" bezAngebot=\"Flexpreis\" fahrscheinTyp_e=\"NORMALFAHRSCHEIN\">");
 	}
 }

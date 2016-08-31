@@ -13,7 +13,7 @@
 			<th>Zeitpunkt</th>
 			<th>Test-Definition-ID</th>
 			<th>Aktionen</th>
-			<th>Validierungsergebniss</th>
+			<th>Validierungsergebnis</th>
 		</tr>
 		<c:forEach items="${actionBean.responses}" var="response">
 			<tr>
@@ -28,7 +28,7 @@
 						<stripes:param name="id" value="${response.id}" />
 				Server-Version
 			</stripes:link></td>
-			<td>${response.valid}</td>
+			<td><c:out value="${response.valid ? 'Valide': 'Nicht valide'}"/></td>
 			</tr>
 		</c:forEach>
 	</table>
