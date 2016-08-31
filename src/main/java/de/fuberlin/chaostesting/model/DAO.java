@@ -2,6 +2,12 @@ package de.fuberlin.chaostesting.model;
 
 import java.util.List;
 
+import javax.persistence.EntityManager;
+import javax.persistence.TypedQuery;
+import javax.persistence.criteria.CriteriaBuilder;
+import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.Root;
+
 /**
  * Simple DAO mechanism for easy access and abstraction from database semantics.
  * 
@@ -9,10 +15,18 @@ import java.util.List;
  *
  * @param <T> The entity type to be managed by a DAO
  */
-public abstract class DAO<T> {
+public class DAO<T> {
+	
+	EntityManager entityManager;
+	Class<T> type;
+	
+	private DAO(Class<T> type, EntityManager entityManager) {
+		this.type = type;
+		this.entityManager = entityManager;
+	}
 	
 	public static <T> DAO<T> createInstance(Class<T> type) {
-		return new JPADAO<>(type, PersistenceUtils.getEntityManager());
+		return new DAO<>(type, PersistenceUtils.getEntityManager());
 	}
 	
 	/**
@@ -20,31 +34,48 @@ public abstract class DAO<T> {
 	 * @param entity the entity with state to be saved
 	 * @return false if creation was unsuccessful, true else
 	 */
-	public abstract Object create(T entity);
-	
+	public Object create(T entity) {
+		entityManager.persist(entity);
+
+		return PersistenceUtils.getEntityPrimaryKey(entity);		
+	}
+
 	/**
 	 * Updates an entity or creates it if necessary.
 	 * @param entity the entity with state to be saved
 	 */
-	public abstract void createOrUpdate(T entity);
-	
+	public void createOrUpdate(T entity) {
+		entityManager.merge(entity);
+	}
+
 	/**
 	 * Deletes an existing entity
 	 * @param entity the entity with state to be deleted
 	 */
-	public abstract void delete(T entity);
-	
+	public void delete(T entity) {
+		entityManager.remove(entity);
+	}
+
 	/**
 	 * Finds all entities managed by this DAO.
 	 * @return A list of all found results.
 	 */
-	public abstract List<T> findAll();
-	
+	public List<T> findAll() {
+		CriteriaBuilder cb = entityManager.getCriteriaBuilder();
+        CriteriaQuery<T> cq = cb.createQuery(type);
+        Root<T> rootEntry = cq.from(type);
+        CriteriaQuery<T> all = cq.select(rootEntry);
+        TypedQuery<T> allQuery = entityManager.createQuery(all);
+        return allQuery.getResultList();
+	}
+
 	/**
 	 * Finds an entity matching the given primary key.
 	 * @param id The primary key to be matched.
 	 * @return An entity instance or null.
 	 */
-	public abstract T findById(Object id);
+	public T findById(Object id) {
+		return entityManager.find(type, id);
+	}
 	
 }
