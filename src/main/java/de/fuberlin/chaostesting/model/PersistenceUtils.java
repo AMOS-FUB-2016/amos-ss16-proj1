@@ -22,10 +22,10 @@ import org.apache.commons.lang3.tuple.Pair;
 
 public class PersistenceUtils {
 
-	private final static EntityManagerFactory entityManagerFactory;
+	private static EntityManagerFactory entityManagerFactory;
 	private final static ThreadLocal<EntityManager> threadLocalEntityManager = new ThreadLocal<>();
 	
-	static {
+	private static EntityManagerFactory createEntityManagerFactory() {
 		Collection<Pair<String, String>> overridables =
 				Arrays.asList(
 					Pair.of("JPA_DB_URL", "javax.persistence.jdbc.url"),
@@ -48,10 +48,13 @@ public class PersistenceUtils {
 			}
 		});
 		
-		entityManagerFactory = Persistence.createEntityManagerFactory("de.fuberlin.chaostesting", overrides);
+		return Persistence.createEntityManagerFactory("de.fuberlin.chaostesting", overrides);
 	}
 
 	public static EntityManager getEntityManager() {
+		if(entityManagerFactory == null) {
+			entityManagerFactory = createEntityManagerFactory();
+		}
 
 		EntityManager entityManager = threadLocalEntityManager.get();
 
@@ -85,6 +88,7 @@ public class PersistenceUtils {
 
 	public static void closeEntityManagerFactory() {
 		entityManagerFactory.close();
+		entityManagerFactory = null;
 	}
 
 	public static <T> String findEntityTableName(Class<T> type) {

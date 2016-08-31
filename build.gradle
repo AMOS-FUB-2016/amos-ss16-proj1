@@ -38,18 +38,14 @@ jaxb {
     }
 }
 
-def hyperjaxb3MetaInfAdditions = 'build/generated/jaxb/java/osst/META-INF'
-
+def hyperjaxb3MetaInfAdditions = 'build/generated/jaxb/java/osst'
 war {
-	metaInf {
-		from hyperjaxb3MetaInfAdditions
-	}
+    classpath hyperjaxb3MetaInfAdditions
 }
 
 eclipse.wtp {
     component {
         contextPath = '/'
-        resource sourcePath: hyperjaxb3MetaInfAdditions, deployPath: "/META-INF"
 		
 		// prevent automatic downgrading on eclipse import which causes some wb-resources to be dropped
 		// (original value is '2.0')
