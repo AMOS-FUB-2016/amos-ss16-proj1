@@ -1,10 +1,11 @@
 <%@tag description="Overall Page template" pageEncoding="UTF-8"%>
 <%@taglib prefix="stripes" uri="http://stripes.sourceforge.net/stripes.tld"%>
+<%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 
 <!DOCTYPE html> 
 <html>
 	<head>
-		<link rel="stylesheet" href="style.css" type="text/css" />
+		<link rel="stylesheet" href="<c:url value="res/style.css" />" type="text/css"/>
 		<title>Chaos Testing</title>	
 	</head>
 	<body>

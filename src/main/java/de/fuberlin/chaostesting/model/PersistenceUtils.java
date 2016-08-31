@@ -85,10 +85,16 @@ public class PersistenceUtils {
 	public static void commit() {
 		getEntityManager().getTransaction().commit();
 	}
+	
+	protected static EntityManagerFactory getEntityManagerFactory() {
+		return entityManagerFactory;
+	}
 
 	public static void closeEntityManagerFactory() {
-		entityManagerFactory.close();
-		entityManagerFactory = null;
+		if(entityManagerFactory != null) {
+			entityManagerFactory.close();
+			entityManagerFactory = null;
+		}
 	}
 
 	public static <T> String findEntityTableName(Class<T> type) {

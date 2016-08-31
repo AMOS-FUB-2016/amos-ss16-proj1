@@ -4,7 +4,7 @@
 <t:genericpage>
 	<h1>Chaos Testing</h1>
 	<p>
-		<img src="logo.png" alt="Logo" width="250px" height="250px"
+		<img src="res/logo.png" alt="Logo" width="250px" height="250px"
 			class="left">
 	</p>
 	<p>Der Testautomat ist ein System, welches mit gegebenem Code und

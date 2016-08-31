@@ -20,6 +20,7 @@ public class DAO<T> {
 	EntityManager entityManager;
 	Class<T> type;
 	
+	
 	private DAO(Class<T> type, EntityManager entityManager) {
 		this.type = type;
 		this.entityManager = entityManager;
@@ -27,6 +28,14 @@ public class DAO<T> {
 	
 	public static <T> DAO<T> createInstance(Class<T> type) {
 		return new DAO<>(type, PersistenceUtils.getEntityManager());
+	}
+	
+	/**
+	 * for subclassing
+	 * @return the entity manager configured for this dao
+	 */
+	protected EntityManager getEntityManager() {
+		return entityManager;
 	}
 	
 	/**
