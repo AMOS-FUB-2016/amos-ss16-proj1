@@ -23,8 +23,7 @@ public class Response {
 	@Column(name="test_id")
 	private int test_id;
 	@Column(name="valid")
-	private boolean valid;
-	
+	private boolean valid;	
 
 	public int getId() {
 		return id;

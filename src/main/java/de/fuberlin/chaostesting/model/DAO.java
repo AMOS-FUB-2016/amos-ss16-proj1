@@ -76,6 +76,5 @@ public class DAO<T> {
 	 */
 	public T findById(Object id) {
 		return entityManager.find(type, id);
-	}
-	
+	}	
 }

@@ -1,11 +1,9 @@
-
-
-
 plugins {
     id "war"
     id "eclipse-wtp"
     id "com.intershop.gradle.jaxb" version "1.0.1"
 }
+
 apply plugin: 'java'
 apply plugin: 'eclipse'
 apply plugin: 'war'
@@ -41,12 +39,9 @@ dependencies {
     testCompile "junit:junit-dep:4.10"
 	//json
 	// https://mvnrepository.com/artifact/org.glassfish.jersey.media/jersey-media-moxy
-//compile group: 'org.glassfish.jersey.media', name: 'jersey-media-moxy', version: '2.23.2'
+	//compile group: 'org.glassfish.jersey.media', name: 'jersey-media-moxy', version: '2.23.2'
 
-
-	
-
-    // jaxb dependencies
+	// jaxb dependencies
     xjc group: 'org.jvnet.hyperjaxb3', name: 'hyperjaxb3-ejb-plugin', version: '0.6.1'
 }
 
@@ -107,7 +102,6 @@ cleanEclipse << {
     File f = file('.settings/org.eclipse.core.resources.prefs')
     f.delete()
 }
-
 
 afterEvaluate {
     tasks.eclipseClasspath.dependsOn tasks.jaxb

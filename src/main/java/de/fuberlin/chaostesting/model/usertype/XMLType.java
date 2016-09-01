@@ -21,7 +21,7 @@ public class XMLType implements org.hibernate.usertype.UserType {
     }
  
     @Override
-    public Class returnedClass() {
+    public Class<String> returnedClass() {
         return String.class;
     }
  
@@ -43,7 +43,8 @@ public class XMLType implements org.hibernate.usertype.UserType {
 	public Object nullSafeGet(ResultSet rs, String[] names, SharedSessionContractImplementor session, Object owner)
 			throws HibernateException, SQLException {
 	    assert(names.length == 1);
-	    String xmldoc = rs.getString( names[0] );
+	    String xmldoc = rs.getString(names[0]);
+	    
 	    return rs.wasNull() ? null : xmldoc;
 	}
 
@@ -59,8 +60,10 @@ public class XMLType implements org.hibernate.usertype.UserType {
  
     @Override
     public Object deepCopy(Object value) throws HibernateException {
-        if (value == null)
+        if (value == null) {
             return null;
+        }
+        
         return new String( (String)value );
     }
  

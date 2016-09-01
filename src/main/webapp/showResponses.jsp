@@ -2,8 +2,7 @@
 <%@taglib prefix="t" tagdir="/WEB-INF/tags"%>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
-<%@taglib prefix="stripes"
-	uri="http://stripes.sourceforge.net/stripes.tld"%>
+<%@taglib prefix="stripes" uri="http://stripes.sourceforge.net/stripes.tld"%>
 <jsp:useBean id="now" class="java.util.Date" />
 
 <t:genericpage>
@@ -28,7 +27,7 @@
 						<stripes:param name="id" value="${response.id}" />
 				Server-Version
 			</stripes:link></td>
-			<td><c:out value="${response.valid ? 'Valide': 'Nicht valide'}"/></td>
+				<td><c:out value="${response.valid ? 'Valide': 'Nicht valide'}" /></td>
 			</tr>
 		</c:forEach>
 	</table>

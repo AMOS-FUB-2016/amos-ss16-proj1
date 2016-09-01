@@ -16,5 +16,4 @@ public abstract class GenericActionBean implements ActionBean {
 	public ActionBeanContext getContext() {
 		return context;
 	}
-
 }

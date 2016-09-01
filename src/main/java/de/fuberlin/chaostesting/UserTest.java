@@ -6,6 +6,7 @@ import de.fuberlin.chaostesting.model.DAO;
 import de.fuberlin.chaostesting.model.User;
 
 public class UserTest {
+	
 		DAO<User> userDao = DAO.createInstance(User.class);
 	
 		public String newTester() {
