@@ -103,7 +103,7 @@ public class Test {
 			AngebotsAnfrage anfrage = new AngebotsAnfrage();
 			anfrage.setMsgVersion(msgVersion);
 			AllgemeineAngaben allgemeineAngaben = new AllgemeineAngaben();
-			allgemeineAngaben.setWagenKlasseE(WagenKlasse.valueOf(klasse));
+			allgemeineAngaben.setWagenKlasse(WagenKlasse.valueOf(klasse));
 			anfrage.setAllgemeineAngaben(allgemeineAngaben);
 			
 			VerbindungsParameter parameter = new VerbindungsParameter();
@@ -111,8 +111,8 @@ public class Test {
 			halt1.setBahnhof(von);
 			AnfrageZughalt halt2 = new AnfrageZughalt();
 			halt2.setBahnhof(nach);
-			parameter.getHalt().add(halt1);
-			parameter.getHalt().add(halt2);
+			parameter.getHalte().add(halt1);
+			parameter.getHalte().add(halt2);
 			
 			DatatypeFactory factory;
 			GregorianCalendar gc = new GregorianCalendar();
@@ -124,8 +124,8 @@ public class Test {
 			anfrage.getVerbindungsParameter().add(parameter);
 			Reisender reisender = new Reisender();
 			reisender.setAnzahl(erwachsene);
-			reisender.setTypE(ReisendenTyp.ERWACHSENER);
-			anfrage.getReisender().add(reisender);
+			reisender.setTyp(ReisendenTyp.ERWACHSENER);
+			anfrage.getReisende().add(reisender);
 			
 			ByteArrayOutputStream stream = new ByteArrayOutputStream();
 			JAXB.marshal(anfrage, stream);
