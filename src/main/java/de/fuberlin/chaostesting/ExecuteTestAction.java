@@ -8,6 +8,7 @@ import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.util.Date;
 
 import de.fuberlin.chaostesting.model.DAO;
 import de.fuberlin.chaostesting.model.Response;
@@ -104,6 +105,8 @@ public class ExecuteTestAction extends GenericActionBean {
 			responseStr = response.toString();
 			
 			Response persistentResponse = new Response();
+			persistentResponse.setTimestamp(new Date());
+			persistentResponse.setTest_id(id);
 			persistentResponse.setXml(responseStr);
 			persistentResponse.setValid(validate(responseStr));
 			responseDao.create(persistentResponse);

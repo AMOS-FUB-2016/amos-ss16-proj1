@@ -10,6 +10,7 @@ import de.fuberlin.chaostesting.model.DAO;
 import de.fuberlin.chaostesting.model.Test;
 import net.sourceforge.stripes.action.Before;
 import net.sourceforge.stripes.action.DefaultHandler;
+import net.sourceforge.stripes.action.DontValidate;
 import net.sourceforge.stripes.action.ForwardResolution;
 import net.sourceforge.stripes.action.HandlesEvent;
 import net.sourceforge.stripes.action.RedirectResolution;
@@ -19,13 +20,23 @@ import net.sourceforge.stripes.controller.FlashScope;
 import net.sourceforge.stripes.controller.LifecycleStage;
 import net.sourceforge.stripes.validation.SimpleError;
 import net.sourceforge.stripes.validation.Validate;
+import net.sourceforge.stripes.validation.ValidateNestedProperties;
+import net.sourceforge.stripes.validation.ValidationErrors;
+import net.sourceforge.stripes.validation.ValidationMethod;
 
 @UrlBinding("/modifyTest.action")
 public class TestCrudAction extends GenericActionBean {
+	
 	String result;
-
 	DAO<Test> testDao = DAO.createInstance(Test.class);
 	
+	@ValidateNestedProperties({
+		@Validate(field="von", required=true, minvalue=8000001, maxvalue=8099999),
+		@Validate(field="nach", required=true, minvalue=8000001, maxvalue=8099999),
+		@Validate(field="zeitpunkt", required=true),
+		@Validate(field="erwachsene", required=true, minvalue=1, maxvalue=5),
+		@Validate(field="klasse", required=true)
+	})
 	Test test; // TODO: create validator for test class
 	Date uhrzeit;
 	
@@ -59,6 +70,8 @@ public class TestCrudAction extends GenericActionBean {
 	
 	@Before(stages = LifecycleStage.BindingAndValidation, on={"show", "delete"})
 	public void rehydrate() {
+		testDao = DAO.createInstance(Test.class);
+		
 		int id = -1;
 		try {
 			id = Integer.parseInt(context.getRequest().getParameter("id"));
@@ -102,6 +115,7 @@ public class TestCrudAction extends GenericActionBean {
 		return new RedirectResolution("/defineTest.jsp");
 	}
 	
+	@DontValidate
 	@HandlesEvent("show")
 	public Resolution showTest() {
 		return new ForwardResolution("/updateTest.jsp");
@@ -116,6 +130,7 @@ public class TestCrudAction extends GenericActionBean {
 		return new RedirectResolution(TestCrudAction.class, "show").addParameter("id", test.getId()).flash(this);
 	}
 	
+	@DontValidate
 	@HandlesEvent("delete")
 	public Resolution deleteTest() {		
 		testDao.delete(test);
@@ -124,10 +139,18 @@ public class TestCrudAction extends GenericActionBean {
 		return new ForwardResolution("/deleteTest.jsp");
 	}
 	
+	@DontValidate
 	@HandlesEvent("deleteUpdate")
 	public Resolution deleteUpdateTest() {
 		// reload test to get a attached instance
 		test = testDao.findById(test.getId());
 		return deleteTest();
+	}
+	
+	@ValidationMethod
+	public void validateVonNach(ValidationErrors errors) {
+		if (test.getVon().equals(test.getNach())) {
+			errors.add("VonEqualsNachError", new SimpleError("Von und Nach sind gleich."));
+		}
 	}
 }

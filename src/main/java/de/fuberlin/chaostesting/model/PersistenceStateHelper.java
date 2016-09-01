@@ -65,5 +65,4 @@ public class PersistenceStateHelper implements Filter, ServletContextListener {
 	public void contextDestroyed(ServletContextEvent sce) {
 		PersistenceUtils.closeEntityManagerFactory();
 	}
-
 }
