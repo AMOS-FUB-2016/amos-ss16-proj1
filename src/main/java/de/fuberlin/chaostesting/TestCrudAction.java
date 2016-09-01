@@ -59,6 +59,8 @@ public class TestCrudAction extends GenericActionBean {
 	
 	@Before(stages = LifecycleStage.BindingAndValidation, on={"show", "delete"})
 	public void rehydrate() {
+		testDao = DAO.createInstance(Test.class);
+		
 		int id = -1;
 		try {
 			id = Integer.parseInt(context.getRequest().getParameter("id"));
