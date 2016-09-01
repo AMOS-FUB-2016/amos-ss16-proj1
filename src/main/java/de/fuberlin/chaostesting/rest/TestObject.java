@@ -1,7 +1,6 @@
 package de.fuberlin.chaostesting.rest;
 
 import javax.xml.bind.annotation.XmlRootElement;
-import javax.xml.bind.annotation.XmlElement;
 
 @XmlRootElement(name="test")
 public class TestObject {
@@ -32,4 +31,4 @@ public class TestObject {
 	}
 
 
-} 
+}
