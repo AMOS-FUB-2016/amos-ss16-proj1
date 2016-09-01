@@ -76,3 +76,6 @@ atlassian-ide-plugin.xml
 *.jar
 *.war
 *.ear
+
+# XML Schema Definition #
+*.xsd
