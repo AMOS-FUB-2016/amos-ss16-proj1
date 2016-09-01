@@ -3,6 +3,7 @@ package de.fuberlin.chaostesting.model;
 import java.io.IOException;
 
 import javax.persistence.Persistence;
+import javax.persistence.PersistenceException;
 import javax.servlet.Filter;
 import javax.servlet.FilterChain;
 import javax.servlet.FilterConfig;
@@ -37,8 +38,8 @@ public class PersistenceStateHelper implements Filter, ServletContextListener {
 			chain.doFilter(request, response);
 			PersistenceUtils.commit();
 		} catch (RuntimeException e) {
-			if(PersistenceUtils.getEntityManagerFactory() == null) {
-				// apparently, creation of the emf failed
+			if(PersistenceUtils.getEntityManagerFactory() == null || e instanceof PersistenceException) {
+				e.printStackTrace();
 				request.getRequestDispatcher("WEB-INF/dbFailure.jsp").forward(request, response);
 				return;
 			}
