@@ -1,14 +1,21 @@
+
+
+
 plugins {
     id "war"
     id "eclipse-wtp"
     id "com.intershop.gradle.jaxb" version "1.0.1"
 }
+apply plugin: 'java'
+apply plugin: 'eclipse'
+apply plugin: 'war'
 
 configurations {
     xjc
 }
 
 repositories {
+mavenCentral()
     jcenter()
 }
 
@@ -19,8 +26,25 @@ dependencies {
     compile "org.hibernate:hibernate-core:5.2.2.Final"
     compile "net.sourceforge.stripes:stripes:1.6.+"
     runtime "org.postgresql:postgresql:9.4.1209"
+	
+	
     compile group: 'commons-lang', name: 'commons-lang', version: '2.6'
     compile group: 'org.jvnet.hyperjaxb3', name: 'hyperjaxb3-ejb-runtime', version: '0.6.1'
+
+	//rest
+	    compile "javax.ws.rs:jsr311-api:1.1.1"
+
+    compile 'com.sun.jersey:jersey-server:1.13'
+    compile 'com.sun.jersey:jersey-core:1.13'
+    compile 'com.sun.jersey:jersey-servlet:1.13'
+
+    testCompile "junit:junit-dep:4.10"
+	//json
+	// https://mvnrepository.com/artifact/org.glassfish.jersey.media/jersey-media-moxy
+//compile group: 'org.glassfish.jersey.media', name: 'jersey-media-moxy', version: '2.23.2'
+
+
+	
 
     // jaxb dependencies
     xjc group: 'org.jvnet.hyperjaxb3', name: 'hyperjaxb3-ejb-plugin', version: '0.6.1'
