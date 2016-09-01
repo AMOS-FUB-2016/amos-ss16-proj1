@@ -26,8 +26,8 @@ import net.sourceforge.stripes.validation.ValidationMethod;
 
 @UrlBinding("/modifyTest.action")
 public class TestCrudAction extends GenericActionBean {
+	
 	String result;
-
 	DAO<Test> testDao = DAO.createInstance(Test.class);
 	
 	@ValidateNestedProperties({
@@ -153,5 +153,4 @@ public class TestCrudAction extends GenericActionBean {
 			errors.add("VonEqualsNachError", new SimpleError("Von und Nach sind gleich."));
 		}
 	}
-	    
 }

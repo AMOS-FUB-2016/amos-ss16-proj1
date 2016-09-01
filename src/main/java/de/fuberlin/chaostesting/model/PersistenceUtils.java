@@ -111,7 +111,6 @@ public class PersistenceUtils {
 				}  
 			}
 
-
 			for(Method method : type.getDeclaredMethods()) {
 				Id idAnnot = method.getAnnotation(Id.class);
 				if(idAnnot != null) {
@@ -158,6 +157,4 @@ public class PersistenceUtils {
 
 		return null;
 	}
-
-
 }
