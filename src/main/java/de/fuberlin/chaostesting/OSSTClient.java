@@ -30,12 +30,11 @@ import de.fuberlin.chaostesting.model.Test;
 
 public class OSSTClient {
 
-	public Response executeTest(Test test) throws IOException {
+	public Response executeTest(Test test, String url) throws IOException {
 		AngebotsAnfrage anfrage;
 		anfrage = convertTest(test);
 		String testXml = marshalAnfrage(anfrage);	
-		String responseStr;
-		responseStr = executeHttpRequest(testXml, "http://localhost:8082/osst");
+		String responseStr = executeHttpRequest(testXml, url);
 
 		Response response = new Response(); 
 		response.setTimestamp(new Date());	

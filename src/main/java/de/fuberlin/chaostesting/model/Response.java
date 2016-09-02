@@ -4,8 +4,11 @@ import java.util.Date;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
 @Entity
@@ -15,13 +18,18 @@ public class Response {
 	@Id	@GeneratedValue
 	@Column(name="response_id")
 	private int id;
+	
 	@Column(name="response_xml", length=65535)
 	@org.hibernate.annotations.Type(type="de.fuberlin.chaostesting.model.usertype.XMLType")
 	private String xml;
+	
 	@Column(name="response_timestamp")
 	private Date timestamp;
-	@Column(name="test_id")
-	private int test_id;
+	
+	@OneToOne(fetch=FetchType.LAZY)
+	@JoinColumn(name="test_id")
+	private Test test;
+	
 	@Column(name="valid")
 	private boolean valid;	
 
@@ -49,14 +57,14 @@ public class Response {
 		this.timestamp = timestamp;
 	}
 
-	public int getTest_id() {
-		return test_id;
+	public Test getTest() {
+		return test;
 	}
 
-	public void setTest_id(int test_id) {
-		this.test_id = test_id;
+	public void setTest(Test test) {
+		this.test = test;
 	}
-	
+
 	public boolean isValid() {
 		return valid;
 	}

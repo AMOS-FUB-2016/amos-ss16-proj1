@@ -17,7 +17,7 @@
 		<c:forEach items="${actionBean.responses}" var="response">
 			<tr>
 				<td>${response.timestamp}</td>
-				<td>${response.test_id}</td>
+				<td>${response.test.id}</td>
 				<td><stripes:link
 						beanclass="de.fuberlin.chaostesting.ShowResponseXMLAction">
 						<stripes:param name="id" value="${response.id}" />

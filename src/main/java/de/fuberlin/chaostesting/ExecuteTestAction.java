@@ -10,15 +10,20 @@ import net.sourceforge.stripes.action.DefaultHandler;
 import net.sourceforge.stripes.action.ForwardResolution;
 import net.sourceforge.stripes.action.Resolution;
 import net.sourceforge.stripes.action.UrlBinding;
+import net.sourceforge.stripes.action.Wizard;
 import net.sourceforge.stripes.controller.LifecycleStage;
 import net.sourceforge.stripes.validation.SimpleError;
+import net.sourceforge.stripes.validation.Validate;
 
+@Wizard(startEvents="prepareTestExecution")
 @UrlBinding("/executeTest.action")
 public class ExecuteTestAction extends GenericActionBean {
 	
 	Test test;
 	String responseMessage;
-	int id = -1;
+	
+	@Validate(required=true)
+	String url;
 	
 	DAO<Test> testDao = DAO.createInstance(Test.class);
 	DAO<Response> responseDao = DAO.createInstance(Response.class);
@@ -32,48 +37,59 @@ public class ExecuteTestAction extends GenericActionBean {
 		this.test = test;
 	}
 
+	
 	public String getResponseMessage() {
 		return responseMessage;
 	}
 
-	public void setResponseMessage(String response) {
-		this.responseMessage = response;
+	public void setResponseMessage(String responseMessage) {
+		this.responseMessage = responseMessage;
+	}
+	
+	public String getUrl() {
+		return url;
 	}
 
-	public int getId() {
-		return id;
-	}
-
-	public void setId(int id) {
-		this.id = id;
+	public void setUrl(String url) {
+		this.url = url;
 	}
 
 	@Before(stages = LifecycleStage.BindingAndValidation)
 	public void rehydrate() {
+		int id = -1;
+		
 		try {
-			setId(Integer.parseInt(context.getRequest().getParameter("id")));
+			id = Integer.parseInt(context.getRequest().getParameter("id"));
 		} catch(NumberFormatException e) {
 			context.getValidationErrors().add("illegalParameter", new SimpleError("Illegaler Request-Parameter", (Object)null));
 			return;
 		}
 		
-		test = testDao.findById(getId());
+		test = testDao.findById(id);
 	    
 	    if(test == null) {
-	    	context.getValidationErrors().add("noTestFound", new SimpleError("Kein Test gefunden für " + getId(), (Object)null));
+	    	context.getValidationErrors().add("noTestFound", new SimpleError("Kein Test gefunden für " + id, (Object)null));
 	    }
 	}
 	
 	@DefaultHandler
+	public Resolution prepareTestExecution() {
+		setUrl("http://localhost:8082/osst");
+		
+		return new ForwardResolution("/WEB-INF/jsps/prepareTest.jsp");
+	}
+	
 	public Resolution executeTest() {
 		responseMessage = "Keine Antwort erhalten.";
 		
 		try {
-			Response response = osstClient.executeTest(test);
-			response.setTest_id(id);
+			Response response = osstClient.executeTest(test, getUrl());
+			response.setTest(test);
 			response.setValid(validate(response));
 			
 			responseMessage = response.getXml();
+			
+			responseDao.create(response);
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
