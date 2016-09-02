@@ -37,7 +37,7 @@ public class TestCrudAction extends GenericActionBean {
 		@Validate(field="erwachsene", required=true, minvalue=1, maxvalue=5),
 		@Validate(field="klasse", required=true)
 	})
-	Test test; // TODO: create validator for test class
+	Test test;
 	Date uhrzeit;
 	
 	public Test getTest() {
