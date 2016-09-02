@@ -11,11 +11,8 @@
 		<stripes:errors />
 		<stripes:hidden name="test.id" />
 		<t:testFormBody/>
-		<br />
-		<br />
 		<stripes:submit name="update" value="Speichern" />		
 		<stripes:submit name="deleteUpdate" value="Löschen" />
-		<br />
 		<br />
 		<c:if test="${actionBean.result != null}">
 			<b>${actionBean.result}</b>
