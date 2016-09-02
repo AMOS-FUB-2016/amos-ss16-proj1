@@ -8,7 +8,6 @@
 	<h1>Test-Definition</h1>
 	<h3>Eingabe der Test-Daten</h3>
 	<stripes:form beanclass="de.fuberlin.chaostesting.TestCrudAction">
-		<stripes:errors />
 		<t:testFormBody />
 		<stripes:submit name="create" value="Speichern" />
 		<br />
