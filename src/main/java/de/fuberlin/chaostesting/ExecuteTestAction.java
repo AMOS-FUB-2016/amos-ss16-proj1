@@ -1,14 +1,6 @@
 package de.fuberlin.chaostesting;
 
-import java.io.BufferedReader;
-import java.io.DataOutputStream;
 import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.net.HttpURLConnection;
-import java.net.MalformedURLException;
-import java.net.URL;
-import java.util.Date;
 
 import de.fuberlin.chaostesting.model.DAO;
 import de.fuberlin.chaostesting.model.Response;
@@ -25,11 +17,12 @@ import net.sourceforge.stripes.validation.SimpleError;
 public class ExecuteTestAction extends GenericActionBean {
 	
 	Test test;
-	String response;
+	String responseMessage;
 	int id = -1;
 	
 	DAO<Test> testDao = DAO.createInstance(Test.class);
 	DAO<Response> responseDao = DAO.createInstance(Response.class);
+	OSSTClient osstClient = new OSSTClient();
 	
 	public Test getTest() {
 		return test;
@@ -39,12 +32,12 @@ public class ExecuteTestAction extends GenericActionBean {
 		this.test = test;
 	}
 
-	public String getResponse() {
-		return response;
+	public String getResponseMessage() {
+		return responseMessage;
 	}
 
-	public void setResponse(String response) {
-		this.response = response;
+	public void setResponseMessage(String response) {
+		this.responseMessage = response;
 	}
 
 	public int getId() {
@@ -73,55 +66,22 @@ public class ExecuteTestAction extends GenericActionBean {
 	
 	@DefaultHandler
 	public Resolution executeTest() {
-		String testXml = test.toXML();
+		responseMessage = "Keine Antwort erhalten.";
 		
-		String responseStr = "Keine Antwort erhalten";
 		try {
-			URL url = new URL("http://localhost:8082/osst");
-			HttpURLConnection urlConnection = (HttpURLConnection) url.openConnection();
-			urlConnection.setRequestMethod("POST");
-			urlConnection.setRequestProperty("Content-Type", "text/xml");
-			urlConnection.setRequestProperty("Content-Length", "" + Integer.toString(testXml.getBytes().length));
-			urlConnection.setRequestProperty("SSL_CLIENT_S_DN_CN", "IAT_FV_J_AUSLAND_J");
-
-			urlConnection.setDoInput(true);
-			urlConnection.setDoOutput(true);
-
-			DataOutputStream wr = new DataOutputStream(urlConnection.getOutputStream());
-			wr.writeBytes(testXml);
-			wr.flush();
-			wr.close();
-
-			// Get Response
-			InputStream is = urlConnection.getInputStream();
-			BufferedReader rd = new BufferedReader(new InputStreamReader(is));
-			String line;
-			StringBuffer response = new StringBuffer();
-			while ((line = rd.readLine()) != null) {
-				response.append(line);
-				response.append('\r');
-			}
-			rd.close();
-			responseStr = response.toString();
+			Response response = osstClient.executeTest(test);
+			response.setTest_id(id);
+			response.setValid(validate(response));
 			
-			Response persistentResponse = new Response();
-			persistentResponse.setTimestamp(new Date());
-			persistentResponse.setTest_id(id);
-			persistentResponse.setXml(responseStr);
-			persistentResponse.setValid(validate(responseStr));
-			responseDao.create(persistentResponse);
-		} catch (MalformedURLException e) {
-			e.printStackTrace();
+			responseMessage = response.getXml();
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
 		
-		this.response = responseStr;
-		
 		return new ForwardResolution("/executeTest.jsp");
 	}
 	
-	private boolean validate(String xml){
-		return xml.contains("<angebote typ_e=\"VERBINDUNGSANGEBOT\" status_e=\"ANGEBOT_GUELTIG\" bezAngebot=\"Flexpreis\" fahrscheinTyp_e=\"NORMALFAHRSCHEIN\">");
+	private boolean validate(Response response){
+		return response.getXml().contains("<angebote typ_e=\"VERBINDUNGSANGEBOT\" status_e=\"ANGEBOT_GUELTIG\" bezAngebot=\"Flexpreis\" fahrscheinTyp_e=\"NORMALFAHRSCHEIN\">");
 	}
 }
