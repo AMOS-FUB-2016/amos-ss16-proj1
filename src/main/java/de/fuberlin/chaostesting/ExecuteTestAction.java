@@ -122,6 +122,19 @@ public class ExecuteTestAction extends GenericActionBean {
 	}
 	
 	private boolean validate(String xml){
-		return xml.contains("<angebote typ_e=\"VERBINDUNGSANGEBOT\" status_e=\"ANGEBOT_GUELTIG\" bezAngebot=\"Flexpreis\" fahrscheinTyp_e=\"NORMALFAHRSCHEIN\">");
+		
+		//TODO: Richtige Strucktur für die Richtige Abfrage finden
+		InputSource source = new InputSource(new StringReader(xml));
+
+		DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
+		DocumentBuilder db = dbf.newDocumentBuilder();
+		Document document = db.parse(source);
+
+		XPathFactory xpathFactory = XPathFactory.newInstance();
+		XPath xpath = xpathFactory.newXPath();
+		xpath.evaluate("/angebote/typ_e", document);
+		
+		return (document.equals("VERBINDUNGSANGEBOT"));
+		//return xml.contains("<angebote typ_e=\"VERBINDUNGSANGEBOT\" status_e=\"ANGEBOT_GUELTIG\" bezAngebot=\"Flexpreis\" fahrscheinTyp_e=\"NORMALFAHRSCHEIN\">");
 	}
 }
