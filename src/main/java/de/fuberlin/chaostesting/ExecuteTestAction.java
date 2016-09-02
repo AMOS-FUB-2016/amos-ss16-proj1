@@ -5,10 +5,22 @@ import java.io.DataOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.io.StringReader;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.Date;
+
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.parsers.ParserConfigurationException;
+import javax.xml.xpath.XPath;
+import javax.xml.xpath.XPathExpressionException;
+import javax.xml.xpath.XPathFactory;
+
+import org.w3c.dom.Document;
+import org.xml.sax.InputSource;
+import org.xml.sax.SAXException;
 
 import de.fuberlin.chaostesting.model.DAO;
 import de.fuberlin.chaostesting.model.Response;
@@ -108,7 +120,7 @@ public class ExecuteTestAction extends GenericActionBean {
 			persistentResponse.setTimestamp(new Date());
 			persistentResponse.setTest_id(id);
 			persistentResponse.setXml(responseStr);
-			persistentResponse.setValid(validate(responseStr));
+			persistentResponse.setValid(validateA(responseStr));
 			responseDao.create(persistentResponse);
 		} catch (MalformedURLException e) {
 			e.printStackTrace();
@@ -121,9 +133,10 @@ public class ExecuteTestAction extends GenericActionBean {
 		return new ForwardResolution("/executeTest.jsp");
 	}
 	
-	private boolean validate(String xml){
+	private boolean validateA(String xml) {
+		String parsedValue = "";
 		
-		//TODO: Richtige Strucktur für die Richtige Abfrage finden
+		try {
 		InputSource source = new InputSource(new StringReader(xml));
 
 		DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
@@ -132,9 +145,32 @@ public class ExecuteTestAction extends GenericActionBean {
 
 		XPathFactory xpathFactory = XPathFactory.newInstance();
 		XPath xpath = xpathFactory.newXPath();
-		xpath.evaluate("/angebote/typ_e", document);
 		
-		return (document.equals("VERBINDUNGSANGEBOT"));
-		//return xml.contains("<angebote typ_e=\"VERBINDUNGSANGEBOT\" status_e=\"ANGEBOT_GUELTIG\" bezAngebot=\"Flexpreis\" fahrscheinTyp_e=\"NORMALFAHRSCHEIN\">");
+		/*
+		 * This returns the Preis of the first Angebote that matches the pattern:
+		 * 	typ_e='VERBINDUNGSANGEBOT'
+		 * 	@status_e='ANGEBOT_GUELTIG'
+		 * 	@bezAngebot='Flexpreis'
+		 * 	@fahrscheinTyp_e='NORMALFAHRSCHEIN'
+		 * If none are found, the Preis will be empty.
+		*/
+		parsedValue = xpath.evaluate("angebotsAntwort/hrKombis/angebote"
+				+ "[@typ_e='VERBINDUNGSANGEBOT' and @status_e='ANGEBOT_GUELTIG' "
+				+ "and @bezAngebot='Flexpreis' and @fahrscheinTyp_e='NORMALFAHRSCHEIN']"
+				+ "/@preis", document);
+		} catch (IOException e) {
+			e.printStackTrace();
+		} catch (XPathExpressionException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (ParserConfigurationException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (SAXException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		return (!parsedValue.equals(""));
 	}
 }
