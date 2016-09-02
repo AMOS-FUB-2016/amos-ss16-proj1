@@ -15,6 +15,10 @@ import javax.servlet.ServletResponse;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.apache.commons.lang.exception.ExceptionUtils;
+
+import net.sourceforge.stripes.exception.StripesServletException;
+
 public class PersistenceStateHelper implements Filter, ServletContextListener {
 
 	@Override
@@ -37,8 +41,8 @@ public class PersistenceStateHelper implements Filter, ServletContextListener {
 			PersistenceUtils.beginTransaction();
 			chain.doFilter(request, response);
 			PersistenceUtils.commit();
-		} catch (RuntimeException e) {
-			if(PersistenceUtils.getEntityManagerFactory() == null || e instanceof PersistenceException) {
+		} catch (RuntimeException | ServletException e) {
+			if(PersistenceUtils.getEntityManagerFactory() == null || ExceptionUtils.indexOfThrowable(e, DAOException.class) != -1) {
 				e.printStackTrace();
 				request.getRequestDispatcher("WEB-INF/dbFailure.jsp").forward(request, response);
 				return;
