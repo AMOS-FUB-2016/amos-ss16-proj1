@@ -8,10 +8,19 @@ import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.List;
 
+import javax.persistence.Basic;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.Inheritance;
+import javax.persistence.InheritanceType;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.xml.bind.JAXB;
 import javax.xml.bind.annotation.XmlAttribute;
@@ -30,29 +39,21 @@ public class Test {
 	@Id	@GeneratedValue
 	@Column(name="test_id")
 	private int id;
-	@Column(name="test_von")
-	private Integer von;
-	@Column(name="test_nach")
-	private Integer nach;
-	@Column(name="test_zeitpunkt")
-	private Date zeitpunkt;
-	@Column(name="test_klasse")
-	private String klasse;
-	@Column(name="test_erwachsene")
-	private Integer erwachsene = 0;
-	@Column(name="test_msgVersion")
-	private String msgVersion = "1.0";
+	private AngebotsAnfrageHelp anfrage;
 	
+	@ManyToOne(targetEntity = AngebotsAnfrageHelp.class, cascade = {
+		CascadeType.ALL
+	})
+	@JoinColumn(name = "TEST_ANFRAGE")
+	public AngebotsAnfrageHelp getAnfrage() {
+		return anfrage;
+	}
+
+	public void setAnfrage(AngebotsAnfrageHelp anfrage) {
+		this.anfrage = anfrage;
+	}
 
 	public Test() {
-	}
-	
-	public String getMsgVersion() {
-		return msgVersion;
-	}
-
-	public void setMsgVersion(String msgVersion) {
-		this.msgVersion = msgVersion;
 	}
 	
 	public int getId() {
@@ -63,87 +64,23 @@ public class Test {
 		this.id = id;
 	}
 
-	public Integer getVon() {
-		return von;
-	}
-
-	public void setVon(Integer von) {
-		this.von = von;
-	}
-
-	public Integer getNach() {
-		return nach;
-	}
-
-	public void setNach(Integer nach) {
-		this.nach = nach;
-	}
-
-	public Date getZeitpunkt() {
-		return zeitpunkt;
-	}
-
-	public void setZeitpunkt(Date zeitpunkt) {
-		this.zeitpunkt = zeitpunkt;
-	}
-
-	public String getKlasse() {
-		return klasse;
-	}
-
-	public void setKlasse(String klasse) {
-		this.klasse = klasse;
-	}
-	
-	public Integer getErwachsene() {
-		return erwachsene;
-	}
-
-	public void setErwachsene(Integer erwachsene) {
-		this.erwachsene = erwachsene;
-	}
-
 	public String toXML(){
 		String s = null;
 		try {
-			AngebotsAnfrage anfrage = new AngebotsAnfrage();
-			anfrage.setMsgVersion(msgVersion);
-			AllgemeineAngaben allgemeineAngaben = new AllgemeineAngaben();
-			allgemeineAngaben.setWagenKlasseE(WagenKlasse.valueOf(klasse));
-			anfrage.setAllgemeineAngaben(allgemeineAngaben);
-			
-			VerbindungsParameter parameter = new VerbindungsParameter();
-			AnfrageZughalt halt1 = new AnfrageZughalt();
-			halt1.setBahnhof(von.toString());
-			AnfrageZughalt halt2 = new AnfrageZughalt();
-			halt2.setBahnhof(nach.toString());
-			parameter.getHalt().add(halt1);
-			parameter.getHalt().add(halt2);
-			
-			DatatypeFactory factory;
-			GregorianCalendar gc = new GregorianCalendar();
-			gc.setTime(zeitpunkt);
-			factory = DatatypeFactory.newInstance();
-			XMLGregorianCalendar calendar = factory.newXMLGregorianCalendar(gc);
-			parameter.setZeitpunkt(calendar);
-			
-			anfrage.getVerbindungsParameter().add(parameter);
-			Reisender reisender = new Reisender();
-			reisender.setAnzahl(erwachsene);
-			reisender.setTypE(ReisendenTyp.ERWACHSENER);
-			anfrage.getReisender().add(reisender);
-			
 			ByteArrayOutputStream stream = new ByteArrayOutputStream();
-			JAXB.marshal(anfrage, stream);
-			s = stream.toString(java.nio.charset.StandardCharsets.UTF_8.name());
-			
-		} catch (DatatypeConfigurationException | UnsupportedEncodingException e) {
+			JAXB.marshal(anfrage.toAngebotsAnfrage(), stream);
+			s = stream.toString(java.nio.charset.StandardCharsets.UTF_8.name());			
+		} catch (UnsupportedEncodingException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		
 		return s;
 	}	
+	
+	@Entity(name = "AngebotsAnfrageHelp")
+	@Table(name = "ANGEBOTS_ANFRAGE_HELP")
+	@Inheritance(strategy = InheritanceType.JOINED)
 	class AngebotsAnfrageHelp{
 		
 		private List<ReisenderHelp> reisender;
@@ -157,14 +94,26 @@ public class Test {
 	    	allgemeineAngaben = new AllgemeineAngabenHelp();
 	    }
 		
+		@OneToMany(targetEntity = ReisenderHelp.class, cascade = {
+	        CascadeType.ALL
+	    })
+	    @JoinColumn(name = "ANFRAGE_REISENDER")
 		public List<ReisenderHelp> getReisender() {
 			return reisender;
 		}
 
+		@OneToMany(targetEntity = VerbindungsParameterHelp.class, cascade = {
+	        CascadeType.ALL
+	    })
+	    @JoinColumn(name = "ANFRAGE_PARAMETER")
 	    public List<VerbindungsParameterHelp> getVerbindungsParameter() {
 			return verbindungsParameter;
 		}
 
+	    @ManyToOne(targetEntity = AllgemeineAngabenHelp.class, cascade = {
+            CascadeType.ALL
+        })
+        @JoinColumn(name = "ANFRAGE_ANGABEN")
 	    public AllgemeineAngabenHelp getAllgemeineAngaben() {
 			return allgemeineAngaben;
 		}
@@ -173,6 +122,8 @@ public class Test {
 			this.allgemeineAngaben = allgemeineAngaben;
 		}
 	    
+		@Basic
+	    @Column(name = "ANFRAGE_MSG_VERSION", length = 255)
 	    public String getMsgVersion() {
 			return msgVersion;
 		}
@@ -207,6 +158,9 @@ public class Test {
 		}
 	}
 	
+	@Entity(name = "ReisenderHelp")
+	@Table(name = "REISENDER_HELP")
+	@Inheritance(strategy = InheritanceType.JOINED)
 	class ReisenderHelp{
 
 		private int alter = 0;
@@ -214,6 +168,8 @@ public class Test {
 		private String ermaessigung = null;
 		private String typ = null;
 		
+		@Basic
+	    @Column(name = "REISENDER_ALTER", precision = 10, scale = 0)
 		public int getAlter() {
 			return alter;
 		}
@@ -222,6 +178,8 @@ public class Test {
 			this.alter = alter;
 		}
 
+	    @Basic
+	    @Column(name = "REISENDER_ANZAHL", precision = 10, scale = 0)
 		public int getAnzahl() {
 			return anzahl;
 		}
@@ -230,6 +188,8 @@ public class Test {
 			this.anzahl = anzahl;
 		}
 
+	    @Basic
+	    @Column(name = "REISENDER_ERMAESSIGUNG", length = 255)
 		public String getErmaessigung() {
 			return ermaessigung;
 		}
@@ -238,6 +198,8 @@ public class Test {
 			this.ermaessigung = ermaessigung;
 		}
 
+	    @Basic
+	    @Column(name = "REISENDER_TYP", length = 255)
 		public String getTyp() {
 			return typ;
 		}
@@ -256,13 +218,16 @@ public class Test {
 				r.setAnzahl(anzahl);
 			}
 			if(ermaessigung != null){				
-				r.setErmaessigung(Ermaessigung.fromValue(ermaessigung));					
+				r.setErmaessigungE(Ermaessigung.fromValue(ermaessigung));					
 			}
 			r.setTypE(ReisendenTyp.fromValue(typ));
 			return r;
 		}		
 	}
-	
+ 
+	@Entity(name = "VerbindungsParameterHelp")
+	@Table(name = "VERBINDUNGS_PARAMETER_HELP")
+	@Inheritance(strategy = InheritanceType.JOINED)
 	class VerbindungsParameterHelp{
 		private List<String> halt;
 		private List<String> ausschlussProduktKlassenCodes;
@@ -274,6 +239,9 @@ public class Test {
 	    private Boolean direktVerbindung;
 	    private Date zeitpunkt;
 	    
+
+	    @Basic
+	    @Column(name = "PARAMETER_ANKUNFT")
 	    public Boolean getAnkunft() {
 			return ankunft;
 		}
@@ -282,6 +250,8 @@ public class Test {
 			this.ankunft = ankunft;
 		}
 
+		@Basic
+	    @Column(name = "PARAMETER_ANZAHL_FAHRRAEDER", precision = 10, scale = 0)
 		public Integer getAnzahlFahrraeder() {
 			return anzahlFahrraeder;
 		}
@@ -290,6 +260,8 @@ public class Test {
 			this.anzahlFahrraeder = anzahlFahrraeder;
 		}
 
+	    @Basic
+	    @Column(name = "PARAMETER_MIN_UMSTIEGS_ZEIT", precision = 10, scale = 0)
 		public Integer getMinUmstiegsZeit() {
 			return minUmstiegsZeit;
 		}
@@ -298,6 +270,8 @@ public class Test {
 			this.minUmstiegsZeit = minUmstiegsZeit;
 		}
 
+	    @Basic
+	    @Column(name = "PARAMETER_UMSTIEGS_FAKTOR", precision = 10, scale = 0)
 		public Integer getUmstiegsFaktor() {
 			return umstiegsFaktor;
 		}
@@ -306,6 +280,8 @@ public class Test {
 			this.umstiegsFaktor = umstiegsFaktor;
 		}
 
+	    @Basic
+	    @Column(name = "PARAMETER_UMSTIEGS_ZUSCHLAG", precision = 10, scale = 0)
 		public Integer getUmstiegsZuschlag() {
 			return umstiegsZuschlag;
 		}
@@ -314,6 +290,8 @@ public class Test {
 			this.umstiegsZuschlag = umstiegsZuschlag;
 		}
 
+	    @Basic
+	    @Column(name = "PARAMETER_DIREKT_VERBINDUNG")
 		public Boolean getDirektVerbindung() {
 			return direktVerbindung;
 		}
@@ -322,6 +300,7 @@ public class Test {
 			this.direktVerbindung = direktVerbindung;
 		}
 
+		@Column(name="PARAMETER_ZEITPUNKT")
 		public Date getZeitpunkt() {
 			return zeitpunkt;
 		}
@@ -330,10 +309,14 @@ public class Test {
 			this.zeitpunkt = zeitpunkt;
 		}
 
+		@OneToMany
+		@JoinColumn(name = "PARAMETER_HALT")
 		public List<String> getHalt() {
 			return halt;
 		}
 
+		@OneToMany
+		@JoinColumn(name = "PARAMETER_CODES")
 		public List<String> getAusschlussProduktKlassenCodes() {
 			return ausschlussProduktKlassenCodes;
 		}
@@ -341,7 +324,7 @@ public class Test {
 	    VerbindungsParameter toVerbindungsParameter(){
 	    	VerbindungsParameter vp = new VerbindungsParameter();
 	    	vp.getHalt().addAll(toHalte());
-	    	vp.getAusschlussProduktKlassen().addAll(toAusschlussProduktKlassen());
+	    	vp.getAusschlussProduktKlasse().addAll(toAusschlussProduktKlassen());
 	    	vp.setAnkunft(ankunft);
 	    	vp.setAnzahlFahrraeder(anzahlFahrraeder);
 	    	vp.setMinUmstiegsZeit(minUmstiegsZeit);
@@ -366,7 +349,7 @@ public class Test {
 			List<ProduktKlassen> pks = new ArrayList<ProduktKlassen>();
 			for(String s:ausschlussProduktKlassenCodes){
 				ProduktKlassen pk = new ProduktKlassen();
-				pk.setCode(ProduktKlasse.fromValue(s));
+				pk.setCodeE(ProduktKlasse.fromValue(s));
 				pks.add(pk);				
 			}
 			return pks;
@@ -382,9 +365,15 @@ public class Test {
 			return halte;
 		}		
 	}
+	
+	@Entity(name = "AllgemeineAngabenHelp")
+	@Table(name = "ALLGEMEINE_ANGABEN_HELP")
+	@Inheritance(strategy = InheritanceType.JOINED)
 	class AllgemeineAngabenHelp{
 		String wagenKlasse;
 
+		@Basic
+	    @Column(name = "ALLGEMEINE_ANGABEN_WAGEN_KLASSE", length = 255)
 		public String getWagenKlasse() {
 			return wagenKlasse;
 		}
