@@ -23,6 +23,7 @@ import net.sourceforge.stripes.validation.Validate;
 import net.sourceforge.stripes.validation.ValidateNestedProperties;
 import net.sourceforge.stripes.validation.ValidationErrors;
 import net.sourceforge.stripes.validation.ValidationMethod;
+import net.sourceforge.stripes.validation.ValidationState;
 
 @UrlBinding("/modifyTest.action")
 public class TestCrudAction extends GenericActionBean {
@@ -37,7 +38,7 @@ public class TestCrudAction extends GenericActionBean {
 		@Validate(field="erwachsene", required=true, minvalue=1, maxvalue=5),
 		@Validate(field="klasse", required=true)
 	})
-	Test test; // TODO: create validator for test class
+	Test test;
 	Date uhrzeit;
 	
 	public Test getTest() {
@@ -147,10 +148,12 @@ public class TestCrudAction extends GenericActionBean {
 		return deleteTest();
 	}
 	
-	@ValidationMethod
+	@ValidationMethod(when=ValidationState.ALWAYS)
 	public void validateVonNach(ValidationErrors errors) {
-		if (test.getVon().equals(test.getNach())) {
-			errors.add("VonEqualsNachError", new SimpleError("Von und Nach sind gleich."));
+		if (test.getVon() != null && test.getNach() != null ) {
+			if (test.getVon().equals(test.getNach())) {
+				errors.add("test.VonNach", new SimpleError("Von und Nach sind gleich!"));
+			}
 		}
 	}
 }
