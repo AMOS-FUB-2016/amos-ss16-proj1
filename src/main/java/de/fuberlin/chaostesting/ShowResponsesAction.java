@@ -12,7 +12,8 @@ import net.sourceforge.stripes.action.UrlBinding;
 @UrlBinding("/showResponses.action")
 public class ShowResponsesAction extends GenericActionBean {
 
-	List<Response> responses;
+	List<Response> responses;	
+	DAO<Response> responseDao = DAO.createInstance(Response.class);
 
 	public List<Response> getResponses() {
 		return responses;
@@ -24,7 +25,7 @@ public class ShowResponsesAction extends GenericActionBean {
 
 	@DefaultHandler
 	public Resolution showResponses() {
-		responses = new DAO<>(Response.class).findAll();
+		responses = responseDao.findAll();
 		
 		return new ForwardResolution("showResponses.jsp");
 	}

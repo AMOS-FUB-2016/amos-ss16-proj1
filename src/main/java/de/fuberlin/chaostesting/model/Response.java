@@ -22,15 +22,8 @@ public class Response {
 	private Date timestamp;
 	@Column(name="test_id")
 	private int test_id;
-	
-	public Response() {
-	}
-	
-	public Response(String xml, int test_id) {
-		this.xml = xml;
-		this.timestamp = new Date();
-		this.test_id = test_id;
-	}
+	@Column(name="valid")
+	private boolean valid;	
 
 	public int getId() {
 		return id;
@@ -62,5 +55,13 @@ public class Response {
 
 	public void setTest_id(int test_id) {
 		this.test_id = test_id;
-	}	
+	}
+	
+	public boolean isValid() {
+		return valid;
+	}
+	
+	public void setValid(boolean valid) {
+		this.valid = valid;
+	}
 }

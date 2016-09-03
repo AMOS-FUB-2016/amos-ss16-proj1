@@ -11,13 +11,19 @@ nav {
 	margin: 0px, 0px, 0px, 0px;
 }
 
-h1{
+h1 {
 	padding: 15px;
 	color :#ffffff;
 	background-color: #c80000;
 }
 
-section{
+h3 {
+	padding: 15px;	
+    margin-top: -1.5em;
+    margin-bottom: -1.5em;
+}
+
+section {
 	margin: 0px, 0px, 0px, 0px;
 	padding: 0px, 0px, 0px, 0px;
 	background-color: #fefefe;
@@ -34,8 +40,18 @@ div {
 	padding: 0px, 0px,  0px, 0px;
 }
 
-table{
+table {
 	margin: 20px;
+}
+
+table.form {
+	margin: 5px;
+}
+
+span.error {
+	font-weight: bold;
+	color: #AA0000;
+	padding: 5px;
 }
 
 p {
@@ -56,15 +72,15 @@ form {
 	padding: 10px;
 }
 
-.left{
+.left {
 	float: left;
 }
 
-.right{
+.right {
 	float: right;	
 }
 
-.clear{
+.clear {
 	clear: both;
 	margin: 0px, 0px,  0px, 0px;
 }
@@ -81,7 +97,7 @@ a:focus {
 	color: #c80000;
 }
 
- a:hover {
+a:hover {
     color: #ffffff;
 }
 

@@ -8,6 +8,7 @@ import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.util.Date;
 
 import de.fuberlin.chaostesting.model.DAO;
 import de.fuberlin.chaostesting.model.Response;
@@ -26,6 +27,9 @@ public class ExecuteTestAction extends GenericActionBean {
 	Test test;
 	String response;
 	int id = -1;
+	
+	DAO<Test> testDao = DAO.createInstance(Test.class);
+	DAO<Response> responseDao = DAO.createInstance(Response.class);
 	
 	public Test getTest() {
 		return test;
@@ -60,7 +64,7 @@ public class ExecuteTestAction extends GenericActionBean {
 			return;
 		}
 		
-		test = new DAO<>(Test.class).findById(getId());
+		test = testDao.findById(getId());
 	    
 	    if(test == null) {
 	    	context.getValidationErrors().add("noTestFound", new SimpleError("Kein Test gefunden für " + getId(), (Object)null));
@@ -99,7 +103,13 @@ public class ExecuteTestAction extends GenericActionBean {
 			}
 			rd.close();
 			responseStr = response.toString();
-			new DAO<>(Response.class).create(new Response(responseStr, getId()));
+			
+			Response persistentResponse = new Response();
+			persistentResponse.setTimestamp(new Date());
+			persistentResponse.setTest_id(id);
+			persistentResponse.setXml(responseStr);
+			persistentResponse.setValid(validate(responseStr));
+			responseDao.create(persistentResponse);
 		} catch (MalformedURLException e) {
 			e.printStackTrace();
 		} catch (IOException e) {
@@ -109,5 +119,9 @@ public class ExecuteTestAction extends GenericActionBean {
 		this.response = responseStr;
 		
 		return new ForwardResolution("/executeTest.jsp");
+	}
+	
+	private boolean validate(String xml){
+		return xml.contains("<angebote typ_e=\"VERBINDUNGSANGEBOT\" status_e=\"ANGEBOT_GUELTIG\" bezAngebot=\"Flexpreis\" fahrscheinTyp_e=\"NORMALFAHRSCHEIN\">");
 	}
 }

@@ -21,7 +21,7 @@ import javax.xml.datatype.DatatypeConfigurationException;
 import javax.xml.datatype.DatatypeFactory;
 import javax.xml.datatype.XMLGregorianCalendar;
 
-import de.fuberlin.chaostesting.xml.*;
+import com.deutschebahn.osst.v1_0.*;
 
 @Entity
 @Table(name="TEST_INFORMATION")
@@ -31,15 +31,15 @@ public class Test {
 	@Column(name="test_id")
 	private int id;
 	@Column(name="test_von")
-	private String von;
+	private Integer von;
 	@Column(name="test_nach")
-	private String nach;
+	private Integer nach;
 	@Column(name="test_zeitpunkt")
 	private Date zeitpunkt;
 	@Column(name="test_klasse")
 	private String klasse;
 	@Column(name="test_erwachsene")
-	private int erwachsene = 0;
+	private Integer erwachsene = 0;
 	@Column(name="test_msgVersion")
 	private String msgVersion = "1.0";
 	
@@ -63,19 +63,19 @@ public class Test {
 		this.id = id;
 	}
 
-	public String getVon() {
+	public Integer getVon() {
 		return von;
 	}
 
-	public void setVon(String von) {
+	public void setVon(Integer von) {
 		this.von = von;
 	}
 
-	public String getNach() {
+	public Integer getNach() {
 		return nach;
 	}
 
-	public void setNach(String nach) {
+	public void setNach(Integer nach) {
 		this.nach = nach;
 	}
 
@@ -94,11 +94,12 @@ public class Test {
 	public void setKlasse(String klasse) {
 		this.klasse = klasse;
 	}
-	public int getErwachsene() {
+	
+	public Integer getErwachsene() {
 		return erwachsene;
 	}
 
-	public void setErwachsene(int erwachsene) {
+	public void setErwachsene(Integer erwachsene) {
 		this.erwachsene = erwachsene;
 	}
 
@@ -113,9 +114,9 @@ public class Test {
 			
 			VerbindungsParameter parameter = new VerbindungsParameter();
 			AnfrageZughalt halt1 = new AnfrageZughalt();
-			halt1.setBahnhof(von);
+			halt1.setBahnhof(von.toString());
 			AnfrageZughalt halt2 = new AnfrageZughalt();
-			halt2.setBahnhof(nach);
+			halt2.setBahnhof(nach.toString());
 			parameter.getHalt().add(halt1);
 			parameter.getHalt().add(halt2);
 			
@@ -140,6 +141,7 @@ public class Test {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+		
 		return s;
 	}	
 	class AngebotsAnfrageHelp{
