@@ -2,8 +2,6 @@ package de.fuberlin.chaostesting.model;
 
 import java.io.IOException;
 
-import javax.persistence.Persistence;
-import javax.persistence.PersistenceException;
 import javax.servlet.Filter;
 import javax.servlet.FilterChain;
 import javax.servlet.FilterConfig;
@@ -13,11 +11,8 @@ import javax.servlet.ServletException;
 import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 
 import org.apache.commons.lang.exception.ExceptionUtils;
-
-import net.sourceforge.stripes.exception.StripesServletException;
 
 public class PersistenceStateHelper implements Filter, ServletContextListener {
 
