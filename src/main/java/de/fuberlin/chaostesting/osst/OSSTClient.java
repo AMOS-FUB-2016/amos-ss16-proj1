@@ -25,6 +25,7 @@ import com.deutschebahn.osst.v1_0.Reisender;
 import com.deutschebahn.osst.v1_0.VerbindungsParameter;
 import com.deutschebahn.osst.v1_0.WagenKlasse;
 
+import de.fuberlin.chaostesting.XmlValidator;
 import de.fuberlin.chaostesting.model.Response;
 import de.fuberlin.chaostesting.model.Test;
 
@@ -39,10 +40,10 @@ public class OSSTClient {
 		Response response = new Response(); 
 		response.setTimestamp(new Date());	
 		response.setXml(responseStr);
+		response.setValid(XmlValidator.validate(responseStr));
 
 		return response;
 	}
-
 
 	private static String marshalAnfrage(AngebotsAnfrage anfrage) {
 		String s;
@@ -132,5 +133,4 @@ public class OSSTClient {
 
 		return responseStr;
 	}
-
 }

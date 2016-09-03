@@ -43,10 +43,16 @@ public class ExecuteAllTestsAction extends GenericActionBean {
 		
 		List<Response> responses = new OSSTService(allTests, getUrl()).call();
 		
-		setResponseMessage("" + responses.size());
-		// TODO: validate and persist test results and present some sensible result
+		int valid = 0;
+		int all = responses.size();
+		for (Response response : responses) {
+			if (response.isValid()) {
+				valid++;
+			}
+		}		
+		setResponseMessage(valid + " aus " + all + " Tests valide");
+		// TODO: persist test results
 		
 		return new ForwardResolution("/executeTest.jsp");
-	}
-	
+	}	
 }

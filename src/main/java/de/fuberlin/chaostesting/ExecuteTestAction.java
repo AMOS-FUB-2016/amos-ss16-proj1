@@ -20,8 +20,6 @@ import net.sourceforge.stripes.validation.Validate;
 @UrlBinding("/executeTest.action")
 public class ExecuteTestAction extends GenericActionBean {
 	
-	
-	
 	Test test;
 	String responseMessage;
 	
@@ -88,7 +86,6 @@ public class ExecuteTestAction extends GenericActionBean {
 		try {
 			Response response = osstClient.executeTest(test, getUrl());
 			response.setTest(test);
-			response.setValid(validate(response));
 			
 			responseMessage = response.getXml();
 			
@@ -98,9 +95,5 @@ public class ExecuteTestAction extends GenericActionBean {
 		}
 		
 		return new ForwardResolution("/executeTest.jsp");
-	}
-	
-	private static boolean validate(Response response){
-		return response.getXml().contains("<angebote typ_e=\"VERBINDUNGSANGEBOT\" status_e=\"ANGEBOT_GUELTIG\" bezAngebot=\"Flexpreis\" fahrscheinTyp_e=\"NORMALFAHRSCHEIN\">");
 	}
 }

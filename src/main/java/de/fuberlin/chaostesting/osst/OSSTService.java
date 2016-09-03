@@ -51,7 +51,6 @@ public class OSSTService implements Callable<List<Response>> {
 		
 		return responses;
 	}
-
 	
 	static class OSSTTask implements Callable<Response> {
 		Test test;
