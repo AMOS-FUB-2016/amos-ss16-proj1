@@ -5,6 +5,7 @@ import java.io.IOException;
 import de.fuberlin.chaostesting.model.DAO;
 import de.fuberlin.chaostesting.model.Response;
 import de.fuberlin.chaostesting.model.Test;
+import de.fuberlin.chaostesting.osst.OSSTClient;
 import net.sourceforge.stripes.action.Before;
 import net.sourceforge.stripes.action.DefaultHandler;
 import net.sourceforge.stripes.action.ForwardResolution;
@@ -18,6 +19,8 @@ import net.sourceforge.stripes.validation.Validate;
 @Wizard(startEvents="prepareTestExecution")
 @UrlBinding("/executeTest.action")
 public class ExecuteTestAction extends GenericActionBean {
+	
+	
 	
 	Test test;
 	String responseMessage;
@@ -97,7 +100,7 @@ public class ExecuteTestAction extends GenericActionBean {
 		return new ForwardResolution("/executeTest.jsp");
 	}
 	
-	private boolean validate(Response response){
+	private static boolean validate(Response response){
 		return response.getXml().contains("<angebote typ_e=\"VERBINDUNGSANGEBOT\" status_e=\"ANGEBOT_GUELTIG\" bezAngebot=\"Flexpreis\" fahrscheinTyp_e=\"NORMALFAHRSCHEIN\">");
 	}
 }

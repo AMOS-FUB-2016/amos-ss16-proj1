@@ -87,8 +87,10 @@ public class PersistenceUtils {
 	}
 
 	public static void closeEntityManagerFactory() {
-		entityManagerFactory.close();
-		entityManagerFactory = null;
+		if(entityManagerFactory != null) {
+			entityManagerFactory.close();
+			entityManagerFactory = null;
+		}
 	}
 
 	public static <T> String findEntityTableName(Class<T> type) {
