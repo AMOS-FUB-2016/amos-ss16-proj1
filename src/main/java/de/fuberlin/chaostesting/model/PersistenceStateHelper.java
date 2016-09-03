@@ -42,7 +42,7 @@ public class PersistenceStateHelper implements Filter, ServletContextListener {
 			chain.doFilter(request, response);
 			PersistenceUtils.commit();
 		} catch (RuntimeException | ServletException e) {
-			if(PersistenceUtils.getEntityManagerFactory() == null || ExceptionUtils.indexOfThrowable(e, DAOException.class) != -1) {
+			if(PersistenceUtils.getEntityManagerFactory() == null || ExceptionUtils.indexOfThrowable(e, DataAccessException.class) != -1) {
 				e.printStackTrace();
 				request.getRequestDispatcher("WEB-INF/dbFailure.jsp").forward(request, response);
 				return;

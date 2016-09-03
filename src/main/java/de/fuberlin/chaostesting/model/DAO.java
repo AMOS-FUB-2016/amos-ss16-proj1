@@ -49,7 +49,7 @@ public class DAO<T> {
 	
 			return PersistenceUtils.getEntityPrimaryKey(entity);
 		} catch (Exception e) {
-			throw new DAOException("error creating entity", e);
+			throw new DataAccessException("error creating entity", e);
 		}
 	}
 
@@ -61,7 +61,7 @@ public class DAO<T> {
 		try {
 			entityManager.merge(entity);
 		} catch(Exception e) {
-			throw new DAOException("error merging entity", e);
+			throw new DataAccessException("error merging entity", e);
 		}
 	}
 
@@ -73,7 +73,7 @@ public class DAO<T> {
 		try {
 			entityManager.remove(entity);
 		} catch(Exception e) {
-			throw new DAOException("error deleting entity", e);
+			throw new DataAccessException("error deleting entity", e);
 		}
 	}
 
@@ -90,7 +90,7 @@ public class DAO<T> {
 	        TypedQuery<T> allQuery = entityManager.createQuery(all);
 	        return allQuery.getResultList();
 		} catch(Exception e) {
-			throw new DAOException("error finding all entities", e);
+			throw new DataAccessException("error finding all entities", e);
 		}
 	}
 
@@ -103,7 +103,7 @@ public class DAO<T> {
 		try {
 			return entityManager.find(type, id);
 		} catch(Exception e) {
-			throw new DAOException("error finding entity given by id", e);
+			throw new DataAccessException("error finding entity given by id", e);
 		}
 	}	
 }
