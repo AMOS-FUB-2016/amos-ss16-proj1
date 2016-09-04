@@ -15,6 +15,7 @@ import net.sourceforge.stripes.action.UrlBinding;
 public class ExecuteAllTestsAction extends GenericActionBean {
 	
 	DAO<Test> testDao = DAO.createInstance(Test.class);
+	DAO<Response> responseDao = DAO.createInstance(Response.class);
 	
 	String url;
 	String responseMessage;
@@ -44,15 +45,15 @@ public class ExecuteAllTestsAction extends GenericActionBean {
 		List<Response> responses = new OSSTService(allTests, getUrl()).call();
 		
 		int valid = 0;
-		int all = responses.size();
 		for (Response response : responses) {
+			responseDao.create(response);
+			
 			if (response.isValid()) {
 				valid++;
 			}
 		}		
-		setResponseMessage(valid + " aus " + all + " Tests valide");
-		// TODO: persist test results
-		
+		setResponseMessage(valid + " aus " + responses.size() + " Tests valide.");
+
 		return new ForwardResolution("/executeTest.jsp");
 	}	
 }

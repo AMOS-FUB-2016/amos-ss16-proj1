@@ -18,6 +18,8 @@ mavenCentral()
 }
 
 dependencies {
+	def jerseyVersion = "1.19.2"
+
     providedCompile "javax.servlet:javax.servlet-api:3.1.+"
     providedCompile group: 'javax.servlet.jsp', name: 'jsp-api', version: '2.2'
     compile group: 'javax.servlet', name: 'jstl', version: '1.2'
@@ -32,9 +34,10 @@ dependencies {
 	//rest
 	    compile "javax.ws.rs:jsr311-api:1.1.1"
 
-    compile 'com.sun.jersey:jersey-server:1.13'
-    compile 'com.sun.jersey:jersey-core:1.13'
-    compile 'com.sun.jersey:jersey-servlet:1.13'
+    compile "com.sun.jersey:jersey-server:$jerseyVersion"
+    compile "com.sun.jersey:jersey-core:$jerseyVersion"
+    compile "com.sun.jersey:jersey-servlet:$jerseyVersion"
+	compile "com.sun.jersey:jersey-json:$jerseyVersion"
 
     testCompile "junit:junit-dep:4.10"
 	//json
