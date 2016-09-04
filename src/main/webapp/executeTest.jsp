@@ -5,5 +5,5 @@
 <t:genericpage>
 	<h1>Testausführung</h1>
 	<stripes:errors />
-	<xmp>${actionBean.response}</xmp>
+	<xmp>${actionBean.responseMessage}</xmp>
 </t:genericpage>

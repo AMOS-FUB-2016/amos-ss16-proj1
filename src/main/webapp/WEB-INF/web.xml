@@ -5,6 +5,8 @@
 		 http://xmlns.jcp.org/xml/ns/javaee/web-app_3_1.xsd"
          version="3.1">
 	
+	<display-name>Chaos Testing</display-name>
+	
 	<filter>
         <display-name>Stripes Filter</display-name>
         <filter-name>StripesFilter</filter-name>
@@ -53,8 +55,6 @@
 	  <url-pattern>*</url-pattern>
 	</filter-mapping>
 	
-	<display-name>de.fuberlin.chaostesting.rest</display-name>
-	
 	<servlet>  
 		<servlet-name>Jersey REST Service</servlet-name>  
 			<servlet-class>com.sun.jersey.spi.container.servlet.ServletContainer</servlet-class>  
@@ -67,7 +67,7 @@
 	
 	<servlet-mapping>  
 		<servlet-name>Jersey REST Service</servlet-name>  
- 		<url-pattern>/testautomat/*</url-pattern>  
+ 		<url-pattern>/rest/*</url-pattern>  
 	</servlet-mapping>
 	
 </web-app>

@@ -97,45 +97,4 @@ public class Test {
 		this.erwachsene = erwachsene;
 	}
 
-	public String toXML(){
-		String s = null;
-		try {
-			AngebotsAnfrage anfrage = new AngebotsAnfrage();
-			anfrage.setMsgVersion(msgVersion);
-			AllgemeineAngaben allgemeineAngaben = new AllgemeineAngaben();
-			allgemeineAngaben.setWagenKlasseE(WagenKlasse.valueOf(klasse));
-			anfrage.setAllgemeineAngaben(allgemeineAngaben);
-			
-			VerbindungsParameter parameter = new VerbindungsParameter();
-			AnfrageZughalt halt1 = new AnfrageZughalt();
-			halt1.setBahnhof(von.toString());
-			AnfrageZughalt halt2 = new AnfrageZughalt();
-			halt2.setBahnhof(nach.toString());
-			parameter.getHalt().add(halt1);
-			parameter.getHalt().add(halt2);
-			
-			DatatypeFactory factory;
-			GregorianCalendar gc = new GregorianCalendar();
-			gc.setTime(zeitpunkt);
-			factory = DatatypeFactory.newInstance();
-			XMLGregorianCalendar calendar = factory.newXMLGregorianCalendar(gc);
-			parameter.setZeitpunkt(calendar);
-			
-			anfrage.getVerbindungsParameter().add(parameter);
-			Reisender reisender = new Reisender();
-			reisender.setAnzahl(erwachsene);
-			reisender.setTypE(ReisendenTyp.ERWACHSENER);
-			anfrage.getReisender().add(reisender);
-			
-			ByteArrayOutputStream stream = new ByteArrayOutputStream();
-			JAXB.marshal(anfrage, stream);
-			s = stream.toString(java.nio.charset.StandardCharsets.UTF_8.name());
-			
-		} catch (DatatypeConfigurationException | UnsupportedEncodingException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		
-		return s;
-	}		
 }
