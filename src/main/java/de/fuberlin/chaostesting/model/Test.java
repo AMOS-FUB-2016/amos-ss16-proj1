@@ -78,6 +78,7 @@ public class Test {
 		return s;
 	}	
 	
+	//
 	@Entity(name = "AngebotsAnfrageHelp")
 	@Table(name = "ANGEBOTS_ANFRAGE_HELP")
 	@Inheritance(strategy = InheritanceType.JOINED)
@@ -99,6 +100,9 @@ public class Test {
 	    })
 	    @JoinColumn(name = "ANFRAGE_REISENDER")
 		public List<ReisenderHelp> getReisender() {
+			if(reisender == null){
+				reisender = new ArrayList<ReisenderHelp>();
+			}
 			return reisender;
 		}
 
@@ -107,6 +111,9 @@ public class Test {
 	    })
 	    @JoinColumn(name = "ANFRAGE_PARAMETER")
 	    public List<VerbindungsParameterHelp> getVerbindungsParameter() {
+			if(verbindungsParameter == null){
+				verbindungsParameter = new ArrayList<VerbindungsParameterHelp>();
+			}
 			return verbindungsParameter;
 		}
 
@@ -158,6 +165,7 @@ public class Test {
 		}
 	}
 	
+	//
 	@Entity(name = "ReisenderHelp")
 	@Table(name = "REISENDER_HELP")
 	@Inheritance(strategy = InheritanceType.JOINED)
@@ -225,6 +233,7 @@ public class Test {
 		}		
 	}
  
+	//
 	@Entity(name = "VerbindungsParameterHelp")
 	@Table(name = "VERBINDUNGS_PARAMETER_HELP")
 	@Inheritance(strategy = InheritanceType.JOINED)
@@ -312,12 +321,18 @@ public class Test {
 		@OneToMany
 		@JoinColumn(name = "PARAMETER_HALT")
 		public List<String> getHalt() {
+			if(halt == null){
+				halt = new ArrayList<String>();
+			}
 			return halt;
 		}
 
 		@OneToMany
 		@JoinColumn(name = "PARAMETER_CODES")
 		public List<String> getAusschlussProduktKlassenCodes() {
+			if(ausschlussProduktKlassenCodes == null){
+				ausschlussProduktKlassenCodes = new ArrayList<String>();
+			}
 			return ausschlussProduktKlassenCodes;
 		}
 	    
@@ -366,6 +381,7 @@ public class Test {
 		}		
 	}
 	
+	//
 	@Entity(name = "AllgemeineAngabenHelp")
 	@Table(name = "ALLGEMEINE_ANGABEN_HELP")
 	@Inheritance(strategy = InheritanceType.JOINED)
