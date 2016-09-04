@@ -20,6 +20,7 @@ public class DAO<T> {
 	EntityManager entityManager;
 	Class<T> type;
 	
+	
 	private DAO(Class<T> type, EntityManager entityManager) {
 		this.type = type;
 		this.entityManager = entityManager;
@@ -30,14 +31,26 @@ public class DAO<T> {
 	}
 	
 	/**
+	 * for subclassing
+	 * @return the entity manager configured for this dao
+	 */
+	protected EntityManager getEntityManager() {
+		return entityManager;
+	}
+	
+	/**
 	 * Creates a new entity
 	 * @param entity the entity with state to be saved
 	 * @return false if creation was unsuccessful, true else
 	 */
 	public Object create(T entity) {
-		entityManager.persist(entity);
-
-		return PersistenceUtils.getEntityPrimaryKey(entity);		
+		try {
+			entityManager.persist(entity);
+	
+			return PersistenceUtils.getEntityPrimaryKey(entity);
+		} catch (Exception e) {
+			throw new DataAccessException("error creating entity", e);
+		}
 	}
 
 	/**
@@ -45,7 +58,11 @@ public class DAO<T> {
 	 * @param entity the entity with state to be saved
 	 */
 	public void createOrUpdate(T entity) {
-		entityManager.merge(entity);
+		try {
+			entityManager.merge(entity);
+		} catch(Exception e) {
+			throw new DataAccessException("error merging entity", e);
+		}
 	}
 
 	/**
@@ -53,7 +70,11 @@ public class DAO<T> {
 	 * @param entity the entity with state to be deleted
 	 */
 	public void delete(T entity) {
-		entityManager.remove(entity);
+		try {
+			entityManager.remove(entity);
+		} catch(Exception e) {
+			throw new DataAccessException("error deleting entity", e);
+		}
 	}
 
 	/**
@@ -61,12 +82,16 @@ public class DAO<T> {
 	 * @return A list of all found results.
 	 */
 	public List<T> findAll() {
-		CriteriaBuilder cb = entityManager.getCriteriaBuilder();
-        CriteriaQuery<T> cq = cb.createQuery(type);
-        Root<T> rootEntry = cq.from(type);
-        CriteriaQuery<T> all = cq.select(rootEntry);
-        TypedQuery<T> allQuery = entityManager.createQuery(all);
-        return allQuery.getResultList();
+		try {
+			CriteriaBuilder cb = entityManager.getCriteriaBuilder();
+	        CriteriaQuery<T> cq = cb.createQuery(type);
+	        Root<T> rootEntry = cq.from(type);
+	        CriteriaQuery<T> all = cq.select(rootEntry);
+	        TypedQuery<T> allQuery = entityManager.createQuery(all);
+	        return allQuery.getResultList();
+		} catch(Exception e) {
+			throw new DataAccessException("error finding all entities", e);
+		}
 	}
 
 	/**
@@ -75,6 +100,10 @@ public class DAO<T> {
 	 * @return An entity instance or null.
 	 */
 	public T findById(Object id) {
-		return entityManager.find(type, id);
+		try {
+			return entityManager.find(type, id);
+		} catch(Exception e) {
+			throw new DataAccessException("error finding entity given by id", e);
+		}
 	}	
 }

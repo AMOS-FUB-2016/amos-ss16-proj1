@@ -75,20 +75,38 @@ public class PersistenceUtils {
 	}
 
 	public static void beginTransaction() {
-		getEntityManager().getTransaction().begin();
+		try {
+			getEntityManager().getTransaction().begin();
+		} catch(RuntimeException e) {
+			throw new DataAccessException("error starting transaction", e);
+		}
 	}
 
 	public static void rollback() {
-		getEntityManager().getTransaction().rollback();
+		try {
+			getEntityManager().getTransaction().rollback();
+		} catch(RuntimeException e) {
+			throw new DataAccessException("error rolling back transaction", e);
+		}
 	}
 
 	public static void commit() {
-		getEntityManager().getTransaction().commit();
+		try {
+			getEntityManager().getTransaction().commit();
+		} catch(RuntimeException e) {
+			throw new DataAccessException("error comitting transaction", e);
+		}
+	}
+	
+	protected static EntityManagerFactory getEntityManagerFactory() {
+		return entityManagerFactory;
 	}
 
 	public static void closeEntityManagerFactory() {
-		entityManagerFactory.close();
-		entityManagerFactory = null;
+		if(entityManagerFactory != null) {
+			entityManagerFactory.close();
+			entityManagerFactory = null;
+		}
 	}
 
 	public static <T> String findEntityTableName(Class<T> type) {
