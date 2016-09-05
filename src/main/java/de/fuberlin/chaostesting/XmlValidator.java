@@ -2,6 +2,8 @@ package de.fuberlin.chaostesting;
 
 import java.io.IOException;
 import java.io.StringReader;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
@@ -16,9 +18,10 @@ import org.xml.sax.SAXException;
 
 public class XmlValidator {
 
-	public static boolean validate(String xml) {
-		String parsedValue = "";
-		
+	public static List<Boolean> validate(String xml) {
+		List<Boolean> parsedValue = new ArrayList<Boolean>();
+		String validation = "";
+		String validation2 = "";
 		try {
 		InputSource source = new InputSource(new StringReader(xml));
 	
@@ -37,10 +40,16 @@ public class XmlValidator {
 		 * 	@fahrscheinTyp_e='NORMALFAHRSCHEIN'
 		 * If none are found, the Preis will be empty.
 		*/
-		parsedValue = xpath.evaluate("angebotsAntwort/hrKombis/angebote"
+		validation = xpath.evaluate("angebotsAntwort/hrKombis/angebote"
 				+ "[@typ_e='VERBINDUNGSANGEBOT' and @status_e='ANGEBOT_GUELTIG' "
 				+ "and @bezAngebot='Flexpreis' and @fahrscheinTyp_e='NORMALFAHRSCHEIN']"
 				+ "/@preis", document);
+		
+		validation2 = xpath.evaluate("angebotsAntwort/hrKombis/angebote"
+				+ "[@typ_e='ANGEBOT_RELATIONSLOS' and @status_e='ANGEBOT_GUELTIG' "
+				+ "and @angebotsKlasse_e='KLASSE_2' and @fahrscheinTyp_e='NORMALFAHRSCHEIN']"
+				+ "/@bezAngebot", document);
+		
 		} catch (IOException e) {
 			e.printStackTrace();
 		} catch (XPathExpressionException e) {
@@ -51,6 +60,8 @@ public class XmlValidator {
 			e.printStackTrace();
 		}
 		
-		return (!parsedValue.equals(""));
+		parsedValue.add(!validation.equals(""));
+		parsedValue.add(!validation2.equals(""));
+		return (parsedValue);
 	}
 }
