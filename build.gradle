@@ -110,7 +110,8 @@ dockerCompose {
 
 task copyToDocker(type: Copy) {
     from war.archivePath
-    into "docker/web/application.war"
+    into "docker/web/"
+    rename '(.*).war', 'application.war'
 }
 
 copyToDocker.dependsOn war
