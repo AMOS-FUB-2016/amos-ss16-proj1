@@ -15,6 +15,7 @@ import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Inheritance;
 import javax.persistence.InheritanceType;
@@ -36,11 +37,68 @@ import com.deutschebahn.osst.v1_0.*;
 @Table(name="TEST_INFORMATION")
 public class Test {
 	
+	//
 	@Id	@GeneratedValue
 	@Column(name="test_id")
 	private int id;
-	private AngebotsAnfrageHelp anfrage;
+	@Column(name="test_von")
+	private Integer von;
+	@Column(name="test_nach")
+	private Integer nach;
+	@Column(name="test_zeitpunkt")
+	private Date zeitpunkt;
+	@Column(name="test_klasse")
+	private String klasse;
+	@Column(name="test_erwachsene")
+	private Integer erwachsene = 0;
+	@Column(name="test_msgVersion")
+	private String msgVersion = "1.0";
+	@ManyToOne(targetEntity = AngebotsAnfrage.class, cascade = {
+			CascadeType.ALL
+		})
+		@JoinColumn(name = "TEST_ANFRAGE")
+	private AngebotsAnfrageHelp anfrage;	
 	
+	public String getMsgVersion() {
+		return msgVersion;
+	}
+
+	public void setMsgVersion(String msgVersion) {
+		this.msgVersion = msgVersion;
+	}
+	
+	public Integer getVon() {
+		return von;
+	}
+
+	public void setVon(Integer von) {
+		this.von = von;
+	}
+
+	public Integer getNach() {
+		return nach;
+	}
+
+	public void setNach(Integer nach) {
+		this.nach = nach;
+	}
+
+	public String getKlasse() {
+		return klasse;
+	}
+
+	public void setKlasse(String klasse) {
+		this.klasse = klasse;
+	}
+	
+	public Integer getErwachsene() {
+		return erwachsene;
+	}
+
+	public void setErwachsene(Integer erwachsene) {
+		this.erwachsene = erwachsene;
+}
+
 	@ManyToOne(targetEntity = AngebotsAnfrageHelp.class, cascade = {
 		CascadeType.ALL
 	})
@@ -53,6 +111,15 @@ public class Test {
 		this.anfrage = anfrage;
 	}
 
+	public Date getZeitpunkt() {
+		// TODO Auto-generated method stub
+		return zeitpunkt;
+	}
+	
+	public void setZeitpunkt(Date zeitpunkt) {
+		this.zeitpunkt = zeitpunkt;
+	}
+	
 	public Test() {
 	}
 	
@@ -64,11 +131,12 @@ public class Test {
 		this.id = id;
 	}
 
+
 	public String toXML(){
 		String s = null;
 		try {
 			ByteArrayOutputStream stream = new ByteArrayOutputStream();
-			JAXB.marshal(anfrage.toAngebotsAnfrage(), stream);
+			//JAXB.marshal(anfrage.toAngebotsAnfrage(), stream);
 			s = stream.toString(java.nio.charset.StandardCharsets.UTF_8.name());			
 		} catch (UnsupportedEncodingException e) {
 			// TODO Auto-generated catch block
@@ -78,23 +146,35 @@ public class Test {
 		return s;
 	}	
 	
-	//
+
 	@Entity(name = "AngebotsAnfrageHelp")
 	@Table(name = "ANGEBOTS_ANFRAGE_HELP")
 	@Inheritance(strategy = InheritanceType.JOINED)
-	class AngebotsAnfrageHelp{
+	public class AngebotsAnfrageHelp{
 		
 		private List<ReisenderHelp> reisender;
 		private List<VerbindungsParameterHelp> verbindungsParameter;
 		private AllgemeineAngabenHelp allgemeineAngaben;
 		private String msgVersion = "1.0";
+		private int id;
 
 		public AngebotsAnfrageHelp(){
 	    	reisender = new ArrayList<ReisenderHelp>();
 	    	verbindungsParameter = new ArrayList<VerbindungsParameterHelp>();
 	    	allgemeineAngaben = new AllgemeineAngabenHelp();
 	    }
-		
+
+	    @Id
+	    @Column(name = "ID")
+	    @GeneratedValue(strategy = GenerationType.AUTO)
+		public int getId() {
+			return id;
+		}
+
+		public void setId(int id) {
+			this.id = id;
+		}
+
 		@OneToMany(targetEntity = ReisenderHelp.class, cascade = {
 	        CascadeType.ALL
 	    })
@@ -104,7 +184,10 @@ public class Test {
 				reisender = new ArrayList<ReisenderHelp>();
 			}
 			return reisender;
-		}
+		}		
+	    public void setReisender(List<ReisenderHelp> reisender) {
+	        this.reisender = reisender;
+	    }
 
 		@OneToMany(targetEntity = VerbindungsParameterHelp.class, cascade = {
 	        CascadeType.ALL
@@ -116,6 +199,9 @@ public class Test {
 			}
 			return verbindungsParameter;
 		}
+	    public void setVerbindungsParameter(List<VerbindungsParameterHelp> verbindungsParameter) {
+	        this.verbindungsParameter = verbindungsParameter;
+	    }
 
 	    @ManyToOne(targetEntity = AllgemeineAngabenHelp.class, cascade = {
             CascadeType.ALL
@@ -169,13 +255,25 @@ public class Test {
 	@Entity(name = "ReisenderHelp")
 	@Table(name = "REISENDER_HELP")
 	@Inheritance(strategy = InheritanceType.JOINED)
-	class ReisenderHelp{
+	public class ReisenderHelp{
 
 		private int alter = 0;
 		private int anzahl = 0;
 		private String ermaessigung = null;
 		private String typ = null;
-		
+		private int id;
+
+	    @Id
+	    @Column(name = "ID")
+	    @GeneratedValue(strategy = GenerationType.AUTO)
+		public int getId() {
+			return id;
+		}
+
+		public void setId(int id) {
+			this.id = id;
+		}
+
 		@Basic
 	    @Column(name = "REISENDER_ALTER", precision = 10, scale = 0)
 		public int getAlter() {
@@ -237,9 +335,9 @@ public class Test {
 	@Entity(name = "VerbindungsParameterHelp")
 	@Table(name = "VERBINDUNGS_PARAMETER_HELP")
 	@Inheritance(strategy = InheritanceType.JOINED)
-	class VerbindungsParameterHelp{
-		private List<String> halt;
-		private List<String> ausschlussProduktKlassenCodes;
+	public class VerbindungsParameterHelp{
+		private List<AnfrageZughaltHelp> halt;
+		private List<ProduktKlassenHelp> produktKlassen;
 	    private Boolean ankunft;
 	    private Integer anzahlFahrraeder;
 	    private Integer minUmstiegsZeit;
@@ -247,9 +345,20 @@ public class Test {
 	    private Integer umstiegsZuschlag;
 	    private Boolean direktVerbindung;
 	    private Date zeitpunkt;
+	    private int id;
 	    
+	    @Id
+	    @Column(name = "ID")
+	    @GeneratedValue(strategy = GenerationType.AUTO)
+	    public int getId() {
+			return id;
+		}
 
-	    @Basic
+		public void setId(int id) {
+			this.id = id;
+		}
+
+		@Basic
 	    @Column(name = "PARAMETER_ANKUNFT")
 	    public Boolean getAnkunft() {
 			return ankunft;
@@ -320,21 +429,27 @@ public class Test {
 
 		@OneToMany
 		@JoinColumn(name = "PARAMETER_HALT")
-		public List<String> getHalt() {
+		public List<AnfrageZughaltHelp> getHalt() {
 			if(halt == null){
-				halt = new ArrayList<String>();
+				halt = new ArrayList<AnfrageZughaltHelp>();
 			}
 			return halt;
 		}
+	    public void setHalt(List<AnfrageZughaltHelp> halt) {
+	        this.halt = halt;
+	    }
 
 		@OneToMany
 		@JoinColumn(name = "PARAMETER_CODES")
-		public List<String> getAusschlussProduktKlassenCodes() {
-			if(ausschlussProduktKlassenCodes == null){
-				ausschlussProduktKlassenCodes = new ArrayList<String>();
+		public List<ProduktKlassenHelp> getProduktKlassen() {
+			if(produktKlassen == null){
+				produktKlassen = new ArrayList<ProduktKlassenHelp>();
 			}
-			return ausschlussProduktKlassenCodes;
+			return produktKlassen;
 		}
+	    public void setProduktKlassen(List<ProduktKlassenHelp> ausschlussProduktKlasse) {
+	        this.produktKlassen = ausschlussProduktKlasse;
+	    }
 	    
 	    VerbindungsParameter toVerbindungsParameter(){
 	    	VerbindungsParameter vp = new VerbindungsParameter();
@@ -362,9 +477,9 @@ public class Test {
 
 		private Collection<? extends ProduktKlassen> toAusschlussProduktKlassen() {
 			List<ProduktKlassen> pks = new ArrayList<ProduktKlassen>();
-			for(String s:ausschlussProduktKlassenCodes){
+			for(ProduktKlassenHelp p:produktKlassen){
 				ProduktKlassen pk = new ProduktKlassen();
-				pk.setCodeE(ProduktKlasse.fromValue(s));
+				pk.setCodeE(ProduktKlasse.fromValue(p.getCodeE()));
 				pks.add(pk);				
 			}
 			return pks;
@@ -372,9 +487,9 @@ public class Test {
 
 		private Collection<? extends AnfrageZughalt> toHalte() {
 			List<AnfrageZughalt> halte = new ArrayList<AnfrageZughalt>();
-			for(String s:halt){
+			for(AnfrageZughaltHelp h:halt){
 				AnfrageZughalt az = new AnfrageZughalt();
-				az.setBahnhof(s);
+				az.setBahnhof(h.getBahnhof());
 				halte.add(az);
 			}
 			return halte;
@@ -385,8 +500,20 @@ public class Test {
 	@Entity(name = "AllgemeineAngabenHelp")
 	@Table(name = "ALLGEMEINE_ANGABEN_HELP")
 	@Inheritance(strategy = InheritanceType.JOINED)
-	class AllgemeineAngabenHelp{
-		String wagenKlasse;
+	public class AllgemeineAngabenHelp{
+		private String wagenKlasse;
+		private int id;
+
+	    @Id
+	    @Column(name = "ID")
+	    @GeneratedValue(strategy = GenerationType.AUTO)
+		public int getId() {
+			return id;
+		}
+
+		public void setId(int id) {
+			this.id = id;
+		}
 
 		@Basic
 	    @Column(name = "ALLGEMEINE_ANGABEN_WAGEN_KLASSE", length = 255)
@@ -403,5 +530,65 @@ public class Test {
 			angaben.setWagenKlasseE(WagenKlasse.fromValue(wagenKlasse));
 			return angaben;
 		}
+	}
+	
+	@Entity(name = "AnfrageZughaltHelp")
+	@Table(name = "ANFRAGE_ZUGHALT_HELP")
+	public class AnfrageZughaltHelp {
+		private String bahnhof;
+	    private Long id;
+	    
+	    @Basic
+	    @Column(name = "BAHNHOF", length = 255)
+	    public String getBahnhof() {
+	        return bahnhof;
+	    }
+
+	    public void setBahnhof(String value) {
+	        this.bahnhof = value;
+	    }
+
+	    @Id
+	    @Column(name = "ID")
+	    @GeneratedValue(strategy = GenerationType.AUTO)
+	    public Long getHjid() {
+	        return id;
+	    }
+	    
+	    public void setHjid(Long value) {
+	        this.id = value;
+	    }
+	}
+	
+	@Entity(name = "ProduktKlassenHelp")
+	@Table(name = "PRODUKT_KLASSEN_HELP")
+	@Inheritance(strategy = InheritanceType.JOINED)
+	public class ProduktKlassenHelp {
+
+	    protected String codeE;
+	    protected Long id;
+
+	    @Basic
+	    @Column(name = "CODE_E", length = 255)
+	    public String getCodeE() {
+	        return codeE;
+	    }
+
+	    public void setCodeE(String value) {
+	        this.codeE = value;
+	    }
+
+	    @Id
+	    @Column(name = "ID")
+	    @GeneratedValue(strategy = GenerationType.AUTO)
+	    public Long getHjid() {
+	        return id;
+	    }
+
+
+	    public void setHjid(Long value) {
+	        this.id = value;
+	    }
+
 	}
 }
