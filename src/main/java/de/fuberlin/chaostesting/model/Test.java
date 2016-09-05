@@ -33,6 +33,9 @@ import javax.xml.datatype.XMLGregorianCalendar;
 
 import com.deutschebahn.osst.v1_0.*;
 
+import net.sourceforge.stripes.validation.Validate;
+import net.sourceforge.stripes.validation.ValidateNestedProperties;
+
 @Entity
 @Table(name="TEST_INFORMATION")
 public class Test {
@@ -53,7 +56,11 @@ public class Test {
 	private Integer erwachsene = 0;
 	@Column(name="test_msgVersion")
 	private String msgVersion = "1.0";
-	@ManyToOne(targetEntity = AngebotsAnfrage.class, cascade = {
+	
+	@ValidateNestedProperties({
+		@Validate(field="msgVersion", required=true),
+	})
+	@ManyToOne(targetEntity = AngebotsAnfrageHelp.class, cascade = {
 			CascadeType.ALL
 		})
 		@JoinColumn(name = "TEST_ANFRAGE")
@@ -97,12 +104,8 @@ public class Test {
 
 	public void setErwachsene(Integer erwachsene) {
 		this.erwachsene = erwachsene;
-}
+	}
 
-	@ManyToOne(targetEntity = AngebotsAnfrageHelp.class, cascade = {
-		CascadeType.ALL
-	})
-	@JoinColumn(name = "TEST_ANFRAGE")
 	public AngebotsAnfrageHelp getAnfrage() {
 		return anfrage;
 	}
@@ -152,8 +155,27 @@ public class Test {
 	@Inheritance(strategy = InheritanceType.JOINED)
 	public class AngebotsAnfrageHelp{
 		
+		@ValidateNestedProperties({
+			@Validate(field="alter", required=false, minvalue=0),
+			@Validate(field="anzahl", required=false, minvalue=0),
+			@Validate(field="ermaessigung", required=false),
+			@Validate(field="typ")
+		})
 		private List<ReisenderHelp> reisender;
+		@ValidateNestedProperties({
+			@Validate(field="ankunft", required=false),
+			@Validate(field="anzahlFahrraeder", required=false),
+			@Validate(field="minUmstiegsZeit", required=false),
+			@Validate(field="umstiegsFaktor", required=false),
+			@Validate(field="umstiegsZuschlag", required=false),
+			@Validate(field="direktVerbindung", required=false),
+			@Validate(field="zeitpunkt", required=true)
+
+		})
 		private List<VerbindungsParameterHelp> verbindungsParameter;
+		@ValidateNestedProperties({
+			@Validate(field="wagenKlasse", required=true),
+		})
 		private AllgemeineAngabenHelp allgemeineAngaben;
 		private String msgVersion = "1.0";
 		private int id;
@@ -257,10 +279,10 @@ public class Test {
 	@Inheritance(strategy = InheritanceType.JOINED)
 	public class ReisenderHelp{
 
-		private int alter = 0;
-		private int anzahl = 0;
-		private String ermaessigung = null;
-		private String typ = null;
+		private int alter;
+		private int anzahl;
+		private String ermaessigung;
+		private String typ;
 		private int id;
 
 	    @Id
@@ -336,7 +358,14 @@ public class Test {
 	@Table(name = "VERBINDUNGS_PARAMETER_HELP")
 	@Inheritance(strategy = InheritanceType.JOINED)
 	public class VerbindungsParameterHelp{
+		@ValidateNestedProperties({
+			@Validate(field="bahnhof", required=true, minvalue=8000001, maxvalue=8099999),
+			@Validate(field="nach", required=true, minvalue=8000001, maxvalue=8099999)
+		})
 		private List<AnfrageZughaltHelp> halt;
+		@ValidateNestedProperties({
+			@Validate(field="codeE", required=false)
+		})
 		private List<ProduktKlassenHelp> produktKlassen;
 	    private Boolean ankunft;
 	    private Integer anzahlFahrraeder;
