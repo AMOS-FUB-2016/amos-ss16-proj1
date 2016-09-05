@@ -1,6 +1,6 @@
-FROM postgres:9.4  
+FROM postgres:9.5
 MAINTAINER chaostesting
 
 ENV POSTGRES_USER postgres  
 ENV POSTGRES_PASSWORD chaostesting  
-ENV POSTGRES_DB HibernateTest
+ENV POSTGRES_DB ChaosTesting
