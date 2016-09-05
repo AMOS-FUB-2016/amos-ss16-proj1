@@ -85,7 +85,6 @@ public class ExecuteTestAction extends GenericActionBean {
 		
 		try {
 			Response response = osstClient.executeTest(test, getUrl());
-			response.setTest(test);
 			
 			responseMessage = Marshalling.marshal(response);
 			

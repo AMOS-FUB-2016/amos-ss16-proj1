@@ -84,14 +84,17 @@ public class TestExecutionService {
 				OSSTClient osstClient = new OSSTClient();
 				Response osstResponse = null;
 				
-				responseDao.create(osstResponse);
 				
 				try {
 					osstResponse = osstClient.executeTest(test, osstUrl);
+					responseDao.create(osstResponse);
 					response.configureWithResult(osstResponse, "true".equals(extended) ? true : false);
 				} catch (IOException e) {
 					response.setError("error connecting to osst service");
 				}
+				
+
+				
 			}
 		}
 		

@@ -73,8 +73,6 @@ public class OSSTService implements Callable<List<Response>> {
 			try {
 				Response r = osstClient.executeTest(test, url);
 				
-				r.setTest(test);
-				
 				return r;
 			} catch (IOException e) {
 				e.printStackTrace();

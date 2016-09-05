@@ -38,6 +38,7 @@ public class OSSTClient {
 
 		Response response = new Response(); 
 		response.setTimestamp(new Date());	
+		response.setTest(test);
 		AngebotsAntwort antwort = Marshalling.unmarshal(responseStr, AngebotsAntwort.class);
 		response.setAntwort(antwort);
 		response.setValid(XmlValidator.validate(responseStr));
