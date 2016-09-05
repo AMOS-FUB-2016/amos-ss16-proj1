@@ -76,14 +76,14 @@ public class ShowResponseXMLAction extends GenericActionBean {
 	
 	@DefaultHandler
 	public Resolution showXML() {
-		setResult(response.getXml());
+		setResult(Marshalling.marshal(response));
 		
 		return new ForwardResolution("/showResponseXML.jsp");
 	}
 	
 	@HandlesEvent("serverVersion")
 	public Resolution showServerVersion() throws ParserConfigurationException, SAXException, IOException, XPathExpressionException {
-		String xml = response.getXml();
+		String xml = Marshalling.marshal(response);
 
 		InputSource source = new InputSource(new StringReader(xml));
 

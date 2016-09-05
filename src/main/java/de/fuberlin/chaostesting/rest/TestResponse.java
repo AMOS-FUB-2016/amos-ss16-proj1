@@ -1,49 +1,31 @@
-package de.fuberlin.chaostesting.model;
+package de.fuberlin.chaostesting.rest;
 
 import java.util.Date;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.xml.bind.annotation.XmlRootElement;
 
-@Entity
-@Table(name="TEST_INFORMATION")
-public class Test {
+import de.fuberlin.chaostesting.model.Test;
+
+@XmlRootElement
+class TestResponse  {
+
+	public TestResponse() {}
 	
-	@Id	@GeneratedValue
-	@Column(name="test_id")
+	private String error;
+	
 	private int id;
-	
-	@Column(name="test_von")
 	private Integer von;
-	
-	@Column(name="test_nach")
 	private Integer nach;
-	
-	@Column(name="test_zeitpunkt")
 	private Date zeitpunkt;
-	
-	@Column(name="test_klasse")
 	private String klasse;
+	private Integer erwachsene;
 	
-	@Column(name="test_erwachsene")
-	private Integer erwachsene = 0;
-	
-	@Column(name="test_msgVersion")
-	private String msgVersion = "1.0";
-	
-
-	public Test() {
-	}
-	
-	public String getMsgVersion() {
-		return msgVersion;
-	}
-
-	public void setMsgVersion(String msgVersion) {
-		this.msgVersion = msgVersion;
+	public void configureWithTest(Test test) {
+		this.id = test.getId();
+		this.von = test.getVon();
+		this.nach = test.getNach();
+		this.zeitpunkt = test.getZeitpunkt();
+		this.erwachsene = test.getErwachsene();
 	}
 	
 	public int getId() {
@@ -85,7 +67,7 @@ public class Test {
 	public void setKlasse(String klasse) {
 		this.klasse = klasse;
 	}
-	
+
 	public Integer getErwachsene() {
 		return erwachsene;
 	}
@@ -94,4 +76,12 @@ public class Test {
 		this.erwachsene = erwachsene;
 	}
 
+	public void setError(String error) {
+		this.error = error;
+	}
+	
+	public String getError() {
+		return error;
+	}
+	
 }

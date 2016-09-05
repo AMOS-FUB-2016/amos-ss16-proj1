@@ -36,6 +36,9 @@
 				-
 				<stripes:link
 					beanclass="de.fuberlin.chaostesting.ShowResponsesAction">Antwort-Liste</stripes:link>
+				-
+				<stripes:link 
+					beanclass="de.fuberlin.chaostesting.ExecuteAllTestsAction">Alle Tests ausführen</stripes:link>
 			</div>
 			<div class="right">
 				<a href="newAdmin.jsp">Test-Admin hinzufügen</a> - <a

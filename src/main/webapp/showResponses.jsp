@@ -17,7 +17,7 @@
 		<c:forEach items="${actionBean.responses}" var="response">
 			<tr>
 				<td>${response.timestamp}</td>
-				<td>${response.test_id}</td>
+				<td>${response.test.id}</td>
 				<td><stripes:link
 						beanclass="de.fuberlin.chaostesting.ShowResponseXMLAction">
 						<stripes:param name="id" value="${response.id}" />
@@ -26,8 +26,10 @@
 						beanclass="de.fuberlin.chaostesting.ShowResponseXMLAction" event="serverVersion">
 						<stripes:param name="id" value="${response.id}" />
 				Server-Version
-			</stripes:link></td>
-				<td><c:out value="${response.valid ? 'Valide': 'Nicht valide'}" /></td>
+			</stripes:link></td>				
+				<td>
+					<c:out value="${response.valid_01 ? 'Valide': 'Nicht valide'}" /> | <c:out value="${response.valid_02 ? 'Valide': 'Nicht valide'}" /> 
+				</td>
 			</tr>
 		</c:forEach>
 	</table>

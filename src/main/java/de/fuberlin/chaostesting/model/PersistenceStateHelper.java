@@ -33,22 +33,24 @@ public class PersistenceStateHelper implements Filter, ServletContextListener {
 		}
 		
 		try {
-			PersistenceUtils.beginTransaction();
+			try {
+				PersistenceUtils.beginTransaction();
+			} catch(RuntimeException e) {
+				if(PersistenceUtils.getEntityManagerFactory() == null || ExceptionUtils.indexOfThrowable(e, DataAccessException.class) != -1) {
+					e.printStackTrace();
+					request.getRequestDispatcher("WEB-INF/dbFailure.jsp").forward(request, response);
+					return;
+				}
+			}
+			
 			chain.doFilter(request, response);
 			PersistenceUtils.commit();
-		} catch (RuntimeException | ServletException e) {
-			if(PersistenceUtils.getEntityManagerFactory() == null || ExceptionUtils.indexOfThrowable(e, DataAccessException.class) != -1) {
-				e.printStackTrace();
-				request.getRequestDispatcher("WEB-INF/dbFailure.jsp").forward(request, response);
-				return;
-			}
-				
+		} catch (RuntimeException | ServletException e) {	
 			if (PersistenceUtils.getEntityManager() != null && PersistenceUtils.getEntityManager().isOpen())  {
 				PersistenceUtils.rollback();
 			}
 			
 			throw e;
-		
 		} finally {
 			PersistenceUtils.closeEntityManager();
 		}
