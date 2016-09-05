@@ -47,7 +47,7 @@ public class ExecuteAllTestsAction extends GenericActionBean {
 		int valid = 0;
 		for (Response response : responses) {
 			responseDao.create(response);
-			if (response.isValid().get(0) && response.isValid().get(1) ){
+			if (response.isValid_01() && response.isValid_02()){
 				valid++;
 			}
 		}		

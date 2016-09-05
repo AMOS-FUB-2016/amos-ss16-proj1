@@ -18,10 +18,8 @@ import org.xml.sax.SAXException;
 
 public class XmlValidator {
 
-	public static List<Boolean> validate(String xml) {
-		List<Boolean> parsedValue = new ArrayList<Boolean>();
-		String validation = "";
-		String validation2 = "";
+	public static boolean validate_01(String xml) {
+		String parsedValue = "";
 		try {
 		InputSource source = new InputSource(new StringReader(xml));
 	
@@ -40,12 +38,46 @@ public class XmlValidator {
 		 * 	@fahrscheinTyp_e='NORMALFAHRSCHEIN'
 		 * If none are found, the Preis will be empty.
 		*/
-		validation = xpath.evaluate("angebotsAntwort/hrKombis/angebote"
+		parsedValue = xpath.evaluate("angebotsAntwort/hrKombis/angebote"
 				+ "[@typ_e='VERBINDUNGSANGEBOT' and @status_e='ANGEBOT_GUELTIG' "
 				+ "and @bezAngebot='Flexpreis' and @fahrscheinTyp_e='NORMALFAHRSCHEIN']"
 				+ "/@preis", document);
 		
-		validation2 = xpath.evaluate("angebotsAntwort/hrKombis/angebote"
+		} catch (IOException e) {
+			e.printStackTrace();
+		} catch (XPathExpressionException e) {
+			e.printStackTrace();
+		} catch (ParserConfigurationException e) {
+			e.printStackTrace();
+		} catch (SAXException e) {
+			e.printStackTrace();
+		}
+		
+		return (!parsedValue.equals(""));
+	}
+	
+	public static boolean validate_02(String xml) {
+		String parsedValue = "";
+		try {
+		InputSource source = new InputSource(new StringReader(xml));
+	
+		DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
+		DocumentBuilder db = dbf.newDocumentBuilder();
+		Document document = db.parse(source);
+	
+		XPathFactory xpathFactory = XPathFactory.newInstance();
+		XPath xpath = xpathFactory.newXPath();
+		
+		/*
+		 * This returns the Preis of the first Angebote that matches the pattern:
+		 * 	typ_e='ANGEBOT_RELATIONSLOS'
+		 * 	@status_e='ANGEBOT_GUELTIG'
+		 * 	@angebotsKlasse_e='KLASSE_2'
+		 * 	@fahrscheinTyp_e='NORMALFAHRSCHEIN'
+		 * If none are found, the bezAngebot will be empty.
+		*/
+		
+		parsedValue = xpath.evaluate("angebotsAntwort/hrKombis/angebote"
 				+ "[@typ_e='ANGEBOT_RELATIONSLOS' and @status_e='ANGEBOT_GUELTIG' "
 				+ "and @angebotsKlasse_e='KLASSE_2' and @fahrscheinTyp_e='NORMALFAHRSCHEIN']"
 				+ "/@bezAngebot", document);
@@ -60,8 +92,6 @@ public class XmlValidator {
 			e.printStackTrace();
 		}
 		
-		parsedValue.add(!validation.equals(""));
-		parsedValue.add(!validation2.equals(""));
-		return (parsedValue);
+		return (!parsedValue.equals(""));
 	}
 }

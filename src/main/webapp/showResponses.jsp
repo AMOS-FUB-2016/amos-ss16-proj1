@@ -26,8 +26,10 @@
 						beanclass="de.fuberlin.chaostesting.ShowResponseXMLAction" event="serverVersion">
 						<stripes:param name="id" value="${response.id}" />
 				Server-Version
-			</stripes:link></td>
-				<td><c:out value="${response.valid ? 'Valide': 'Nicht valide'}" /></td>
+			</stripes:link></td>				
+				<td>
+					<c:out value="${response.valid_01 ? 'Valide': 'Nicht valide'}" /> | <c:out value="${response.valid_02 ? 'Valide': 'Nicht valide'}" /> 
+				</td>
 			</tr>
 		</c:forEach>
 	</table>

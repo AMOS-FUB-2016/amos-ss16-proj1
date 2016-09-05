@@ -1,13 +1,13 @@
 package de.fuberlin.chaostesting.model;
 
 import java.util.Date;
+import java.util.List;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
@@ -23,7 +23,7 @@ import com.deutschebahn.osst.v1_0.AngebotsAntwort;
 @Table(name="TEST_RESPONSE")
 public class Response {
 	
-	@Id	@GeneratedValue(strategy=GenerationType.IDENTITY)
+	@Id	@GeneratedValue
 	@Column(name="response_id")
 	private int id;
 	
@@ -40,8 +40,11 @@ public class Response {
 	@JoinColumn(name="test_id")
 	private Test test;
 	
-	@Column(name="valid")
-	private boolean valid;	
+	@Column(name="valid_01")
+	private boolean valid_01;
+	
+	@Column(name="valid_02")
+	private boolean valid_02;
 
 	public int getId() {
 		return id;
@@ -75,11 +78,19 @@ public class Response {
 		this.test = test;
 	}
 
-	public boolean isValid() {
-		return valid;
+	public boolean isValid_01() {
+		return valid_01;
 	}
 	
-	public void setValid(boolean valid) {
-		this.valid = valid;
+	public void setValid_01(boolean b) {
+		this.valid_01 = b;
+	}
+	
+	public boolean isValid_02() {
+		return valid_02;
+	}
+	
+	public void setValid_02(boolean b) {
+		this.valid_02 = b;
 	}
 }

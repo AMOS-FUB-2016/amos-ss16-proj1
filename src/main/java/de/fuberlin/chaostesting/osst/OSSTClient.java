@@ -41,8 +41,8 @@ public class OSSTClient {
 		response.setTest(test);
 		AngebotsAntwort antwort = Marshalling.unmarshal(responseStr, AngebotsAntwort.class);
 		response.setAntwort(antwort);
-		response.setValid(XmlValidator.validate(responseStr));
-
+		response.setValid_01(XmlValidator.validate_01(responseStr));
+		response.setValid_02(XmlValidator.validate_02(responseStr));
 		return response;
 	}
 	
@@ -51,7 +51,7 @@ public class OSSTClient {
 		AngebotsAnfrage anfrage = new AngebotsAnfrage();
 		anfrage.setMsgVersion(test.getMsgVersion());
 		AllgemeineAngaben allgemeineAngaben = new AllgemeineAngaben();
-		allgemeineAngaben.setWagenKlasse(WagenKlasse.valueOf(test.getKlasse()));
+		allgemeineAngaben.setWagenKlasseE(WagenKlasse.valueOf(test.getKlasse()));
 		anfrage.setAllgemeineAngaben(allgemeineAngaben);
 
 		VerbindungsParameter parameter = new VerbindungsParameter();
@@ -59,8 +59,8 @@ public class OSSTClient {
 		halt1.setBahnhof(test.getVon().toString());
 		AnfrageZughalt halt2 = new AnfrageZughalt();
 		halt2.setBahnhof(test.getNach().toString());
-		parameter.getHalte().add(halt1);
-		parameter.getHalte().add(halt2);
+		parameter.getHalt().add(halt1);
+		parameter.getHalt().add(halt2);
 
 		GregorianCalendar gc = new GregorianCalendar();
 		gc.setTime(test.getZeitpunkt());
@@ -79,8 +79,8 @@ public class OSSTClient {
 		anfrage.getVerbindungsParameter().add(parameter);
 		Reisender reisender = new Reisender();
 		reisender.setAnzahl(test.getErwachsene());
-		reisender.setTyp(ReisendenTyp.ERWACHSENER);
-		anfrage.getReisende().add(reisender);
+		reisender.setTypE(ReisendenTyp.ERWACHSENER);
+		anfrage.getReisender().add(reisender);
 
 		return anfrage;
 	}
