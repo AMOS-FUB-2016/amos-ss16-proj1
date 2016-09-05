@@ -107,6 +107,16 @@ dockerCompose {
 	useComposeFiles = ['docker/docker-compose.yml']
 }
 
+
+task copyToDocker(type: Copy) {
+    from war.archivePath
+    into "docker/web/application.war"
+}
+
+copyToDocker.dependsOn war
+
+composeUp.dependsOn copyToDocker
+
 afterEvaluate {
     tasks.eclipseClasspath.dependsOn tasks.jaxb
 }
