@@ -12,6 +12,7 @@ import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
+import java.util.concurrent.TimeUnit;
 
 import de.fuberlin.chaostesting.model.Response;
 import de.fuberlin.chaostesting.model.Test;
@@ -47,7 +48,12 @@ public class OSSTService implements Callable<List<Response>> {
 			}
 		}
 		
-		pool.shutdown();
+		pool.shutdownNow();
+		try {
+			pool.awaitTermination(10, TimeUnit.SECONDS);
+		} catch (InterruptedException e) {
+			throw new RuntimeException(e);
+		}
 		
 		return responses;
 	}

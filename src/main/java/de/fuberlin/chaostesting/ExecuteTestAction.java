@@ -87,11 +87,11 @@ public class ExecuteTestAction extends GenericActionBean {
 			Response response = osstClient.executeTest(test, getUrl());
 			response.setTest(test);
 			
-			responseMessage = response.getXml();
+			responseMessage = Marshalling.marshal(response);
 			
 			responseDao.create(response);
 		} catch (IOException e) {
-			e.printStackTrace();
+			throw new RuntimeException("error creating or persisting response", e);
 		}
 		
 		return new ForwardResolution("/executeTest.jsp");

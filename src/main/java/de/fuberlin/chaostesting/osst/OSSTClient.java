@@ -1,18 +1,15 @@
 package de.fuberlin.chaostesting.osst;
 
 import java.io.BufferedReader;
-import java.io.ByteArrayOutputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.io.UnsupportedEncodingException;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.Date;
 import java.util.GregorianCalendar;
 
-import javax.xml.bind.JAXB;
 import javax.xml.datatype.DatatypeConfigurationException;
 import javax.xml.datatype.DatatypeFactory;
 import javax.xml.datatype.XMLGregorianCalendar;
@@ -20,11 +17,13 @@ import javax.xml.datatype.XMLGregorianCalendar;
 import com.deutschebahn.osst.v1_0.AllgemeineAngaben;
 import com.deutschebahn.osst.v1_0.AnfrageZughalt;
 import com.deutschebahn.osst.v1_0.AngebotsAnfrage;
+import com.deutschebahn.osst.v1_0.AngebotsAntwort;
 import com.deutschebahn.osst.v1_0.ReisendenTyp;
 import com.deutschebahn.osst.v1_0.Reisender;
 import com.deutschebahn.osst.v1_0.VerbindungsParameter;
 import com.deutschebahn.osst.v1_0.WagenKlasse;
 
+import de.fuberlin.chaostesting.Marshalling;
 import de.fuberlin.chaostesting.XmlValidator;
 import de.fuberlin.chaostesting.model.Response;
 import de.fuberlin.chaostesting.model.Test;
@@ -34,31 +33,19 @@ public class OSSTClient {
 	public Response executeTest(Test test, String url) throws IOException {
 		AngebotsAnfrage anfrage;
 		anfrage = convertTest(test);
-		String testXml = marshalAnfrage(anfrage);	
+		String testXml = Marshalling.marshal(anfrage);
 		String responseStr = executeHttpRequest(testXml, url);
 
 		Response response = new Response(); 
 		response.setTimestamp(new Date());	
-		response.setXml(responseStr);
+		AngebotsAntwort antwort = Marshalling.unmarshal(responseStr, AngebotsAntwort.class);
+		response.setAntwort(antwort);
 		response.setValid(XmlValidator.validate(responseStr));
 
 		return response;
 	}
-
-	private static String marshalAnfrage(AngebotsAnfrage anfrage) {
-		String s;
-
-		ByteArrayOutputStream stream = new ByteArrayOutputStream();
-		JAXB.marshal(anfrage, stream);
-		try {
-			s = stream.toString(java.nio.charset.StandardCharsets.UTF_8.name());
-		} catch (UnsupportedEncodingException e) {
-			throw new RuntimeException(e);
-		}
-
-		return s;
-	}
-
+	
+	
 	private static AngebotsAnfrage convertTest(Test test)  {
 		AngebotsAnfrage anfrage = new AngebotsAnfrage();
 		anfrage.setMsgVersion(test.getMsgVersion());

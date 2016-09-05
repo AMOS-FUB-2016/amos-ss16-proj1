@@ -2,6 +2,7 @@ package de.fuberlin.chaostesting.model;
 
 import java.util.Date;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -11,6 +12,8 @@ import javax.persistence.JoinColumn;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
+import com.deutschebahn.osst.v1_0.AngebotsAntwort;
+
 @Entity
 @Table(name="TEST_RESPONSE")
 public class Response {
@@ -19,10 +22,10 @@ public class Response {
 	@Column(name="response_id")
 	private int id;
 	
-	@Column(name="response_xml", length=65535)
-	@org.hibernate.annotations.Type(type="de.fuberlin.chaostesting.model.usertype.XMLType")
-	private String xml;
-	
+	@OneToOne(cascade=CascadeType.ALL)
+	@JoinColumn(name="response")
+	private AngebotsAntwort antwort;
+
 	@Column(name="response_timestamp")
 	private Date timestamp;
 	
@@ -41,12 +44,12 @@ public class Response {
 		this.id = id;
 	}
 
-	public String getXml() {
-		return xml;
+	public AngebotsAntwort getAntwort() {
+		return antwort;
 	}
 
-	public void setXml(String xml) {
-		this.xml = xml;
+	public void setAntwort(AngebotsAntwort antwort) {
+		this.antwort = antwort;
 	}
 
 	public Date getTimestamp() {
