@@ -1,19 +1,26 @@
+buildscript {
+	repositories {
+		jcenter()
+	}
+	dependencies {
+		classpath "com.avast.gradle:docker-compose-gradle-plugin:0.3.8"
+	}
+}
+
+
 plugins {
     id "war"
     id "eclipse-wtp"
     id "com.intershop.gradle.jaxb" version "1.0.1"
 }
 
-apply plugin: 'java'
-apply plugin: 'eclipse'
-apply plugin: 'war'
+apply plugin: 'docker-compose'
 
 configurations {
     xjc
 }
 
 repositories {
-mavenCentral()
     jcenter()
 }
 
@@ -95,6 +102,21 @@ cleanEclipse << {
     File f = file('.settings/org.eclipse.core.resources.prefs')
     f.delete()
 }
+
+dockerCompose {
+	useComposeFiles = ['docker/docker-compose.yml']
+}
+
+
+task copyToDocker(type: Copy) {
+    from war.archivePath
+    into "docker/web/"
+    rename '(.*).war', 'application.war'
+}
+
+copyToDocker.dependsOn war
+
+composeUp.dependsOn copyToDocker
 
 afterEvaluate {
     tasks.eclipseClasspath.dependsOn tasks.jaxb
