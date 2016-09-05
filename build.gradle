@@ -41,10 +41,11 @@ jaxb {
     javaGen {
         //generates a 'project' schema file from existing java code
         osst {
-            schema = file('Schnittstelle_OSST.xsd')
+            schema = file('xsd/Schnittstelle_OSST.xsd')
+			binding = file('xsd/bindings.xjb')
             extension = true
             packageName="com.deutschebahn.osst.v1_0"
-            args = ["-Xhyperjaxb3-jpa2", "-Xhyperjaxb3-jpa2-persistenceXml=persistence.xml"]
+            args = ["-Xhyperjaxb3-jpa2", "-Xhyperjaxb3-jpa2-persistenceXml=xsd/persistence.xml"]
         }
     }
 }

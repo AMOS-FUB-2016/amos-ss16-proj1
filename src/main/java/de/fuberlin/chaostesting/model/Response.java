@@ -9,8 +9,12 @@ import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
+
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
 
 import com.deutschebahn.osst.v1_0.AngebotsAntwort;
 
@@ -29,7 +33,9 @@ public class Response {
 	@Column(name="response_timestamp")
 	private Date timestamp;
 	
-	@OneToOne(fetch=FetchType.LAZY)
+	@ManyToOne(fetch=FetchType.LAZY, cascade=CascadeType.ALL)
+	// this annotation is specific to hibernate, but sadly, there does not seem to be a JPA alternative
+	@OnDelete(action = OnDeleteAction.CASCADE)
 	@JoinColumn(name="test_id")
 	private Test test;
 	

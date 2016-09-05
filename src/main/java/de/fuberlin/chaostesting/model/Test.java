@@ -15,16 +15,22 @@ public class Test {
 	@Id	@GeneratedValue
 	@Column(name="test_id")
 	private int id;
+	
 	@Column(name="test_von")
 	private Integer von;
+	
 	@Column(name="test_nach")
 	private Integer nach;
+	
 	@Column(name="test_zeitpunkt")
 	private Date zeitpunkt;
+	
 	@Column(name="test_klasse")
 	private String klasse;
+	
 	@Column(name="test_erwachsene")
 	private Integer erwachsene = 0;
+	
 	@Column(name="test_msgVersion")
 	private String msgVersion = "1.0";
 	
