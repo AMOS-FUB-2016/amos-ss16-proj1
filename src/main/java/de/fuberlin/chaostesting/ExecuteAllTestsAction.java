@@ -44,14 +44,18 @@ public class ExecuteAllTestsAction extends GenericActionBean {
 		
 		List<Response> responses = new OSSTService(allTests, getUrl()).call();
 		
-		int valid = 0;
+		int valid_01 = 0;
+		int valid_02 = 0;
 		for (Response response : responses) {
 			responseDao.create(response);
-			if (response.isValid_01() && response.isValid_02()){
-				valid++;
+			if (response.isValid_01()){
+				valid_01++;
+			}
+			if (response.isValid_02()){
+				valid_02++;
 			}
 		}		
-		setResponseMessage(valid + " aus " + responses.size() + " Tests valide.");
+		setResponseMessage(valid_01 + " aus " + responses.size() + " bestehen Test 1. " + valid_02 + " aus " + responses.size() + " bestehen Test 2.");
 
 		return new ForwardResolution("/executeTest.jsp");
 	}	

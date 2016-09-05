@@ -1,7 +1,6 @@
 package de.fuberlin.chaostesting.model;
 
 import java.util.Date;
-import java.util.List;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;

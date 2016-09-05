@@ -2,8 +2,6 @@ package de.fuberlin.chaostesting;
 
 import java.io.IOException;
 import java.io.StringReader;
-import java.util.ArrayList;
-import java.util.List;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
@@ -69,7 +67,7 @@ public class XmlValidator {
 		XPath xpath = xpathFactory.newXPath();
 		
 		/*
-		 * This returns the Preis of the first Angebote that matches the pattern:
+		 * This returns the Bezugsangebot of the first Angebote that matches the pattern:
 		 * 	typ_e='ANGEBOT_RELATIONSLOS'
 		 * 	@status_e='ANGEBOT_GUELTIG'
 		 * 	@angebotsKlasse_e='KLASSE_2'
