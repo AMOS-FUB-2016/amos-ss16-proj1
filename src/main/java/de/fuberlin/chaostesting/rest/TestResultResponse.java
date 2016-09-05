@@ -1,5 +1,7 @@
 package de.fuberlin.chaostesting.rest;
 
+import java.util.List;
+
 import javax.xml.bind.annotation.XmlRootElement;
 
 import de.fuberlin.chaostesting.Marshalling;
@@ -10,7 +12,7 @@ public class TestResultResponse {
 	
 	String error;
 	Integer testId;
-	boolean valid;
+	List<Boolean> valid;
 	String responseXML;
 
 	public String getError() {
@@ -21,11 +23,11 @@ public class TestResultResponse {
 		this.error = error;
 	}
 	
-	public boolean isValid() {
+	public List<Boolean> isValid() {
 		return valid;
 	}
 
-	public void setValid(boolean valid) {
+	public void setValid(List<Boolean> valid) {
 		this.valid = valid;
 	}
 
