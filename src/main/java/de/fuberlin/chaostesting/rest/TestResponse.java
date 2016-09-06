@@ -82,6 +82,5 @@ class TestResponse  {
 	
 	public String getError() {
 		return error;
-	}
-	
+	}	
 }

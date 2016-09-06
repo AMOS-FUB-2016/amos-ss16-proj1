@@ -21,14 +21,10 @@
 				<td><stripes:link
 						beanclass="de.fuberlin.chaostesting.ShowResponseXMLAction">
 						<stripes:param name="id" value="${response.id}" />
-				XML
-			</stripes:link> | <stripes:link
-						beanclass="de.fuberlin.chaostesting.ShowResponseXMLAction" event="serverVersion">
-						<stripes:param name="id" value="${response.id}" />
-				Server-Version
-			</stripes:link></td>				
+				XML</stripes:link></td>
 				<td>
-					<c:out value="${response.valid_01 ? 'Valide': 'Nicht valide'}" /> | <c:out value="${response.valid_02 ? 'Valide': 'Nicht valide'}" /> 
+					<c:out value="${response.valid_01 ? 'Valide': 'Nicht valide'}" /> | 
+					<c:out value="${response.valid_02 ? 'Valide': 'Nicht valide'}" /> 
 				</td>
 			</tr>
 		</c:forEach>

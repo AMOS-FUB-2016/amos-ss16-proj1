@@ -94,5 +94,4 @@ public class Test {
 	public void setErwachsene(Integer erwachsene) {
 		this.erwachsene = erwachsene;
 	}
-
 }

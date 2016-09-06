@@ -32,8 +32,8 @@ public class TestCrudAction extends GenericActionBean {
 	DAO<Test> testDao = DAO.createInstance(Test.class);
 	
 	@ValidateNestedProperties({
-		@Validate(field="von", required=true, minvalue=8000001, maxvalue=8099999),
-		@Validate(field="nach", required=true, minvalue=8000001, maxvalue=8099999),
+		@Validate(field="von", required=true, minvalue=1000018, maxvalue=9663293),
+		@Validate(field="nach", required=true, minvalue=1000018, maxvalue=9663293),
 		@Validate(field="zeitpunkt", required=true),
 		@Validate(field="erwachsene", required=true, minvalue=1, maxvalue=5),
 		@Validate(field="klasse", required=true)
@@ -150,10 +150,9 @@ public class TestCrudAction extends GenericActionBean {
 	
 	@ValidationMethod(when=ValidationState.ALWAYS)
 	public void validateVonNach(ValidationErrors errors) {
-		if (test.getVon() != null && test.getNach() != null ) {
-			if (test.getVon().equals(test.getNach())) {
+		if (test.getVon() != null && test.getNach() != null
+				&& test.getVon().equals(test.getNach())) {
 				errors.add("test.VonNach", new SimpleError("Von und Nach sind gleich!"));
-			}
 		}
 	}
 }

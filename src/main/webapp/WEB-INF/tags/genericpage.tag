@@ -40,11 +40,6 @@
 				<stripes:link 
 					beanclass="de.fuberlin.chaostesting.ExecuteAllTestsAction">Alle Tests ausführen</stripes:link>
 			</div>
-			<div class="right">
-				<a href="newAdmin.jsp">Test-Admin hinzufügen</a> - <a
-					href="newTester.jsp">Test-Anwender hinzufügen</a> - <a
-					href="showUsers.jsp">Nutzer-Liste</a>
-			</div>
 		</nav>
 	</header>
 
@@ -53,7 +48,7 @@
 	</section>
 
 	<footer>
-		<p>AMOS-Projekt - Testautomat - FU Berlin - 2016 - Mid-Release 4</p>
+		<p>AMOS-Projekt - Testautomat - FU Berlin - 2016 - Sprint-Release 7</p>
 	</footer>
 </body>
 </html>

@@ -25,14 +25,13 @@
 				<td>${test.klasse}</td>
 				<td><stripes:link beanclass="de.fuberlin.chaostesting.ExecuteTestAction">
 						<stripes:param name="id" value="${test.id}" />
-				Ausführen
-			</stripes:link> | <stripes:link beanclass="de.fuberlin.chaostesting.TestCrudAction" event="show">
+				Ausführen</stripes:link> | 
+					<stripes:link beanclass="de.fuberlin.chaostesting.TestCrudAction" event="show">
 						<stripes:param name="id" value="${test.id}" />
-				Bearbeiten
-			</stripes:link> | <stripes:link beanclass="de.fuberlin.chaostesting.TestCrudAction" event="delete">
+				Bearbeiten</stripes:link> | 
+					<stripes:link beanclass="de.fuberlin.chaostesting.TestCrudAction" event="delete">
 						<stripes:param name="id" value="${test.id}" />
-				Löschen
-			</stripes:link></td>
+				Löschen</stripes:link></td>
 			</tr>
 		</c:forEach>
 	</table>

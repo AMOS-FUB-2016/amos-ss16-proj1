@@ -63,7 +63,8 @@ public class ExecuteAllTestsAction extends GenericActionBean {
 				valid_02++;
 			}
 		}		
-		setResponseMessage(valid_01 + " aus " + responses.size() + " bestehen Test 1. " + valid_02 + " aus " + responses.size() + " bestehen Test 2.");
+		setResponseMessage(valid_01 + " aus " + responses.size() + " bestehen Test 1. "
+				+ valid_02 + " aus " + responses.size() + " bestehen Test 2.");
 
 		return new ForwardResolution("/executeTest.jsp");
 	}	
