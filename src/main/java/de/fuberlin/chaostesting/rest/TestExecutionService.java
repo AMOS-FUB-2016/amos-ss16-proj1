@@ -105,7 +105,6 @@ public class TestExecutionService {
 	@Path("test/executeAll")
 	@Produces(MediaType.APPLICATION_JSON)
 	public TestResultListResponse executeAllTests (
-				@PathParam("testId") Integer testId,
 				@DefaultValue("http://localhost:8082/osst") @QueryParam("osstUrl") String osstUrl,
 				@DefaultValue("false") @QueryParam("extended") String extended
 			)
@@ -127,6 +126,4 @@ public class TestExecutionService {
 		
 		return response;
 	}
-	
-	
 }

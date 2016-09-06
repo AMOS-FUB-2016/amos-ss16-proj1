@@ -24,6 +24,5 @@ public class Marshalling {
 		}
 
 		return s;
-	}
-	
+	}	
 }

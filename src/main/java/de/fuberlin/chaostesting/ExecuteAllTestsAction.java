@@ -10,13 +10,17 @@ import net.sourceforge.stripes.action.DefaultHandler;
 import net.sourceforge.stripes.action.ForwardResolution;
 import net.sourceforge.stripes.action.Resolution;
 import net.sourceforge.stripes.action.UrlBinding;
+import net.sourceforge.stripes.action.Wizard;
+import net.sourceforge.stripes.validation.Validate;
 
+@Wizard(startEvents="prepareTestExecution")
 @UrlBinding("/executeAllTests.action")
 public class ExecuteAllTestsAction extends GenericActionBean {
 	
 	DAO<Test> testDao = DAO.createInstance(Test.class);
 	DAO<Response> responseDao = DAO.createInstance(Response.class);
 	
+	@Validate(required=true)
 	String url;
 	String responseMessage;
 	
@@ -35,12 +39,16 @@ public class ExecuteAllTestsAction extends GenericActionBean {
 	public void setResponseMessage(String responseMessage) {
 		this.responseMessage = responseMessage;
 	}
-
+	
 	@DefaultHandler
+	public Resolution prepareTestExecution() {
+		setUrl("http://localhost:8082/osst");
+		
+		return new ForwardResolution("/WEB-INF/jsps/prepareAllTests.jsp");
+	}
+
 	public Resolution executeAllTests() {
 		List<Test> allTests = testDao.findAll();
-		
-		setUrl("http://localhost:8082/osst");
 		
 		List<Response> responses = new OSSTService(allTests, getUrl()).call();
 		
@@ -55,7 +63,8 @@ public class ExecuteAllTestsAction extends GenericActionBean {
 				valid_02++;
 			}
 		}		
-		setResponseMessage(valid_01 + " aus " + responses.size() + " bestehen Test 1. " + valid_02 + " aus " + responses.size() + " bestehen Test 2.");
+		setResponseMessage(valid_01 + " aus " + responses.size() + " bestehen Test 1. "
+				+ valid_02 + " aus " + responses.size() + " bestehen Test 2.");
 
 		return new ForwardResolution("/executeTest.jsp");
 	}	

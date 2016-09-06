@@ -20,6 +20,5 @@ public class TestResultListResponse {
 
 	public void setResults(List<TestResultResponse> results) {
 		this.results = results;
-	}	
-	
+	}
 }

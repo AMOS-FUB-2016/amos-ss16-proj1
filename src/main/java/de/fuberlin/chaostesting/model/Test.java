@@ -5,6 +5,7 @@ import java.util.Date;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
@@ -12,7 +13,7 @@ import javax.persistence.Table;
 @Table(name="TEST_INFORMATION")
 public class Test {
 	
-	@Id	@GeneratedValue
+	@Id @GeneratedValue(strategy=GenerationType.IDENTITY)
 	@Column(name="test_id")
 	private int id;
 	
@@ -93,5 +94,4 @@ public class Test {
 	public void setErwachsene(Integer erwachsene) {
 		this.erwachsene = erwachsene;
 	}
-
 }
