@@ -4,6 +4,8 @@ import java.util.Date;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -35,8 +37,12 @@ public class Test {
 	@Column(name="test_msgVersion")
 	private String msgVersion = "1.0";
 	
-    @Column(name="test_bezAngebot")
-    private String bezAngebot;
+	@Column(name="test_expectedBezAngebot")
+	@Enumerated(EnumType.STRING)
+	private BezAngebot expectedBezAngebot;
+	
+	@Column(name="test_expected_preis")
+	private Integer expectedPreis;
 
 	public Test() {
 	}
@@ -96,14 +102,20 @@ public class Test {
 	public void setErwachsene(Integer erwachsene) {
 		this.erwachsene = erwachsene;
 	}
-	
-    
-    public String getBezAngebot() {
-        return bezAngebot;
-    }
-    
-    public void setBezAngebot(String bezAngebot) {
-        this.bezAngebot = bezAngebot;
-    }
 
+	public BezAngebot getExpectedBezAngebot() {
+		return expectedBezAngebot;
+	}
+
+	public void setExpectedBezAngebot(BezAngebot expectedBezAngebot) {
+		this.expectedBezAngebot = expectedBezAngebot;
+	}
+
+	public Integer getExpectedPreis() {
+		return expectedPreis;
+	}
+
+	public void setExpectedPreis(Integer expectedPreis) {
+		this.expectedPreis = expectedPreis;
+	}
 }
