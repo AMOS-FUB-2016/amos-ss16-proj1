@@ -21,12 +21,25 @@ public class XmlValidator {
 	
 	public static void validate(Test test, Response response) {
 		// TODO: Use all validation methods and change Response with results
+		String xml = Marshalling.marshal(response);
+		
+		try {
+			response.setValid_01(validate_01(xml, test.getKlasse()));
+			response.setValid_02(validate_02(xml));
+		} catch (IOException e) {
+			e.printStackTrace();
+		} catch (XPathExpressionException e) {
+			e.printStackTrace();
+		} catch (ParserConfigurationException e) {
+			e.printStackTrace();
+		} catch (SAXException e) {
+			e.printStackTrace();
+		}
+		
 		return;
 	}
 
-	public static boolean validate_01(String xml) {
-		String result = "";
-		try {
+	static boolean validate_01(String xml, String klasse) throws ParserConfigurationException, SAXException, IOException, XPathExpressionException {
 		Document document = createDocument(xml);
 		XPath xpath = createXPath();
 		
@@ -36,54 +49,36 @@ public class XmlValidator {
 		 * 	@status_e='ANGEBOT_GUELTIG'
 		 * 	@bezAngebot='Flexpreis'
 		 * 	@fahrscheinTyp_e='NORMALFAHRSCHEIN'
-		 * If none are found, the Preis will be empty.
+		 *	@angebotsKlasse_e= given Klasse in Test
+		 * If none are found, the Preis will be empty, meaning the validation failed.
 		*/
-		result = xpath.evaluate("angebotsAntwort/hrKombis/angebote"
-				+ "[@typ_e='VERBINDUNGSANGEBOT' and @status_e='ANGEBOT_GUELTIG' "
-				+ "and @bezAngebot='Flexpreis' and @fahrscheinTyp_e='NORMALFAHRSCHEIN']"
+		String result = xpath.evaluate("response/antwort/hrKombis/angebote"
+				+ "[@typ_e='VERBINDUNGSANGEBOT' and @status_e='ANGEBOT_GUELTIG'"
+				+ " and @bezAngebot='Flexpreis' and @fahrscheinTyp_e='NORMALFAHRSCHEIN'"
+				+ " and @angebotsKlasse_e='" + klasse + "']"
 				+ "/@preis", document);
-		
-		} catch (IOException e) {
-			e.printStackTrace();
-		} catch (XPathExpressionException e) {
-			e.printStackTrace();
-		} catch (ParserConfigurationException e) {
-			e.printStackTrace();
-		} catch (SAXException e) {
-			e.printStackTrace();
-		}
 		
 		return (!result.equals(""));
 	}
 	
-	public static boolean validate_02(String xml) {
-		String result = "";
-		try {
+	static boolean validate_02(String xml) throws ParserConfigurationException, SAXException, IOException, XPathExpressionException {
 		Document document = createDocument(xml);
 		XPath xpath = createXPath();
 		
 		/*
-		 * This returns the Bezugsangebot of the first Angebote that matches the pattern:
+		 * This returns the Preis of the first Angebote that matches the pattern:
 		 * 	typ_e='ANGEBOT_RELATIONSLOS'
 		 * 	@status_e='ANGEBOT_GUELTIG'
 		 * 	@angebotsKlasse_e='KLASSE_2'
 		 * 	@fahrscheinTyp_e='NORMALFAHRSCHEIN'
-		 * If none are found, the bezAngebot will be empty.
+		 * 	@bezAngebot='QUER-DURCHS-LAND-T' or @bezAngebot='Schönes-Wochenende-T'
+		 * If none are found, the Preis will be empty, meaning the validation failed.
 		*/		
-		result = xpath.evaluate("angebotsAntwort/hrKombis/angebote"
-				+ "[@typ_e='ANGEBOT_RELATIONSLOS' and @status_e='ANGEBOT_GUELTIG' "
-				+ "and @angebotsKlasse_e='KLASSE_2' and @fahrscheinTyp_e='NORMALFAHRSCHEIN']"
-				+ "/@bezAngebot", document);
-		
-		} catch (IOException e) {
-			e.printStackTrace();
-		} catch (XPathExpressionException e) {
-			e.printStackTrace();
-		} catch (ParserConfigurationException e) {
-			e.printStackTrace();
-		} catch (SAXException e) {
-			e.printStackTrace();
-		}
+		String result = xpath.evaluate("response/antwort/hrKombis/angebote"
+				+ "[@typ_e='ANGEBOT_RELATIONSLOS' and @status_e='ANGEBOT_GUELTIG'"
+				+ " and @angebotsKlasse_e='KLASSE_2' and @fahrscheinTyp_e='NORMALFAHRSCHEIN'"
+				+ " and (@bezAngebot='QUER-DURCHS-LAND-T' or @bezAngebot='Schönes-Wochenende-T')]"
+				+ "/@preis", document);
 		
 		return (!result.equals(""));
 	}
