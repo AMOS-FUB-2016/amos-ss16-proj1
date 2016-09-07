@@ -93,17 +93,25 @@ public class XmlValidator {
 	
     static boolean validate_02a(String xml, String bezAngebot) throws ParserConfigurationException,
     		SAXException, IOException, XPathExpressionException {
-        String result = "";
-
         Document document = createDocument(xml);
         XPath xpath = createXPath();
-            
-        result = xpath.evaluate("response/antwort/hrKombis/angebote"
-                + "[@typ_e='ANGEBOT_RELATIONSLOS' and @status_e='ANGEBOT_GUELTIG' "
-                + "and @angebotsKlasse_e='KLASSE_2' and @fahrscheinTyp_e='NORMALFAHRSCHEIN']"
-                + "/@bezAngebot", document);
+           
+        /*
+		 * This returns the Preis of the first Angebote that matches the pattern:
+		 * 	typ_e='ANGEBOT_RELATIONSLOS'
+		 * 	@status_e='ANGEBOT_GUELTIG'
+		 * 	@angebotsKlasse_e='KLASSE_2'
+		 * 	@fahrscheinTyp_e='NORMALFAHRSCHEIN'
+		 * 	@bezAngebot= given bezAngebot in Test
+		 * If none are found, the Preis will be empty, meaning the validation failed.
+		*/		
+		String result = xpath.evaluate("response/antwort/hrKombis/angebote"
+				+ "[@typ_e='ANGEBOT_RELATIONSLOS' and @status_e='ANGEBOT_GUELTIG'"
+				+ " and @angebotsKlasse_e='KLASSE_2' and @fahrscheinTyp_e='NORMALFAHRSCHEIN'"
+				+ " and @bezAngebot='" + bezAngebot + "']"
+				+ "/@preis", document);
         
-        return (result.equals(bezAngebot));
+        return (!result.equals(""));
     }
     
 	static Document createDocument(String xml) throws ParserConfigurationException, SAXException, IOException {
