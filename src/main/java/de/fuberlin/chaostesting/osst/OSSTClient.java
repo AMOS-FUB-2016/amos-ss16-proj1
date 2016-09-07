@@ -34,7 +34,8 @@ public class OSSTClient {
 		AngebotsAnfrage anfrage;
 		anfrage = convertTest(test);
 		String testXml = Marshalling.marshal(anfrage);
-		String responseStr = executeHttpRequest(testXml, url);
+		String responseStr = new String(executeHttpRequest(testXml, url)
+				.getBytes("windows-1252"), "UTF-8");
 
 		Response response = new Response(); 
 		response.setTimestamp(new Date());	
