@@ -48,12 +48,6 @@ public class Response {
 	
 	@Column(name="valid_02a")
 	private boolean valid_02a;
-	
-	@Column(name="valid_03a")
-	private boolean valid_03a;
-	
-	@Column(name="valid_03b")
-	private boolean valid_03b;
 
 	public int getId() {
 		return id;
@@ -109,21 +103,5 @@ public class Response {
 	
 	public void setValid_02a(boolean b) {
 		this.valid_02a = b;
-	}
-	
-	public boolean isValid_03a() {
-		return valid_03a;
-	}
-	
-	public void setValid_03a(boolean b) {
-		this.valid_03a = b;
-	}
-	
-	public boolean isValid_03b() {
-		return valid_03b;
-	}
-	
-	public void setValid_03b(boolean b) {
-		this.valid_03b = b;
 	}
 }
