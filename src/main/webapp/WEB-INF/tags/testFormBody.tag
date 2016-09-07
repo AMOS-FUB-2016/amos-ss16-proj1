@@ -38,5 +38,22 @@
 			</stripes:select></td>
 		<td><stripes:errors field="test.klasse"/></td>
 	</tr>
+	<tr>
+		<td>Erwartetes Bezugsangebot (optional):</td>
+		<td>
+			<stripes:select name="test.expectedBezAngebot">
+				<stripes:option value=""/>
+				<stripes:options-enumeration enum="de.fuberlin.chaostesting.model.BezAngebot"  />
+			</stripes:select>
+		</td>
+		<td>
+	</tr>
+	<tr>
+		<td>Erwarteter Preis (optional):</td>
+		<td>
+			<stripes:text name="test.expectedPreis"/>
+		</td>
+		<td><stripes:errors field="test.expectedPreis"/></td>
+	</tr>
 </table>
 <stripes:errors field="test.VonNach"/>

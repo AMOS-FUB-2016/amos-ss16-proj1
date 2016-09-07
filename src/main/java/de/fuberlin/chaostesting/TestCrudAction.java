@@ -25,6 +25,7 @@ import net.sourceforge.stripes.validation.ValidationErrors;
 import net.sourceforge.stripes.validation.ValidationMethod;
 import net.sourceforge.stripes.validation.ValidationState;
 
+
 @UrlBinding("/modifyTest.action")
 public class TestCrudAction extends GenericActionBean {
 	
@@ -36,7 +37,7 @@ public class TestCrudAction extends GenericActionBean {
 		@Validate(field="nach", required=true, minvalue=1000018, maxvalue=9663293),
 		@Validate(field="zeitpunkt", required=true),
 		@Validate(field="erwachsene", required=true, minvalue=1, maxvalue=5),
-		@Validate(field="klasse", required=true)
+		@Validate(field="klasse", required=true),
 	})
 	Test test;
 	Date uhrzeit;
