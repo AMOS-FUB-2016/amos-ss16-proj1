@@ -14,7 +14,15 @@ import org.w3c.dom.Document;
 import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
 
+import de.fuberlin.chaostesting.model.Response;
+import de.fuberlin.chaostesting.model.Test;
+
 public class XmlValidator {
+	
+	public static void validate(Test test, Response response) {
+		// TODO: Use all validation methods and change Response with results
+		return;
+	}
 
 	public static boolean validate_01(String xml) {
 		String result = "";
