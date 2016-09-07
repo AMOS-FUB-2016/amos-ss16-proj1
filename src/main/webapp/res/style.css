@@ -54,6 +54,10 @@ span.error {
 	padding: 5px;
 }
 
+span.note {
+	font-size: 12px;
+}
+
 p {
 	margin: 20px;
 	padding: 10px, 0px,  10px, 0px;
