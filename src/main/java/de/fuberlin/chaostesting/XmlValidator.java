@@ -22,10 +22,16 @@ public class XmlValidator {
 	public static void validate(Test test, Response response) {
 		String xml = Marshalling.marshal(response);
 		
+		String bezAngebot = "NONE_GIVEN";
+		try {
+			bezAngebot = test.getExpectedBezAngebot().internalName();
+		} catch (NullPointerException e) {			
+		}
+		
 		try {
 			response.setValid_01(validate_01(xml, test.getKlasse()));
 			response.setValid_02(validate_02(xml));
-			response.setValid_02a(validate_02a(xml, test.getExpectedBezAngebot().toString()));
+			response.setValid_02a(validate_02a(xml, bezAngebot));
 			if (response.isValid_01() || response.isValid_02()){
 				response.setValid_03a(validate_03a(xml));
 				response.setValid_03b(validate_03b(xml, test.getExpectedPreis()));
@@ -96,12 +102,12 @@ public class XmlValidator {
         Document document = createDocument(xml);
         XPath xpath = createXPath();
             
-        result = xpath.evaluate("angebotsAntwort/hrKombis/angebote"
+        result = xpath.evaluate("response/antwort/hrKombis/angebote"
                 + "[@typ_e='ANGEBOT_RELATIONSLOS' and @status_e='ANGEBOT_GUELTIG' "
                 + "and @angebotsKlasse_e='KLASSE_2' and @fahrscheinTyp_e='NORMALFAHRSCHEIN']"
                 + "/@bezAngebot", document);
         
-        return (!result.equals(bezAngebot));        
+        return (result.equals(bezAngebot));
     }
     
     static boolean validate_03a(String xml) throws ParserConfigurationException,
