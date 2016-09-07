@@ -12,7 +12,11 @@
 			<th>Zeitpunkt</th>
 			<th>Test-Definition-ID</th>
 			<th>Aktionen</th>
-			<th>Validierungsergebnis</th>
+			<th>Prüfung 1</th>
+			<th>Prüfung 2</th>
+			<th>Prüfung 2a</th>
+			<th>Prüfung 3a</th>
+			<th>Prüfung 3b</th>
 		</tr>
 		<c:forEach items="${actionBean.responses}" var="response">
 			<tr>
@@ -22,10 +26,11 @@
 						beanclass="de.fuberlin.chaostesting.ShowResponseXMLAction">
 						<stripes:param name="id" value="${response.id}" />
 				XML</stripes:link></td>
-				<td>
-					<c:out value="${response.valid_01 ? 'Valide': 'Nicht valide'}" /> | 
-					<c:out value="${response.valid_02 ? 'Valide': 'Nicht valide'}" /> 
-				</td>
+				<td><c:out value="${response.valid_01 ? 'Valide': 'Nicht valide'}" /></td>
+				<td><c:out value="${response.valid_02 ? 'Valide': 'Nicht valide'}" /></td>
+				<td><c:out value="${response.valid_02a ? 'Valide': 'Nicht valide'}" /></td>
+				<td><c:out value="${response.valid_03a ? 'Valide': 'Nicht valide'}" /></td>
+				<td><c:out value="${response.valid_03b ? 'Valide': 'Nicht valide'}" /></td>
 			</tr>
 		</c:forEach>
 	</table>

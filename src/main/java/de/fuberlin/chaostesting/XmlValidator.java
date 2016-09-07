@@ -20,13 +20,12 @@ import de.fuberlin.chaostesting.model.Test;
 public class XmlValidator {
 	
 	public static void validate(Test test, Response response) {
-		// TODO: Use all validation methods and change Response with results
 		String xml = Marshalling.marshal(response);
 		
 		try {
 			response.setValid_01(validate_01(xml, test.getKlasse()));
 			response.setValid_02(validate_02(xml));
-			response.setValid_02a(validate_02a(xml, test.getExpectedBezAngebot()));
+			response.setValid_02a(validate_02a(xml, test.getExpectedBezAngebot().toString()));
 			if (response.isValid_01() || response.isValid_02()){
 				response.setValid_03a(validate_03a(xml));
 				response.setValid_03b(validate_03b(xml, test.getExpectedPreis()));
@@ -44,7 +43,8 @@ public class XmlValidator {
 		return;
 	}
 
-	static boolean validate_01(String xml, String klasse) throws ParserConfigurationException, SAXException, IOException, XPathExpressionException {
+	static boolean validate_01(String xml, String klasse) throws ParserConfigurationException,
+			SAXException, IOException, XPathExpressionException {
 		Document document = createDocument(xml);
 		XPath xpath = createXPath();
 		
@@ -66,7 +66,8 @@ public class XmlValidator {
 		return (!result.equals(""));
 	}
 	
-	static boolean validate_02(String xml) throws ParserConfigurationException, SAXException, IOException, XPathExpressionException {
+	static boolean validate_02(String xml) throws ParserConfigurationException,
+			SAXException, IOException, XPathExpressionException {
 		Document document = createDocument(xml);
 		XPath xpath = createXPath();
 		
@@ -88,58 +89,34 @@ public class XmlValidator {
 		return (!result.equals(""));
 	}
 	
-    public static boolean validate_02a(String xml, String bezAngebot) {
+    static boolean validate_02a(String xml, String bezAngebot) throws ParserConfigurationException,
+    		SAXException, IOException, XPathExpressionException {
         String result = "";
-        try {
+
         Document document = createDocument(xml);
         XPath xpath = createXPath();
-        
-        /*
-         * This checks if the bezAngebot is the same as the given:
-         *     typ_e='ANGEBOT_RELATIONSLOS'
-         *     @status_e='ANGEBOT_GUELTIG'
-         *     @angebotsKlasse_e='KLASSE_2'
-         *     @fahrscheinTyp_e='NORMALFAHRSCHEIN'
-         * If none are found, the bezAngebot will be empty.
-        */        
+            
         result = xpath.evaluate("angebotsAntwort/hrKombis/angebote"
                 + "[@typ_e='ANGEBOT_RELATIONSLOS' and @status_e='ANGEBOT_GUELTIG' "
                 + "and @angebotsKlasse_e='KLASSE_2' and @fahrscheinTyp_e='NORMALFAHRSCHEIN']"
                 + "/@bezAngebot", document);
         
-        } catch (IOException e) {
-            e.printStackTrace();
-        } catch (XPathExpressionException e) {
-            e.printStackTrace();
-        } catch (ParserConfigurationException e) {
-            e.printStackTrace();
-        } catch (SAXException e) {
-            e.printStackTrace();
-        }
-        
-        return (!result.equals(bezAngebot));
-        
+        return (!result.equals(bezAngebot));        
     }
     
-    public static boolean validate_03a(String xml) {
+    static boolean validate_03a(String xml) throws ParserConfigurationException,
+    		SAXException, IOException, XPathExpressionException {
         String result = "";
         String fahrschein = "";
         int laenge = 0;
-        try {
         Document document = createDocument(xml);
         XPath xpath = createXPath();
         
-        /*
-         * This returns the Bezugsangebot of the first Angebote that matches the pattern:
-         *     typ_e='ANGEBOT_RELATIONSLOS'
-         *     @status_e='ANGEBOT_GUELTIG'
-         *     @angebotsKlasse_e='KLASSE_2'
-         *     @fahrscheinTyp_e='NORMALFAHRSCHEIN'
-         * If none are found, the bezAngebot will be empty.
-        */
         fahrschein = xpath.evaluate("angebotsAntwort/hrKombis/angebot"
                 + "/@fahrschein", document);
-        laenge = Integer.parseInt(fahrschein);
+        if (fahrschein != "") {
+    		laenge = Integer.parseInt(fahrschein);
+        }
         if (laenge == 1){
         	result = xpath.evaluate("angebotsAntwort/hrKombis/angebot"
                     + "[@typ_e='ANGEBOT_RELATIONSLOS' and @status_e='ANGEBOT_GUELTIG' "
@@ -147,56 +124,29 @@ public class XmlValidator {
                     + "/@bezAngebot", document);
         }
         
-        } catch (IOException e) {
-            e.printStackTrace();
-        } catch (XPathExpressionException e) {
-            e.printStackTrace();
-        } catch (ParserConfigurationException e) {
-            e.printStackTrace();
-        } catch (SAXException e) {
-            e.printStackTrace();
-        }
-        
-        return (!result.equals(""));
-        
+        return (!result.equals(""));        
     }
 	
-    public static boolean validate_03a(String xml,Integer preis) {
+    public static boolean validate_03b(String xml, Integer preis) throws ParserConfigurationException,
+    		SAXException, IOException, XPathExpressionException {
         String result = "";
         String fahrschein = "";
         int laenge = 0;
-        try {
+
         Document document = createDocument(xml);
         XPath xpath = createXPath();
         
-        /*
-         * This returns the Bezugsangebot of the first Angebote that matches the pattern:
-         *     typ_e='ANGEBOT_RELATIONSLOS'
-         *     @status_e='ANGEBOT_GUELTIG'
-         *     @angebotsKlasse_e='KLASSE_2'
-         *     @fahrscheinTyp_e='NORMALFAHRSCHEIN'
-         * If none are found, the bezAngebot will be empty.
-        */
         fahrschein = xpath.evaluate("angebotsAntwort/hrKombis/angebot"
                 + "/@fahrschein", document);
-        laenge = Integer.parseInt(fahrschein);
-        if (laenge >= 2){
+        if (fahrschein != "") {
+        		laenge = Integer.parseInt(fahrschein);
+        }
+        if (laenge > 1){
         	result = xpath.evaluate("angebotsAntwort/hrKombis/angebot/fahrschein"
         		+ "/@preis", document);
         }
         
-        } catch (IOException e) {
-            e.printStackTrace();
-        } catch (XPathExpressionException e) {
-            e.printStackTrace();
-        } catch (ParserConfigurationException e) {
-            e.printStackTrace();
-        } catch (SAXException e) {
-            e.printStackTrace();
-        }
-        
-        return (!result.equals(preis.toString()));
-        
+        return (!result.equals(preis.toString()));        
     }
     
 	static Document createDocument(String xml) throws ParserConfigurationException, SAXException, IOException {
