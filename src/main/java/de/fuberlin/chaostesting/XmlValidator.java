@@ -26,6 +26,11 @@ public class XmlValidator {
 		try {
 			response.setValid_01(validate_01(xml, test.getKlasse()));
 			response.setValid_02(validate_02(xml));
+			response.setValid_02a(validate_02a(xml, test.getExpectedBezAngebot()));
+			if (response.isValid_01() || response.isValid_02()){
+				response.setValid_03a(validate_03a(xml));
+				response.setValid_03b(validate_03b(xml, test.getExpectedPreis()));
+			} 
 		} catch (IOException e) {
 			e.printStackTrace();
 		} catch (XPathExpressionException e) {
@@ -83,6 +88,117 @@ public class XmlValidator {
 		return (!result.equals(""));
 	}
 	
+    public static boolean validate_02a(String xml, String bezAngebot) {
+        String result = "";
+        try {
+        Document document = createDocument(xml);
+        XPath xpath = createXPath();
+        
+        /*
+         * This checks if the bezAngebot is the same as the given:
+         *     typ_e='ANGEBOT_RELATIONSLOS'
+         *     @status_e='ANGEBOT_GUELTIG'
+         *     @angebotsKlasse_e='KLASSE_2'
+         *     @fahrscheinTyp_e='NORMALFAHRSCHEIN'
+         * If none are found, the bezAngebot will be empty.
+        */        
+        result = xpath.evaluate("angebotsAntwort/hrKombis/angebote"
+                + "[@typ_e='ANGEBOT_RELATIONSLOS' and @status_e='ANGEBOT_GUELTIG' "
+                + "and @angebotsKlasse_e='KLASSE_2' and @fahrscheinTyp_e='NORMALFAHRSCHEIN']"
+                + "/@bezAngebot", document);
+        
+        } catch (IOException e) {
+            e.printStackTrace();
+        } catch (XPathExpressionException e) {
+            e.printStackTrace();
+        } catch (ParserConfigurationException e) {
+            e.printStackTrace();
+        } catch (SAXException e) {
+            e.printStackTrace();
+        }
+        
+        return (!result.equals(bezAngebot));
+        
+    }
+    
+    public static boolean validate_03a(String xml) {
+        String result = "";
+        String fahrschein = "";
+        int laenge = 0;
+        try {
+        Document document = createDocument(xml);
+        XPath xpath = createXPath();
+        
+        /*
+         * This returns the Bezugsangebot of the first Angebote that matches the pattern:
+         *     typ_e='ANGEBOT_RELATIONSLOS'
+         *     @status_e='ANGEBOT_GUELTIG'
+         *     @angebotsKlasse_e='KLASSE_2'
+         *     @fahrscheinTyp_e='NORMALFAHRSCHEIN'
+         * If none are found, the bezAngebot will be empty.
+        */
+        fahrschein = xpath.evaluate("angebotsAntwort/hrKombis/angebot"
+                + "/@fahrschein", document);
+        laenge = Integer.parseInt(fahrschein);
+        if (laenge == 1){
+        	result = xpath.evaluate("angebotsAntwort/hrKombis/angebot"
+                    + "[@typ_e='ANGEBOT_RELATIONSLOS' and @status_e='ANGEBOT_GUELTIG' "
+                    + "and @angebotsKlasse_e='KLASSE_2' and @fahrscheinTyp_e='NORMALFAHRSCHEIN']"
+                    + "/@bezAngebot", document);
+        }
+        
+        } catch (IOException e) {
+            e.printStackTrace();
+        } catch (XPathExpressionException e) {
+            e.printStackTrace();
+        } catch (ParserConfigurationException e) {
+            e.printStackTrace();
+        } catch (SAXException e) {
+            e.printStackTrace();
+        }
+        
+        return (!result.equals(""));
+        
+    }
+	
+    public static boolean validate_03a(String xml,Integer preis) {
+        String result = "";
+        String fahrschein = "";
+        int laenge = 0;
+        try {
+        Document document = createDocument(xml);
+        XPath xpath = createXPath();
+        
+        /*
+         * This returns the Bezugsangebot of the first Angebote that matches the pattern:
+         *     typ_e='ANGEBOT_RELATIONSLOS'
+         *     @status_e='ANGEBOT_GUELTIG'
+         *     @angebotsKlasse_e='KLASSE_2'
+         *     @fahrscheinTyp_e='NORMALFAHRSCHEIN'
+         * If none are found, the bezAngebot will be empty.
+        */
+        fahrschein = xpath.evaluate("angebotsAntwort/hrKombis/angebot"
+                + "/@fahrschein", document);
+        laenge = Integer.parseInt(fahrschein);
+        if (laenge >= 2){
+        	result = xpath.evaluate("angebotsAntwort/hrKombis/angebot/fahrschein"
+        		+ "/@preis", document);
+        }
+        
+        } catch (IOException e) {
+            e.printStackTrace();
+        } catch (XPathExpressionException e) {
+            e.printStackTrace();
+        } catch (ParserConfigurationException e) {
+            e.printStackTrace();
+        } catch (SAXException e) {
+            e.printStackTrace();
+        }
+        
+        return (!result.equals(preis.toString()));
+        
+    }
+    
 	static Document createDocument(String xml) throws ParserConfigurationException, SAXException, IOException {
 		InputSource source = new InputSource(new StringReader(xml));
 	

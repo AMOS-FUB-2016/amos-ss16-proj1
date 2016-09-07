@@ -35,6 +35,8 @@ public class Test {
 	@Column(name="test_msgVersion")
 	private String msgVersion = "1.0";
 	
+    @Column(name="test_bezAngebot")
+    private String bezAngebot;
 
 	public Test() {
 	}
@@ -94,4 +96,14 @@ public class Test {
 	public void setErwachsene(Integer erwachsene) {
 		this.erwachsene = erwachsene;
 	}
+	
+    
+    public String getBezAngebot() {
+        return bezAngebot;
+    }
+    
+    public void setBezAngebot(String bezAngebot) {
+        this.bezAngebot = bezAngebot;
+    }
+
 }
