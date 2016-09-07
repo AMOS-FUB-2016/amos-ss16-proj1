@@ -86,7 +86,7 @@ public class ExecuteTestAction extends GenericActionBean {
 		try {
 			Response response = osstClient.executeTest(test, getUrl());
 			
-			responseMessage = Marshalling.marshal(response);
+			responseMessage = Marshalling.marshal(response.getAntwort());
 			
 			responseDao.create(response);
 		} catch (IOException e) {

@@ -76,7 +76,7 @@ public class ShowResponseXMLAction extends GenericActionBean {
 	
 	@DefaultHandler
 	public Resolution showXML() {
-		setResult(Marshalling.marshal(response));
+		setResult(Marshalling.marshal(response.getAntwort()));
 		
 		return new ForwardResolution("/showResponseXML.jsp");
 	}

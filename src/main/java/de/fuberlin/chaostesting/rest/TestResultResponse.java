@@ -64,7 +64,7 @@ public class TestResultResponse {
 		this.testId = response.getTest().getId();
 		
 		if(extended) {
-			responseXML = Marshalling.marshal(response);
+			responseXML = Marshalling.marshal(response.getAntwort());
 		}
 	}
 }
