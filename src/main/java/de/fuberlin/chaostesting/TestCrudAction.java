@@ -25,7 +25,6 @@ import net.sourceforge.stripes.validation.ValidationErrors;
 import net.sourceforge.stripes.validation.ValidationMethod;
 import net.sourceforge.stripes.validation.ValidationState;
 
-
 @UrlBinding("/modifyTest.action")
 public class TestCrudAction extends GenericActionBean {
 	
