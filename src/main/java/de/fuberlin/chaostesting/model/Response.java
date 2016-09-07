@@ -45,6 +45,9 @@ public class Response {
 	
 	@Column(name="valid_02")
 	private boolean valid_02;
+	
+	@Column(name="valid_02a")
+	private boolean valid_02a;
 
 	public int getId() {
 		return id;
@@ -92,5 +95,13 @@ public class Response {
 	
 	public void setValid_02(boolean b) {
 		this.valid_02 = b;
+	}
+	
+	public boolean isValid_02a() {
+		return valid_02a;
+	}
+	
+	public void setValid_02a(boolean b) {
+		this.valid_02a = b;
 	}
 }
