@@ -6,6 +6,8 @@ import java.util.GregorianCalendar;
 
 import org.apache.commons.lang.time.DateUtils;
 
+import com.google.inject.Inject;
+
 import de.fuberlin.chaostesting.model.DAO;
 import de.fuberlin.chaostesting.model.Test;
 import net.sourceforge.stripes.action.Before;
@@ -28,8 +30,8 @@ import net.sourceforge.stripes.validation.ValidationState;
 @UrlBinding("/modifyTest.action")
 public class TestCrudAction extends GenericActionBean {
 	
-	String result;
-	DAO<Test> testDao = DAO.createInstance(Test.class);
+	@Inject
+	DAO<Test> testDao;
 	
 	@ValidateNestedProperties({
 		@Validate(field="von", required=true, minvalue=1000018, maxvalue=9663293),
@@ -40,6 +42,7 @@ public class TestCrudAction extends GenericActionBean {
 	})
 	Test test;
 	Date uhrzeit;
+	String result;
 	
 	public Test getTest() {
 		return test;
@@ -70,9 +73,7 @@ public class TestCrudAction extends GenericActionBean {
 	}
 	
 	@Before(stages = LifecycleStage.BindingAndValidation, on={"show", "delete"})
-	public void rehydrate() {
-		testDao = DAO.createInstance(Test.class);
-		
+	public void rehydrate() {		
 		int id = -1;
 		try {
 			id = Integer.parseInt(context.getRequest().getParameter("id"));

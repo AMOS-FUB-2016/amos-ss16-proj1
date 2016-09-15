@@ -12,6 +12,8 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.MediaType;
 
+import com.google.inject.Inject;
+
 import de.fuberlin.chaostesting.model.DAO;
 import de.fuberlin.chaostesting.model.Response;
 import de.fuberlin.chaostesting.model.Test;
@@ -21,8 +23,8 @@ import de.fuberlin.chaostesting.osst.OSSTService;
 @Path("/")
 public class TestExecutionService {
 	
-	DAO<Test> testDao = DAO.createInstance(Test.class);
-	DAO<Response> responseDao = DAO.createInstance(Response.class);
+	@Inject	DAO<Test> testDao;
+	@Inject DAO<Response> responseDao;
 	
 	@GET
 	@Path("test/list")

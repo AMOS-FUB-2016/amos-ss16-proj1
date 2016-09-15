@@ -16,11 +16,12 @@ import org.xml.sax.SAXException;
 
 import de.fuberlin.chaostesting.model.Response;
 import de.fuberlin.chaostesting.model.Test;
+import de.fuberlin.chaostesting.util.MarshalUtil;
 
 public class XmlValidator {
 	
 	public static void validate(Test test, Response response) {
-		String xml = Marshalling.marshal(response);
+		String xml = MarshalUtil.marshal(response);
 		
 		String bezAngebot = "NONE_GIVEN";
 		try {

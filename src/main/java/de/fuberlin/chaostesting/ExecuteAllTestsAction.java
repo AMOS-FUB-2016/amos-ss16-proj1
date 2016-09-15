@@ -2,6 +2,8 @@ package de.fuberlin.chaostesting;
 
 import java.util.List;
 
+import com.google.inject.Inject;
+
 import de.fuberlin.chaostesting.model.DAO;
 import de.fuberlin.chaostesting.model.Response;
 import de.fuberlin.chaostesting.model.Test;
@@ -17,8 +19,8 @@ import net.sourceforge.stripes.validation.Validate;
 @UrlBinding("/executeAllTests.action")
 public class ExecuteAllTestsAction extends GenericActionBean {
 	
-	DAO<Test> testDao = DAO.createInstance(Test.class);
-	DAO<Response> responseDao = DAO.createInstance(Response.class);
+	@Inject DAO<Test> testDao;
+	@Inject DAO<Response> responseDao;
 	
 	@Validate(required=true)
 	String url;

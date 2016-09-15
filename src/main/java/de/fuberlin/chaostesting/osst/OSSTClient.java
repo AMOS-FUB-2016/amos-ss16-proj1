@@ -23,24 +23,24 @@ import com.deutschebahn.osst.v1_0.Reisender;
 import com.deutschebahn.osst.v1_0.VerbindungsParameter;
 import com.deutschebahn.osst.v1_0.WagenKlasse;
 
-import de.fuberlin.chaostesting.Marshalling;
 import de.fuberlin.chaostesting.XmlValidator;
 import de.fuberlin.chaostesting.model.Response;
 import de.fuberlin.chaostesting.model.Test;
+import de.fuberlin.chaostesting.util.MarshalUtil;
 
 public class OSSTClient {
 
 	public Response executeTest(Test test, String url) throws IOException {
 		AngebotsAnfrage anfrage;
 		anfrage = convertTest(test);
-		String testXml = Marshalling.marshal(anfrage);
+		String testXml = MarshalUtil.marshal(anfrage);
 		String responseStr = new String(executeHttpRequest(testXml, url)
 				.getBytes("windows-1252"), "UTF-8");
 
 		Response response = new Response(); 
 		response.setTimestamp(new Date());	
 		response.setTest(test);
-		AngebotsAntwort antwort = Marshalling.unmarshal(responseStr, AngebotsAntwort.class);
+		AngebotsAntwort antwort = MarshalUtil.unmarshal(responseStr, AngebotsAntwort.class);
 		response.setAntwort(antwort);
 		XmlValidator.validate(test, response);
 		return response;

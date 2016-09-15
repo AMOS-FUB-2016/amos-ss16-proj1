@@ -1,4 +1,4 @@
-package de.fuberlin.chaostesting.model;
+package de.fuberlin.chaostesting.util;
 
 import java.beans.BeanInfo;
 import java.beans.IntrospectionException;
@@ -11,102 +11,21 @@ import java.util.Arrays;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Set;
 
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.Id;
 import javax.persistence.Persistence;
 import javax.persistence.Table;
+import javax.persistence.metamodel.EntityType;
 
 import org.apache.commons.lang3.tuple.Pair;
 
 public class PersistenceUtils {
 
-	private static EntityManagerFactory entityManagerFactory;
-	private final static ThreadLocal<EntityManager> threadLocalEntityManager = new ThreadLocal<>();
-	
-	private static EntityManagerFactory createEntityManagerFactory() {
-		Collection<Pair<String, String>> overridables =
-				Arrays.asList(
-					Pair.of("JPA_DB_URL", "javax.persistence.jdbc.url"),
-					Pair.of("JPA_DB_USER", "javax.persistence.jdbc.user"),
-					Pair.of("JPA_DB_PASSWORD", "javax.persistence.jdbc.password")
-				);
-
-		Map<String, String> overrides = new HashMap<>();
-		overridables.forEach(pair -> {
-			String envKey = pair.getLeft();
-			String jpaKey = pair.getRight();
-			
-			String envVal = System.getProperty(envKey);
-			if(envVal == null) {
-				envVal = System.getenv(envKey);
-			}
-			
-			if(envVal != null) {
-				overrides.put(jpaKey, envVal);
-			}
-		});
-		
-		return Persistence.createEntityManagerFactory("de.fuberlin.chaostesting", overrides);
-	}
-
-	public static EntityManager getEntityManager() {
-		if(entityManagerFactory == null) {
-			entityManagerFactory = createEntityManagerFactory();
-		}
-
-		EntityManager entityManager = threadLocalEntityManager.get();
-
-		if(entityManager == null) {
-			entityManager = entityManagerFactory.createEntityManager();
-			threadLocalEntityManager.set(entityManager);
-		}
-
-		return entityManager;
-	}
-
-	public static void closeEntityManager() {
-		EntityManager entityManager = threadLocalEntityManager.get();
-		if(entityManager != null) {
-			entityManager.close();
-			threadLocalEntityManager.set(null);
-		}
-	}
-
-	public static void beginTransaction() {
-		try {
-			getEntityManager().getTransaction().begin();
-		} catch(RuntimeException e) {
-			throw new DataAccessException("error starting transaction", e);
-		}
-	}
-
-	public static void rollback() {
-		try {
-			getEntityManager().getTransaction().rollback();
-		} catch(RuntimeException e) {
-			throw new DataAccessException("error rolling back transaction", e);
-		}
-	}
-
-	public static void commit() {
-		try {
-			getEntityManager().getTransaction().commit();
-		} catch(RuntimeException e) {
-			throw new DataAccessException("error comitting transaction", e);
-		}
-	}
-	
-	protected static EntityManagerFactory getEntityManagerFactory() {
-		return entityManagerFactory;
-	}
-
-	public static void closeEntityManagerFactory() {
-		if(entityManagerFactory != null) {
-			entityManagerFactory.close();
-			entityManagerFactory = null;
-		}
+	public static Set<EntityType<?>> getManagedTypes(EntityManagerFactory emf) {
+		return emf.getMetamodel().getEntities();
 	}
 
 	public static <T> String findEntityTableName(Class<T> type) {
@@ -116,7 +35,7 @@ public class PersistenceUtils {
 		}
 
 		return type.getName();
-	}	
+	}
 
 	public static Object getEntityPrimaryKey(Object entity) {
 		Class<? extends Object> type = entity.getClass();
@@ -132,7 +51,7 @@ public class PersistenceUtils {
 			for(Method method : type.getDeclaredMethods()) {
 				Id idAnnot = method.getAnnotation(Id.class);
 				if(idAnnot != null) {
-					return method.invoke(entity, (Object[])null);
+					return method.invoke(entity);
 				}
 			}
 		} catch (IllegalArgumentException | IllegalAccessException | InvocationTargetException e) {
@@ -156,7 +75,7 @@ public class PersistenceUtils {
 	public static Object getBeanProperty(Object bean, String propertyName) {
 		try {
 			PropertyDescriptor propDesc = propDescByName(bean.getClass(), propertyName);
-			return propDesc.getReadMethod().invoke(bean, (Object[])null);
+			return propDesc.getReadMethod().invoke(bean);
 		} catch (IntrospectionException | IllegalAccessException | IllegalArgumentException | InvocationTargetException e) {
 			// programmer's error
 			throw new RuntimeException("could not fetch bean property \"" + propertyName + "\" on bean of type " + bean.getClass().getName(), e);

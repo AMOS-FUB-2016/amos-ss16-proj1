@@ -14,8 +14,11 @@ import org.w3c.dom.Document;
 import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
 
+import com.google.inject.Inject;
+
 import de.fuberlin.chaostesting.model.DAO;
 import de.fuberlin.chaostesting.model.Response;
+import de.fuberlin.chaostesting.util.MarshalUtil;
 import net.sourceforge.stripes.action.Before;
 import net.sourceforge.stripes.action.DefaultHandler;
 import net.sourceforge.stripes.action.ForwardResolution;
@@ -32,7 +35,7 @@ public class ShowResponseXMLAction extends GenericActionBean {
 	String result;
 	int id = -1;
 	
-	DAO<Response> responseDao = DAO.createInstance(Response.class);
+	@Inject DAO<Response> responseDao;
 
 	public Response getResponse() {
 		return response;
@@ -76,14 +79,14 @@ public class ShowResponseXMLAction extends GenericActionBean {
 	
 	@DefaultHandler
 	public Resolution showXML() {
-		setResult(Marshalling.marshal(response.getAntwort()));
+		setResult(MarshalUtil.marshal(response.getAntwort()));
 		
 		return new ForwardResolution("/showResponseXML.jsp");
 	}
 	
 	@HandlesEvent("serverVersion")
 	public Resolution showServerVersion() throws ParserConfigurationException, SAXException, IOException, XPathExpressionException {
-		String xml = Marshalling.marshal(response);
+		String xml = MarshalUtil.marshal(response);
 
 		InputSource source = new InputSource(new StringReader(xml));
 

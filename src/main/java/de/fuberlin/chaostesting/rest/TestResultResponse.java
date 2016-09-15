@@ -2,8 +2,8 @@ package de.fuberlin.chaostesting.rest;
 
 import javax.xml.bind.annotation.XmlRootElement;
 
-import de.fuberlin.chaostesting.Marshalling;
 import de.fuberlin.chaostesting.model.Response;
+import de.fuberlin.chaostesting.util.MarshalUtil;
 
 @XmlRootElement
 public class TestResultResponse {
@@ -74,7 +74,7 @@ public class TestResultResponse {
 		this.testId = response.getTest().getId();
 		
 		if(extended) {
-			responseXML = Marshalling.marshal(response.getAntwort());
+			responseXML = MarshalUtil.marshal(response.getAntwort());
 		}
 	}
 }

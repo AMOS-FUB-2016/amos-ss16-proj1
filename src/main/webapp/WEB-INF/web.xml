@@ -15,6 +15,12 @@
             <param-name>ActionResolver.Packages</param-name>
             <param-value>de.fuberlin.chaostesting</param-value>
         </init-param>
+        <init-param>
+		    <param-name>Interceptor.Classes</param-name>
+		    <param-value>
+		        de.fuberlin.chaostesting.ioc.GuiceInjectionSupportInterceptor
+		    </param-value>
+		</init-param>
     </filter>
 
 	<filter-mapping>
@@ -40,19 +46,18 @@
         <url-pattern>*.action</url-pattern>
     </servlet-mapping>
 	
-	<listener>
-	  <description>Persistence State Listener</description>
-	  <listener-class>de.fuberlin.chaostesting.model.PersistenceStateHelper</listener-class>
-	</listener>
-	
 	<filter>
-	  <filter-name>persistence_interceptor</filter-name>
-	  <filter-class>de.fuberlin.chaostesting.model.PersistenceStateHelper</filter-class>
+		<filter-name>persistence_interceptor</filter-name>
+		<filter-class>de.fuberlin.chaostesting.ioc.TransactionManagementFilter</filter-class>
+		<init-param>
+			<param-name>InjectionProvider</param-name>
+			<param-value>de.fuberlin.chaostesting.ioc.IOC</param-value>
+		</init-param>
 	</filter>
 	
 	<filter-mapping>
-	  <filter-name>persistence_interceptor</filter-name>
-	  <url-pattern>*</url-pattern>
+		<filter-name>persistence_interceptor</filter-name>
+		<url-pattern>*</url-pattern>
 	</filter-mapping>
 	
 	<servlet>  
@@ -61,7 +66,7 @@
  			<init-param>  
  				<param-name>jersey.config.server.provider.packages</param-name>  
  				<param-value>de.fuberlin.chaostesting.rest</param-value>  
-			</init-param>  
+			</init-param>   
 		<load-on-startup>1</load-on-startup>  
 	</servlet> 
 	
@@ -70,4 +75,19 @@
  		<url-pattern>/rest/*</url-pattern>  
 	</servlet-mapping>
 	
+	<filter>
+        <filter-name>guiceFilter</filter-name>
+        <filter-class>com.google.inject.servlet.GuiceFilter</filter-class>
+    </filter>
+
+    <filter-mapping>
+        <filter-name>guiceFilter</filter-name>
+        <url-pattern>/rest/*</url-pattern>
+    </filter-mapping>
+	
+	<listener>
+		<description>Rest IOC Interceptor</description>
+        <listener-class>de.fuberlin.chaostesting.ioc.RestServletContextListener</listener-class>
+    </listener>
+
 </web-app>

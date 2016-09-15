@@ -1,4 +1,4 @@
-package de.fuberlin.chaostesting;
+package de.fuberlin.chaostesting.util;
 
 import java.io.ByteArrayOutputStream;
 import java.io.StringReader;
@@ -6,7 +6,7 @@ import java.io.UnsupportedEncodingException;
 
 import javax.xml.bind.JAXB;
 
-public class Marshalling {
+public class MarshalUtil {
 
 	public static <T> T unmarshal(String xml, Class<T> type) {
 		return JAXB.unmarshal(new StringReader(xml), type);

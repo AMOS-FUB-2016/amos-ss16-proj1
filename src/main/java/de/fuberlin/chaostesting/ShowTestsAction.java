@@ -2,6 +2,8 @@ package de.fuberlin.chaostesting;
 
 import java.util.List;
 
+import com.google.inject.Inject;
+
 import de.fuberlin.chaostesting.model.DAO;
 import de.fuberlin.chaostesting.model.Test;
 import net.sourceforge.stripes.action.DefaultHandler;
@@ -12,8 +14,9 @@ import net.sourceforge.stripes.action.UrlBinding;
 @UrlBinding("/showTests.action")
 public class ShowTestsAction extends GenericActionBean {
 
-	List<Test> tests;	
-	DAO<Test> testDao = DAO.createInstance(Test.class);
+	List<Test> tests;
+	
+	@Inject DAO<Test> testDao;
 	
 	public List<Test> getTests() {
 		return tests;

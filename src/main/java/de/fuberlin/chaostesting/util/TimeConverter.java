@@ -1,4 +1,4 @@
-package de.fuberlin.chaostesting;
+package de.fuberlin.chaostesting.util;
 
 import net.sourceforge.stripes.validation.DateTypeConverter;
 

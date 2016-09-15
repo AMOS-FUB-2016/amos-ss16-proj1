@@ -26,6 +26,7 @@ repositories {
 
 dependencies {
 	def jerseyVersion = "2.23.2"
+	def guiceVersion = "4.1.0"
 
     providedCompile "javax.servlet:javax.servlet-api:3.1.+"
     providedCompile group: 'javax.servlet.jsp', name: 'jsp-api', version: '2.2'
@@ -35,13 +36,25 @@ dependencies {
     runtime "org.postgresql:postgresql:9.4.1209"
     compile group: 'commons-lang', name: 'commons-lang', version: '2.6'
     
+    // guice dependency injection
+    compile group: 'com.google.inject', name: 'guice', version: guiceVersion, classifier: "no_aop"
+    compile group: 'com.google.inject.extensions', name: 'guice-servlet', version: guiceVersion
+    
+    // jersey
 	compile group: 'org.glassfish.jersey.containers', name: 'jersey-container-servlet', version: jerseyVersion
 	compile group: 'org.glassfish.jersey.containers', name: 'jersey-container-servlet-core', version: jerseyVersion
 	compile group: 'org.glassfish.jersey.media', name: 'jersey-media-json-jackson', version: jerseyVersion
+	
+    compile group: 'com.squarespace.jersey2-guice', name: 'jersey2-guice-impl', version: '1.0.6'
 
 	// jaxb dependencies
 	compile group: 'org.jvnet.hyperjaxb3', name: 'hyperjaxb3-ejb-runtime', version: '0.6.1'
     xjc group: 'org.jvnet.hyperjaxb3', name: 'hyperjaxb3-ejb-plugin', version: '0.6.1'
+
+    // testing
+    testCompile group: 'junit', name: 'junit', version: '4.12'
+    testCompile group: 'org.mockito', name: 'mockito-all', version: '1.10.19'
+    testCompile group: 'com.h2database', name: 'h2', version: '1.4.192'
 }
 
 jaxb {
@@ -57,9 +70,11 @@ jaxb {
     }
 }
 
-def hyperjaxb3MetaInfAdditions = 'build/generated/jaxb/java/osst'
-war {
-    classpath hyperjaxb3MetaInfAdditions
+// add persistence.xml to classpath
+project.afterEvaluate { project ->
+    def jaxbOutDir = project.getTasks().getByPath("jaxbJavaGenOsst").outputDirectory
+    sourceSets.main.resources.srcDir jaxbOutDir
+    sourceSets.test.resources.srcDir jaxbOutDir
 }
 
 eclipse.wtp {
@@ -120,4 +135,10 @@ composeUp.dependsOn copyToDocker
 
 afterEvaluate {
     tasks.eclipseClasspath.dependsOn tasks.jaxb
+}
+
+test {
+    testLogging {
+        events "passed", "skipped", "failed"
+    }
 }

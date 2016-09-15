@@ -2,10 +2,13 @@ package de.fuberlin.chaostesting;
 
 import java.io.IOException;
 
+import com.google.inject.Inject;
+
 import de.fuberlin.chaostesting.model.DAO;
 import de.fuberlin.chaostesting.model.Response;
 import de.fuberlin.chaostesting.model.Test;
 import de.fuberlin.chaostesting.osst.OSSTClient;
+import de.fuberlin.chaostesting.util.MarshalUtil;
 import net.sourceforge.stripes.action.Before;
 import net.sourceforge.stripes.action.DefaultHandler;
 import net.sourceforge.stripes.action.ForwardResolution;
@@ -26,8 +29,9 @@ public class ExecuteTestAction extends GenericActionBean {
 	@Validate(required=true)
 	String url;
 	
-	DAO<Test> testDao = DAO.createInstance(Test.class);
-	DAO<Response> responseDao = DAO.createInstance(Response.class);
+	@Inject DAO<Test> testDao;
+	@Inject DAO<Response> responseDao;
+	
 	OSSTClient osstClient = new OSSTClient();
 	
 	public Test getTest() {
@@ -86,7 +90,7 @@ public class ExecuteTestAction extends GenericActionBean {
 		try {
 			Response response = osstClient.executeTest(test, getUrl());
 			
-			responseMessage = Marshalling.marshal(response.getAntwort());
+			responseMessage = MarshalUtil.marshal(response.getAntwort());
 			
 			responseDao.create(response);
 		} catch (IOException e) {

@@ -8,6 +8,11 @@ import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Root;
 
+import com.google.inject.Inject;
+import com.google.inject.TypeLiteral;
+
+import de.fuberlin.chaostesting.util.PersistenceUtils;
+
 /**
  * Simple DAO mechanism for easy access and abstraction from database semantics.
  * 
@@ -20,14 +25,16 @@ public class DAO<T> {
 	EntityManager entityManager;
 	Class<T> type;
 	
-	
-	private DAO(Class<T> type, EntityManager entityManager) {
+	public DAO(Class<T> type, EntityManager entityManager) {
 		this.type = type;
 		this.entityManager = entityManager;
 	}
 	
-	public static <T> DAO<T> createInstance(Class<T> type) {
-		return new DAO<>(type, PersistenceUtils.getEntityManager());
+	@SuppressWarnings("unchecked")
+	@Inject
+	public DAO(TypeLiteral<T> type, EntityManager entityManager) {
+		this.type = (Class<T>) type.getRawType();
+		this.entityManager = entityManager;
 	}
 	
 	/**
@@ -41,7 +48,7 @@ public class DAO<T> {
 	/**
 	 * Creates a new entity
 	 * @param entity the entity with state to be saved
-	 * @return false if creation was unsuccessful, true else
+	 * @return the primary key generated for the entity
 	 */
 	public Object create(T entity) {
 		try {
