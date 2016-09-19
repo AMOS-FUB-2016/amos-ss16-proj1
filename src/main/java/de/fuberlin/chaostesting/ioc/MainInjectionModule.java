@@ -29,7 +29,7 @@ public class MainInjectionModule extends AbstractModule {
 	protected void configure() {
 		
 		emf = createEntityManagerFactory();
-		transactionManager = new TransactionManager(emf);
+		transactionManager = createTransactionManager(emf);
 		
 		bind(EntityManagerFactory.class).toInstance(emf);
 		bind(TransactionManager.class).toInstance(transactionManager);
@@ -56,13 +56,13 @@ public class MainInjectionModule extends AbstractModule {
 				}
 			}));
 			
-		}	
+		}
 	}
 	
 	
 	@Provides
 	private EntityManager provideEntityManager() {
-		return transactionManager.getEntityManager();
+		return getEntityManager();
 	}
 	
 	protected EntityManagerFactory createEntityManagerFactory() {
@@ -90,6 +90,13 @@ public class MainInjectionModule extends AbstractModule {
 		
 		return Persistence.createEntityManagerFactory("de.fuberlin.chaostesting", overrides);
 	}
+	
+	protected TransactionManager createTransactionManager(EntityManagerFactory emf) {
+		return new TransactionManager(emf);
+	}
 
+	protected EntityManager getEntityManager() {
+		return transactionManager.getEntityManager();
+	}
 	
 }

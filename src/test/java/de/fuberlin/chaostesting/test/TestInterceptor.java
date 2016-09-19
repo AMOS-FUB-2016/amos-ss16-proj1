@@ -1,6 +1,5 @@
 package de.fuberlin.chaostesting.test;
 
-import com.google.inject.Guice;
 import com.google.inject.Injector;
 
 import de.fuberlin.chaostesting.ioc.InjectionProvider;
@@ -27,11 +26,11 @@ public class TestInterceptor implements Interceptor, InjectionProvider {
 		return resolution;
 	}
 	
+	public static void setInjector(Injector injector) {
+		TestInterceptor.injector = injector;
+	}
+	
 	public static Injector getInjector() {
-		if(injector == null) {
-			injector = Guice.createInjector(new TestGuiceModule());
-		}
-		
 		return injector;
 	}
 

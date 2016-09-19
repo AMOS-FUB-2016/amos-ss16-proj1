@@ -53,7 +53,7 @@ public class DAO<T> {
 	public Object create(T entity) {
 		try {
 			entityManager.persist(entity);
-	
+			entityManager.flush(); // only on flush it's guaranteed that id on entity is set
 			return PersistenceUtils.getEntityPrimaryKey(entity);
 		} catch (Exception e) {
 			throw new DataAccessException("error creating entity", e);

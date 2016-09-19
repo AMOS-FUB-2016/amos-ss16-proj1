@@ -11,6 +11,7 @@ buildscript {
 plugins {
     id "war"
     id "eclipse-wtp"
+	id "jacoco"
     id "com.intershop.gradle.jaxb" version "1.0.1"
 }
 
@@ -55,6 +56,7 @@ dependencies {
     testCompile group: 'junit', name: 'junit', version: '4.12'
     testCompile group: 'org.mockito', name: 'mockito-all', version: '1.10.19'
     testCompile group: 'com.h2database', name: 'h2', version: '1.4.192'
+	testCompile group: 'org.apache.tomcat', name: 'jasper', version: '6.0.45' // needed for Java EL validation in ActionBeans
 }
 
 jaxb {

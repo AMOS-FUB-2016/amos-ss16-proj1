@@ -10,6 +10,7 @@ import com.google.inject.Inject;
 
 import de.fuberlin.chaostesting.model.DAO;
 import de.fuberlin.chaostesting.model.Test;
+import de.fuberlin.chaostesting.util.TimeConverter;
 import net.sourceforge.stripes.action.Before;
 import net.sourceforge.stripes.action.DefaultHandler;
 import net.sourceforge.stripes.action.DontValidate;
@@ -34,11 +35,12 @@ public class TestCrudAction extends GenericActionBean {
 	DAO<Test> testDao;
 	
 	@ValidateNestedProperties({
-		@Validate(field="von", required=true, minvalue=1000018, maxvalue=9663293),
-		@Validate(field="nach", required=true, minvalue=1000018, maxvalue=9663293),
-		@Validate(field="zeitpunkt", required=true),
-		@Validate(field="erwachsene", required=true, minvalue=1, maxvalue=5),
-		@Validate(field="klasse", required=true),
+		@Validate(field="id", required=true, on={"update"}),
+		@Validate(field="von", required=true, minvalue=1000018, maxvalue=9663293, on={"create", "update"}),
+		@Validate(field="nach", required=true, minvalue=1000018, maxvalue=9663293, on={"create", "update"}),
+		@Validate(field="zeitpunkt", required=true, on={"create", "update"}),
+		@Validate(field="erwachsene", required=true, minvalue=1, maxvalue=5, on={"create", "update"}),
+		@Validate(field="klasse", required=true, expression="self eq 'KLASSE_1' or self eq 'KLASSE_2'", on={"create", "update"}),
 	})
 	Test test;
 	Date uhrzeit;
@@ -78,14 +80,14 @@ public class TestCrudAction extends GenericActionBean {
 		try {
 			id = Integer.parseInt(context.getRequest().getParameter("id"));
 		} catch(NumberFormatException e) {
-			context.getValidationErrors().add("illegalParameter", new SimpleError("Illegaler Request-Parameter", (Object)null));
+			context.getValidationErrors().add("illegalParameter", new SimpleError("Illegaler Request-Parameter"));
 			return;
 		}
 		
 		test = testDao.findById(id);
 	    
 	    if(test == null) {
-	    	context.getValidationErrors().add("noTestFound", new SimpleError("Kein Test gefunden für " + id, (Object)null));
+	    	context.getValidationErrors().add("noTestFound", new SimpleError("Kein Test gefunden für " + id));
 	    }
 	}
 	
@@ -108,7 +110,7 @@ public class TestCrudAction extends GenericActionBean {
 	public Resolution createTest() {
 		handleTimeOfDayInput(uhrzeit, test);
 		
-		testDao.createOrUpdate(test);
+		testDao.create(test);
 		
 		FlashScope scope = FlashScope.getCurrent(context.getRequest(), true);
 		scope.put("test", test);
@@ -132,7 +134,6 @@ public class TestCrudAction extends GenericActionBean {
 		return new RedirectResolution(TestCrudAction.class, "show").addParameter("id", test.getId()).flash(this);
 	}
 	
-	@DontValidate
 	@HandlesEvent("delete")
 	public Resolution deleteTest() {		
 		testDao.delete(test);
@@ -141,7 +142,6 @@ public class TestCrudAction extends GenericActionBean {
 		return new ForwardResolution("/deleteTest.jsp");
 	}
 	
-	@DontValidate
 	@HandlesEvent("deleteUpdate")
 	public Resolution deleteUpdateTest() {
 		// reload test to get a attached instance
@@ -149,7 +149,7 @@ public class TestCrudAction extends GenericActionBean {
 		return deleteTest();
 	}
 	
-	@ValidationMethod(when=ValidationState.ALWAYS)
+	@ValidationMethod(when=ValidationState.NO_ERRORS)
 	public void validateVonNach(ValidationErrors errors) {
 		if (test.getVon() != null && test.getNach() != null
 				&& test.getVon().equals(test.getNach())) {
